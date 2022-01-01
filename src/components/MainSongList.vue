@@ -81,7 +81,7 @@
           </div>
           <div class="song-full-details-record">
             <span>录播：</span>
-            <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p" target="blank">
+            <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&t='+Math.floor(song.record_start_ms/1000)" target="blank">
               {{song.date}} p{{song.record.p}} {{song.record.timecode}}
             </a>
           </div>
