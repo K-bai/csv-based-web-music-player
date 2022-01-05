@@ -98,10 +98,13 @@ function get_query()
 
 function if_first_browse(){
   // 初始化
-  if (!localStorage.getItem('browse_flag'))
+  let lastest = '20220101'
+  if (!localStorage.getItem('browse_flag')){
+    localStorage.setItem('browse_flag', lastest)
     return true
-  else if (localStorage.getItem('browse_flag') !== '20220101'){
-    localStorage.setItem('browse_flag', '20220101')
+  }
+  else if (localStorage.getItem('browse_flag') !== lastest){
+    localStorage.setItem('browse_flag', lastest)
     return true
   }
   return false

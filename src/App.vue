@@ -70,7 +70,7 @@ export default {
           let recommand_song_list = ['U00044', 'U01506', 'U00113', 'U01500']
           let song_list = recommand_song_list.map(i => window.meumy.song_list.find(s => (s.id === i)))
           console.log(song_list)
-          this.$refs.player.playlist_replace(song_list)
+          this.$refs.player.playlist_add_many(song_list)
         }
       })
     }
