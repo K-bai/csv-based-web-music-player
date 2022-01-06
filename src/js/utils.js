@@ -84,18 +84,6 @@ function decode_share(code){
   return song_list
 }
 
-function get_query()
-// 获取url参数
-{
-  let query = window.location.search.substring(1).split("&")
-  let rst = {}
-  for (let i of query){
-    let pair = i.split("=")
-    rst[pair[0]] = pair[1]
-  }
-  return rst
-}
-
 function if_first_browse(){
   // 初始化
   let lastest = '20220101'
@@ -122,7 +110,6 @@ export default {
   read_playlist,
   encode_share,
   decode_share,
-  get_query,
   if_first_browse,
   debug
 }

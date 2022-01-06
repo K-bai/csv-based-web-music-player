@@ -59,11 +59,14 @@ export default {
         let c_playlist = utils.read_playlist()
         this.$refs.player.playlist_replace(c_playlist.song_list, c_playlist.current_song)
         // 如果有查询参数就把这首歌加入播放列表
-        let query = utils.get_query()
-        if (query.s){
-          let song_idx = window.meumy.song_list.findIndex(s => (s.id === query.s))
+        const parsedUrl = new URL(window.location.href)
+        let query = parsedUrl.searchParams.get('s')
+        if (query !== null && query !== ''){
+          let song_idx = window.meumy.song_list.findIndex(s => (s.id === query))
           if (song_idx !== -1)
             this.$refs.player.playlist_add_song(window.meumy.song_list[song_idx], true)
+          // 清空地址栏的查询参数
+          window.history.replaceState({}, '', window.location.pathname);
         }
         // 看看是不是首次打开
         if (utils.if_first_browse()){
