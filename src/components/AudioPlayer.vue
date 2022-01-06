@@ -304,6 +304,11 @@ export default {
         else audio.play()
       }
     },
+    audio_pause() {
+      // 正在播放就暂停
+      this.play_status = !audio.paused
+      if (this.play_status) audio.pause()
+    },
     next_song(idx) {
       // 如果列表是空的就return
       if (this.playlist[0].id === 'empty_song') return

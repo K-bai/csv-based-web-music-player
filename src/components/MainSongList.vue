@@ -5,7 +5,7 @@
       v-on:update:song_list_filtered="page=1"
     />
     <div class="c-controler">
-      <button class="controler-item controler-item-all" v-on:click="all_song_to_playlist">全部筛选结果加入播放列表</button>
+      <button class="general-button controler-item controler-item-all" v-on:click="all_song_to_playlist">全部筛选结果加入播放列表</button>
     </div>
     <div class="c-song-list">
       <div class="song-list-header" ref="header">
@@ -35,6 +35,11 @@
           <div class="item-column-idx all-column all-column-idx">{{idx+1+(page-1)*per_page}}</div>
           <div class="item-column-op all-column all-column-op">
             <div
+              class="item-op-download item-op-all"
+              title="下载歌曲"
+              v-show="song.have_audio"
+            ><a v-bind:href="song.src" download><div></div></a></div>
+            <div
               class="item-op-add item-op-all"
               title="加入播放列表"
               v-show="song.have_audio"
@@ -49,7 +54,7 @@
             <div
               class="item-op-none"
               v-show="!song.have_audio"
-            >暂无音频</div>
+            >{{song.days_before_available>=0?song.days_before_available+'天后可听':'暂无音频'}}</div>
           </div>
           <div
             class="all-column-info item-column-info"
@@ -239,16 +244,13 @@ export default {
   flex-direction: row-reverse;
 }
 .controler-item {
-  background-color: white;
   color: #6c757d;
-  border-radius: 0.3rem;
   border: 1px solid #6c757d;
   flex-grow: 1;
   flex-basis: 1rem;
   text-align: center;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  cursor: pointer;
 }
 @media (any-hover: hover) {
   .controler-item:hover{
@@ -318,7 +320,7 @@ export default {
   height: 1rem;
 }
 .all-column-op {
-  width: 4rem;
+  width: 5rem;
   flex-grow: 0;
   flex-shrink: 0;
 }
@@ -392,6 +394,11 @@ export default {
 }
 .item-op-all div {
   background-size: contain;
+}
+.item-op-download div {
+  height: 1.0rem;
+  width: 1.0rem;
+  background-image: url("~bootstrap-icons/icons/download.svg");
 }
 .item-op-add div {
   height: 1.1rem;
@@ -529,6 +536,9 @@ export default {
   }
   .item-column-details {
     font-size: 0.8rem;
+  }
+  .item-op-download {
+    display: none;
   }
   .song-list-item-details {
     width: calc(100% - 2rem);

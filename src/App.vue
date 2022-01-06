@@ -11,6 +11,7 @@
       </div>
       <main-song-list ref="main" />
       <audio-player ref="player" />
+      <countdown />
       <import-song-list />
       <v-footer />
       <pop-up-info v-if="show_info" v-on:closepopup="show_info=false" />
@@ -24,6 +25,7 @@ import AudioPlayer from './components/AudioPlayer.vue'
 import Banner from './components/Banner.vue'
 import ImportSongList from './components/ImportSongList.vue'
 import Footer from './components/Footer.vue'
+import Countdown from './components/Countdown.vue'
 import PopUpInfo from './components/PopUp/Info.vue'
 import song_data from './js/data.js'
 import utils from './js/utils.js'
@@ -36,6 +38,7 @@ export default {
     Banner,
     ImportSongList,
     'v-footer': Footer,
+    Countdown,
     PopUpInfo
   },
   data() {
@@ -116,16 +119,30 @@ body {
   padding-right: 2rem;
   flex-grow: 1;
 }
+
+
 .card {
   border-radius: 0.3rem;
   border:1px solid rgba(0, 0, 0, 0.096);
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.719);
   background-color: white;
 }
-
 .card hr {
   border: none;
   border-top: 1px rgb(207, 207, 207) solid;
+}
+.general-input {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px rgb(190, 190, 190) solid;
+  border-radius: 0.3rem;
+  background-color: white;
+}
+.general-button {
+  background-color: white;
+  border-radius: 0.3rem;
+  text-align: center;
+  cursor: pointer;
 }
 
 

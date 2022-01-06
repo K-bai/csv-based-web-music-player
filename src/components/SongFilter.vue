@@ -28,7 +28,7 @@
       >
         <div class="filter-item-label">{{filter_item.text}}:</div>
         <select
-          class="filter-item-input"
+          class="general-input"
           v-model="filter_item.value"
           v-on:change="filter_change_event"
         >
@@ -39,32 +39,32 @@
           >{{option}}</option>
         </select>
       </div>
-      <div class="filter-item filter-song-search">
-        <select
-          class="filter-item-input filter-song-search-select"
-          v-model="search.type"
-        >
-          <option
-            v-for="option in search.options"
-            v-bind:value="option"
-            v-bind:key="option"
-          >{{option}}</option>
-        </select>
-        <input
-          v-model="search.text"
-          class="filter-item-input filter-song-search-input"
-          v-on:keydown.enter="search_press_enter"
-          v-on:keydown.space.stop=""
-        />
-        <button
-          class="filter-song-search-go filter-song-search-button"
-          v-on:click="apply_search(false)"
-        >搜索!</button>
-        <button
-          class="filter-song-search-clear filter-song-search-button"
-          v-on:click="apply_search(true)"
-        >清空</button>
-      </div>
+    </div>
+    <div class="filter-song-search">
+      <select
+        class="general-input filter-song-search-select"
+        v-model="search.type"
+      >
+        <option
+          v-for="option in search.options"
+          v-bind:value="option"
+          v-bind:key="option"
+        >{{option}}</option>
+      </select>
+      <input
+        v-model="search.text"
+        class="general-input filter-song-search-input"
+        v-on:keydown.enter="search_press_enter"
+        v-on:keydown.space.stop=""
+      />
+      <button
+        class="general-button filter-song-search-go filter-song-search-button"
+        v-on:click="apply_search(false)"
+      >搜索!</button>
+      <button
+        class="general-button filter-song-search-clear filter-song-search-button"
+        v-on:click="apply_search(true)"
+      >清空</button>
     </div>
   </div>
 </template>
@@ -243,15 +243,8 @@ export default {
 .filter-item-label {
   margin-right: 0.5rem;
 }
-.filter-item-input {
-  flex-grow: 1;
-  padding: 0.5rem;
-  border: 1px rgb(190, 190, 190) solid;
-  border-radius: 0.3rem;
-  background-color: white;
-}
 .filter-song-search {
-  flex-grow: 3;
+  display: flex;
   align-items: stretch;
 }
 .filter-song-search-select {
@@ -271,10 +264,6 @@ export default {
 .filter-song-search-button {
   flex-grow: 0;
   flex-shrink: 0;
-  background-color: white;
-  border-radius: 0.3rem;
-  text-align: center;
-  cursor: pointer;
 }
 .filter-song-search-go {
   border-radius: 0rem;

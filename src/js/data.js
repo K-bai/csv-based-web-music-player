@@ -2,6 +2,8 @@ import { parse } from 'csv-parse/dist/esm/sync.js'
 import dayjs from 'dayjs'
 import song_list from './song_list.js'
 
+let AVAILABLE_DAYS_LIMIT = 5
+
 function get_song_data(callback){
   fetch('/static/recording database.csv', {
     cache: 'no-cache'
@@ -92,6 +94,10 @@ function convert_song(row){
   // 有没有音频
   let have_audio = false
   if (row['有没有音频'] == 'TRUE') have_audio = true
+  // 如果没到时间也不可用
+  let days_before_available = AVAILABLE_DAYS_LIMIT - dayjs().diff(dayjs(date), 'day')
+  if (days_before_available >= 0)
+    have_audio = false
   // 计算持续时间 解析不了结束时间戳就不算持续时间了
   let duration = '--:--'
   if (have_audio) {
@@ -115,7 +121,8 @@ function convert_song(row){
     duration,
     id: song_id,
     src: `/songs/${song_id}.mp3`,
-    have_audio
+    have_audio,
+    days_before_available
   }
 }
 
