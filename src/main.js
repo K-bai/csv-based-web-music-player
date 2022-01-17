@@ -38,6 +38,7 @@ window.meumy = {
     month: [],
     collection: []
   },
+  backdoor: false,
   debug_list: []
 }
 

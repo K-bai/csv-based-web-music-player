@@ -54,6 +54,12 @@ export default {
       console.log(this.$refs.player.playlist_share())
     },
     init() {
+      // 看看是不是开了后门
+      const parsedUrl = new URL(window.location.href)
+      let backdoor_query = parsedUrl.searchParams.get('backdoor')
+      if (backdoor_query === 'ILOVEMEUMY')
+        window.meumy.backdoor = true
+      // 获取歌曲
       song_data.get_song_data(() => {
         // 加入保存的播放列表
         let c_playlist = utils.read_playlist()
@@ -62,7 +68,7 @@ export default {
         const parsedUrl = new URL(window.location.href)
         let query = parsedUrl.searchParams.get('s')
         if (query !== null && query !== ''){
-          let song_idx = window.meumy.song_list.findIndex(s => (s.id === query))
+          let song_idx = window.meumy.song_list.findIndex(s => (s.have_audio && (s.id === query)))
           if (song_idx !== -1)
             this.$refs.player.playlist_add_song(window.meumy.song_list[song_idx], true)
           // 清空地址栏的查询参数
@@ -72,7 +78,7 @@ export default {
         if (utils.if_first_browse()){
           // 首次打开就播放推荐曲
           this.show_info = true
-          // 光 逆光 我的偶像宣言 Fans
+          // 光 逆光 我的偶像宣言 Fansa
           let recommand_song_list = ['U00044', 'U01506', 'U00113', 'U01500']
           let song_list = recommand_song_list.map(i => window.meumy.song_list.find(s => (s.id === i)))
           console.log(song_list)

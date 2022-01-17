@@ -1,11 +1,11 @@
 <template>
   <div class="c-pagination">
-    <div class="pagination-total">
+    <div class="pagination-item pagination-total">
       {{(n_page-1)*n_per_page+1}}-{{Math.min(n_page*n_per_page, total)}} 共{{total}}首
     </div>
-    <div class="pagination-per-page-label">每页数量:</div>
+    <div class="pagination-item pagination-per-page-label">每页数量:</div>
     <select
-      class="pagination-per-page-select"
+      class="pagination-item pagination-per-page-select"
       v-model="n_per_page"
       v-on:change="change_per_page"
     >
@@ -15,7 +15,11 @@
         v-bind:key="option.text"
       >{{option.text}}</option>
     </select>
-    <div class="c-pagination-go">
+    <div class="pagination-item c-pagination-go">
+      <div
+        class="pagination-go-first pagination-go-button"
+        v-on:click="change_page(1)"
+      ><div></div></div>
       <div
         class="pagination-go-left pagination-go-button"
         v-on:click="add_page(-1)"
@@ -29,6 +33,10 @@
       <div
         class="pagination-go-right pagination-go-button"
         v-on:click="add_page(1)"
+      ><div></div></div>
+      <div
+        class="pagination-go-last pagination-go-button"
+        v-on:click="to_last_page"
       ><div></div></div>
     </div>
   </div>
@@ -69,6 +77,9 @@ export default {
       if (to_page >= 1 && to_page <= Math.ceil(this.total/this.n_per_page))
         this.change_page(to_page)
     },
+    to_last_page() {
+      this.change_page(Math.ceil(this.total/this.n_per_page))
+    },
     change_page(p) {
       this.input_page = p
       this.n_page = p
@@ -91,9 +102,11 @@ export default {
 
 <style scoped>
 .c-pagination {
-  padding: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   justify-content: flex-end;
   align-items: center;
   border-bottom: 1px solid rgb(224, 224, 224);
@@ -101,7 +114,9 @@ export default {
   border-right: 1px solid rgb(224, 224, 224);
   font-size: 0.9rem;
 }
-
+.pagination-item {
+  margin-top: 0.5rem;
+}
 .pagination-per-page-select {
   padding: 0.2rem;
   margin-left: 0.5rem;
@@ -132,11 +147,16 @@ export default {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
-.pagination-go-left div {
+.pagination-go-button div{
   height: 1rem;
   width: 1rem;
-  background-image: url('~bootstrap-icons/icons/chevron-left.svg');
   background-size: contain;
+}
+.pagination-go-first div {
+  background-image: url('~bootstrap-icons/icons/chevron-double-left.svg');
+}
+.pagination-go-left div {
+  background-image: url('~bootstrap-icons/icons/chevron-left.svg');
 }
 .pagination-current-page {
   min-width: 1rem;
@@ -146,9 +166,15 @@ export default {
   text-align: center;
 }
 .pagination-go-right div {
-  height: 1rem;
-  width: 1rem;
   background-image: url('~bootstrap-icons/icons/chevron-right.svg');
-  background-size: contain;
+}
+.pagination-go-last div {
+  background-image: url('~bootstrap-icons/icons/chevron-double-right.svg');
+}
+
+@media all and (max-width: 799px) {
+  .c-pagination {
+    justify-content: center;
+  }
 }
 </style>

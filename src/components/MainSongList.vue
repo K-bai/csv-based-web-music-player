@@ -54,7 +54,7 @@
             <div
               class="item-op-none"
               v-show="!song.have_audio"
-            >{{song.days_before_available>=0?song.days_before_available+'天后可听':'暂无音频'}}</div>
+            >{{song.days_before_available>0?song.days_before_available+'天后可听':'暂无音频'}}</div>
           </div>
           <div
             class="all-column-info item-column-info"

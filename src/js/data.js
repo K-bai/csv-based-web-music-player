@@ -96,7 +96,7 @@ function convert_song(row){
   if (row['有没有音频'] == 'TRUE') have_audio = true
   // 如果没到时间也不可用
   let days_before_available = AVAILABLE_DAYS_LIMIT - dayjs().diff(dayjs(date), 'day')
-  if (days_before_available >= 0)
+  if (days_before_available > 0 && !window.meumy.backdoor)
     have_audio = false
   // 计算持续时间 解析不了结束时间戳就不算持续时间了
   let duration = '--:--'
