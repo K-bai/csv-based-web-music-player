@@ -12,6 +12,7 @@
       <main-song-list ref="main" />
       <audio-player ref="player" />
       <countdown />
+      <copy-call-code />
       <import-song-list />
       <v-footer />
       <pop-up-info v-if="show_info" v-on:closepopup="show_info=false" />
@@ -26,6 +27,7 @@ import Banner from './components/Banner.vue'
 import ImportSongList from './components/ImportSongList.vue'
 import Footer from './components/Footer.vue'
 import Countdown from './components/Countdown.vue'
+import CopyCallCode from './components/CopyCallCode.vue'
 import PopUpInfo from './components/PopUp/Info.vue'
 import song_data from './js/data.js'
 import utils from './js/utils.js'
@@ -39,6 +41,7 @@ export default {
     ImportSongList,
     'v-footer': Footer,
     Countdown,
+    CopyCallCode,
     PopUpInfo
   },
   data() {
@@ -60,10 +63,11 @@ export default {
       if (backdoor_query === 'ILOVEMEUMY')
         window.meumy.backdoor = true
       // 获取歌曲
-      song_data.get_song_data(() => {
+      song_data.get_song_data().then(() => {
         // 加入保存的播放列表
         let c_playlist = utils.read_playlist()
         this.$refs.player.playlist_replace(c_playlist.song_list, c_playlist.current_song)
+        this.$refs.player.play_mode = utils.read_settings().play_mode
         // 如果有查询参数就把这首歌加入播放列表
         const parsedUrl = new URL(window.location.href)
         let query = parsedUrl.searchParams.get('s')
@@ -84,7 +88,7 @@ export default {
           console.log(song_list)
           this.$refs.player.playlist_add_many(song_list)
         }
-      })
+      }).catch(e => console.log(e))
     }
   },
   mounted () {
@@ -153,7 +157,26 @@ body {
   text-align: center;
   cursor: pointer;
 }
-
+.general-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid rgba(0,0,0,.25);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.general-checkbox:checked {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23fff' viewBox='0 0 16 16'><path d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z'/></svg>");
+  background-size: 1.2rem;
+  background-position: center;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.1s;

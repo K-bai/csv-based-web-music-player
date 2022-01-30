@@ -43,6 +43,23 @@ function read_playlist(){
   }
 }
 
+let default_settings = {
+  use_treated: false,
+  play_mode: 'loop'
+}
+function save_settings(s){
+  let current_settings = Object.assign(read_settings(), s)
+  localStorage.setItem('settings', JSON.stringify(current_settings))
+}
+function read_settings(){
+  // 初始化
+  if (!localStorage.getItem('settings'))
+    localStorage.setItem('settings', JSON.stringify(default_settings))
+  let current_settings = JSON.parse(localStorage.getItem('settings'))
+  Object.assign(default_settings, current_settings)
+  return default_settings
+}
+
 let cipher = 'ILovEMeUmyhOc0nWsJzCVau4BYGAtSH2XpZPld1b657F3xNi98wRKDQkTrgjqf'
 let code_prefix = 'musong://'
 function encode_share(){
@@ -98,6 +115,13 @@ function if_first_browse(){
   return false
 }
 
+function str_to_code(str){
+  let s = 0
+  for (let idx = 0; idx < str.length; idx++)
+    s += str.charCodeAt(idx)
+  return s
+}
+
 function debug(text){
   window.meumy.debug_list.push(text)
 }
@@ -108,8 +132,11 @@ export default {
   read_love_list,
   save_playlist,
   read_playlist,
+  save_settings,
+  read_settings,
   encode_share,
   decode_share,
   if_first_browse,
+  str_to_code,
   debug
 }

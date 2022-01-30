@@ -13,6 +13,7 @@
     "core-js": "^3.20.1",
     "csv": "^6.0.5",
     "dayjs": "^1.10.7",
+    "howler": "^2.2.3",
     "mutationobserver-shim": "^0.3.7",
     "portal-vue": "^2.1.7",
     "svg-url-loader": "^7.1.1",

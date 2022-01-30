@@ -39,6 +39,20 @@
           >{{option}}</option>
         </select>
       </div>
+      <div class="filter-item">
+        <input
+          id="filter-checkbox-treated"
+          class="general-checkbox"
+          type="checkbox"
+          v-model="use_treated.value"
+          v-on:change="change_use_treated"
+        />
+        <label
+          for="filter-checkbox-treated"
+          class="filter-item-label filter-item-treated"
+        >听经过处理的歌</label>
+        <div class="filter-item-question" v-on:click="show_explain=true"></div>
+      </div>
     </div>
     <div class="filter-song-search">
       <select
@@ -66,13 +80,22 @@
         v-on:click="apply_search(true)"
       >清空</button>
     </div>
+    <pop-up-explain-treated
+      v-if="show_explain"
+      v-on:closepopup="show_explain=false"
+    />
   </div>
 </template>
 
 <script>
+import PopUpExplainTreated from './PopUp/ExplainTreated.vue'
+import utils from '@/js/utils.js'
 
 export default {
   name: 'SongFilter',
+  components: {
+    PopUpExplainTreated
+  },
   data() {
     return {
       song_list_org: window.meumy.song_list,
@@ -93,7 +116,9 @@ export default {
         text_for_search: '',
         type: '搜索歌名',
         options: window.meumy.filter_options.search_type
-      }
+      },
+      use_treated: window.meumy.use_treated,
+      show_explain: false
     }
   },
   props: [
@@ -170,6 +195,11 @@ export default {
     search_press_enter(event) {
       this.apply_search(false)
       event.target.blur()
+    },
+    change_use_treated() {
+      utils.save_settings({
+        use_treated: this.use_treated.value
+      })
     }
   }
 }
@@ -243,6 +273,23 @@ export default {
 .filter-item-label {
   margin-right: 0.5rem;
 }
+#filter-checkbox-treated {
+  margin-right: 0.5rem;
+}
+.filter-item-treated {
+  margin-right: 0rem;
+}
+.filter-item-question {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'><path d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/><path d='M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z'/></svg>");
+  background-position: center;
+  background-size: contain;
+  height: 0.9rem;
+  width: 0.9rem;
+  margin-top: 0.1rem;
+  margin-left: 0.1rem;
+  cursor: pointer;
+}
+
 .filter-song-search {
   display: flex;
   align-items: stretch;

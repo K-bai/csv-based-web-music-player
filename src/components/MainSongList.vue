@@ -42,8 +42,14 @@
             <div
               class="item-op-add item-op-all"
               title="加入播放列表"
-              v-show="song.have_audio"
+              v-show="song.have_audio && !in_playlist_list[idx]"
               v-on:click.stop="add_song(idx)"
+            ><div></div></div>
+            <div
+              class="item-op-added item-op-all"
+              title="已在播放列表"
+              v-show="song.have_audio && in_playlist_list[idx]"
+              v-on:click.stop="remove_song(idx)"
             ><div></div></div>
             <div
               class="item-op-star item-op-all"
@@ -137,7 +143,8 @@ export default {
       expand_list: [],
       page: 1,
       per_page: 10,
-      song_list_filtered: window.meumy.song_list
+      song_list_filtered: window.meumy.song_list,
+      playlist: window.meumy.playlist
     }
   },
   computed: {
@@ -147,6 +154,11 @@ export default {
         (this.page - 1) * this.per_page,
         this.page * this.per_page
       )
+    },
+    in_playlist_list: function() {
+      return this.song_list.map(s => (
+        this.playlist.findIndex(song => (song.id === s.id)) !== -1
+      ))
     },
     is_loved: function() {
       return this.song_list.map(song => (
@@ -164,6 +176,10 @@ export default {
       if (this.song_list[idx].have_audio === false) return
       // 这里怎么定位到播放器组件 我完全哇嘎那一
       this.$parent.$refs.player.playlist_add_song(this.song_list[idx], should_play, should_play)
+    },
+    remove_song(idx) {
+      // 这里怎么定位到播放器组件 我完全哇嘎那一
+      this.$parent.$refs.player.playlist_remove_song_id(this.song_list[idx].id)
     },
     love_song(idx){
       let song = this.song_list[idx]
@@ -404,6 +420,11 @@ export default {
   height: 1.1rem;
   width: 1.1rem;
   background-image: url("~bootstrap-icons/icons/plus-circle.svg");
+}
+.item-op-added div {
+  height: 1.1rem;
+  width: 1.1rem;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' viewBox='0 0 16 16'><path d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'/></svg>");
 }
 .item-op-star div {
   height: 1.1rem;

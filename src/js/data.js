@@ -1,35 +1,41 @@
 import { parse } from 'csv-parse/dist/esm/sync.js'
 import dayjs from 'dayjs'
 import song_list from './song_list.js'
+import utils from './utils.js'
 
 let AVAILABLE_DAYS_LIMIT = 5
 
-function get_song_data(callback){
-  fetch('/static/recording database.csv', {
-    cache: 'no-cache'
+function fetch_csv(url){
+  return fetch(url, {
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'text/csv'
+    }
   }).then(res => {
     if (res.ok) {
       return res.text()
     }
     else return Promise.reject('Wrong.')
-  }).then(t => {
-    recording_csv_to_obj(t)
-    fetch('/static/song database.csv', {
-      cache: 'no-cache'
-    }).then(res => {
-      if (res.ok) {
-        return res.text()
-      }
-      else return Promise.reject('Wrong.')
-    }).then(t => {
-      song_csv_to_obj(t)
-      song_list.get_all()
-      callback()
-    }, console.log)
-  }, console.log)
+  })
 }
 
-function recording_csv_to_obj(t){
+function get_song_data(){
+  // 获取数据 包括录播数据库、歌曲数据库、歌单数据库
+  let url_list = [
+    '/static/recording database.csv',
+    '/static/song database.csv',
+    '/static/playlist database.csv'
+  ]
+  let fetch_list = url_list.map(l => fetch_csv(l))
+  return Promise.all(fetch_list).then(results => {
+    parse_recording_csv(results[0])
+    parse_song_csv(results[1])
+    parse_playlist_csv(results[2])
+    song_list.get_all()
+  })
+}
+
+function parse_recording_csv(t){
   // 将csv解析为内存对象
   let csv = parse(t, {columns: true})
   // 转换为对象
@@ -45,22 +51,32 @@ function convert_recording(row){
   }
 }
 
-function song_csv_to_obj(t){
+function parse_song_csv(t){
   // 将csv解析为内存对象
   let csv = parse(t, {columns: true})
   // 转换为对象
-  window.meumy.song_list.splice(0, window.meumy.song_list.length);
+  window.meumy.song_list.splice(0, window.meumy.song_list.length)
   for (let row of csv)
     window.meumy.song_list.push(convert_song(row))
   // 按时间降序
   window.meumy.song_list.sort((s2, s1) => {
     let d1 = dayjs(s1.date, "YYYY-MM-DD")
     let d2 = dayjs(s2.date, "YYYY-MM-DD")
+    // 按日期判断
     if (d1.isBefore(d2)) return -1
     else if (d2.isBefore(d1)) return 1
     else {
-      if (s2.record.p !== s1.record.p) return s1.record.p - s2.record.p
-      else return s1.record_start_ms - s2.record_start_ms
+      // 按录播bv号判断
+      if (s2.record.bv !== s1.record.bv)
+        return utils.str_to_code(s1.record.bv) - utils.str_to_code(s2.record.bv)
+      else {
+        // 按分p判断
+        if (s2.record.p !== s1.record.p)
+          return s1.record.p - s2.record.p
+        // 按时间点判断
+        else
+          return s1.record_start_ms - s2.record_start_ms
+      }
     }
   })
   // 计算各种筛选条件
@@ -94,6 +110,9 @@ function convert_song(row){
   // 有没有音频
   let have_audio = false
   if (row['有没有音频'] == 'TRUE') have_audio = true
+  // 有没有第二版本
+  let second_src = ''
+  if (row['有没有第二版本'] == 'TRUE') second_src = `/treated_songs/${song_id}.mp3`
   // 如果没到时间也不可用
   let days_before_available = AVAILABLE_DAYS_LIMIT - dayjs().diff(dayjs(date), 'day')
   if (days_before_available > 0 && !window.meumy.backdoor)
@@ -121,6 +140,7 @@ function convert_song(row){
     duration,
     id: song_id,
     src: `/songs/${song_id}.mp3`,
+    second_src,
     have_audio,
     days_before_available
   }
@@ -194,40 +214,53 @@ function ms_to_timecode(ms){
   return hour_t + ':' + minute_t + ':' + second_t
 }
 
-function cutter_list() {
-  return [
-    ['29099073', 'spaceshipppppp'],
-    ['14146676', '轩雨roriki'],
-    ['9898403', '泓茶'],
-    ['102184050', '永远喜欢呜米的铃鹿'],
-    ['1847888129', '咩啊栗nya'],
-    ['3045020', '泡泡要抱抱举高高'],
-    ['355895788', '久秋-蓬'],
-    ['173985337', '半步灬青莲'],
-    ['85774607', '呜米嗷嗷嗷'],
-    ['277710095', '咩栗小姐的萝北'],
-    ['4981170', '咸鱼诗人阿兰'],
-    ['499813226', 'photoelectricity'],
-    ['327389390', '崽崽是我的小太阳啊'],
-    ['676673098', '黑夜office'],
-    ['19319616', '丶颜艺丶'],
-    ['22257026', '星斗Star'],
-    ['266752689', '休止-符'],
-    ['82399211', '星空有丶蓝'],
-    ['434800565', 'CW狂风'],
-    ['5024537', 'Umy的天谴之子'],
-    ['151439304', '八月中秋月'],
-    ['361729677', '史莱姆的频道'],
-    ['545133496', '枺芙'],
-    ['517852301', '忘崽牛奶嗷呜'],
-    ['282545441', 'Me-Suwin'],
-    ['862706', 'wizard魔法'],
-    ['7391732', '咩栗保护协会-凌月'],
-    ['37268234', '毕加索de猫猫'],
-    ['150884484', 'うみ呜米'],
-    ['182568485', '不想努力的盒子'],
-  ]
+function parse_playlist_csv(t){
+  // 解析预定义歌单
+  let csv = parse(t)
+  for (let idx = 0; idx < csv[0].length; idx++) {
+    let id_list = csv.map(id => id[idx]).slice(1).filter(id => (id !== ''))
+    window.meumy.song_collection.push({
+      name: csv[0][idx],
+      list: id_list.map(id => (
+        window.meumy.song_list.find(s => (s.id === id))
+      ))
+    })
+    
+  }
 }
+
+let cutter_list = [
+  ['29099073', 'spaceshipppppp'],
+  ['14146676', '轩雨roriki'],
+  ['9898403', '泓茶'],
+  ['102184050', '永远喜欢呜米的铃鹿'],
+  ['1847888129', '咩啊栗nya'],
+  ['3045020', '泡泡要抱抱举高高'],
+  ['355895788', '久秋-蓬'],
+  ['173985337', '半步灬青莲'],
+  ['85774607', '呜米嗷嗷嗷'],
+  ['277710095', '咩栗小姐的萝北'],
+  ['4981170', '咸鱼诗人阿兰'],
+  ['499813226', 'photoelectricity'],
+  ['327389390', '崽崽是我的小太阳啊'],
+  ['676673098', '黑夜office'],
+  ['19319616', '丶颜艺丶'],
+  ['22257026', '星斗Star'],
+  ['266752689', '休止-符'],
+  ['82399211', '星空有丶蓝'],
+  ['434800565', 'CW狂风'],
+  ['5024537', 'Umy的天谴之子'],
+  ['151439304', '八月中秋月'],
+  ['361729677', '史莱姆的频道'],
+  ['545133496', '枺芙'],
+  ['517852301', '忘崽牛奶嗷呜'],
+  ['282545441', 'Me-Suwin'],
+  ['862706', 'wizard魔法'],
+  ['7391732', '咩栗保护协会-凌月'],
+  ['37268234', '毕加索de猫猫'],
+  ['150884484', 'うみ呜米'],
+  ['182568485', '不想努力的盒子'],
+]
 
 export default {
   get_song_data,

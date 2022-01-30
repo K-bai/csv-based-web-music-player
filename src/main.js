@@ -26,7 +26,7 @@ window.meumy = {
   recording_list: [],
   playlist: [utils.empty_song],
   love_list,
-  cutter_list: data.cutter_list(),
+  cutter_list: data.cutter_list,
   filter_options: {
     star: ['--', '星标', '非星标'],
     have_audio: ['--', '有音频', '无音频'],
@@ -39,6 +39,7 @@ window.meumy = {
     collection: []
   },
   backdoor: false,
+  use_treated: {value: utils.read_settings().use_treated},
   debug_list: []
 }
 

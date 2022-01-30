@@ -177,6 +177,9 @@
       v-on:closepopup="show_details=false"
       :song="playlist[current_song]"
     />
+    <audio id="meumy_player">
+      <source id="meumy_player_source" src="" type="audio/mpeg" />
+    </audio>
   </div>
 </template>
 
@@ -194,7 +197,8 @@
 import utils from '@/js/utils.js'
 import PopUpShare from './PopUp/Share.vue'
 import PopUpDetails from './PopUp/Details.vue'
-var audio = new Audio()
+let audio = {}
+let audio_source = {}
 audio.volume = 0.9
 
 // 滑动检测
@@ -241,6 +245,7 @@ export default {
       if(this.play_mode === 'loop') this.play_mode = 'loopOnce'
       else if(this.play_mode === 'loopOnce') this.play_mode = 'shuffle'
       else if(this.play_mode === 'shuffle') this.play_mode = 'loop'
+      utils.save_settings({play_mode: this.play_mode})
     },
     volume_bar_mouse_event(event) {
       // 判断是否按键
@@ -280,9 +285,16 @@ export default {
     apply_song() {
       this.audio_loading = false
       if (this.playlist[this.current_song].id === 'empty_song') return false
-      // 加载当前歌曲 播放列表跳转
-      audio.src = this.playlist[this.current_song].src
+      // 加载当前歌曲 如果是精选状态且有精选版本就跳精选
+      let src = this.playlist[this.current_song].src
+      if (window.meumy.use_treated.value){
+        let second_src = this.playlist[this.current_song].second_src
+        if (second_src !== '')
+          src = second_src
+      }
+      audio_source.src = src
       audio.load()
+      // 播放列表跳转
       if (this.show_playlist) this.playlist_scroll()
       // 更改media session信息
       if ('mediaSession' in navigator) {
@@ -293,6 +305,7 @@ export default {
           artwork: [{src: require('../assets/logo.png')}]
         })
       }
+      audio.title = this.playlist[this.current_song].name
       // 保存当前歌单
       utils.save_playlist(this.current_song, this.playlist)
     },
@@ -383,7 +396,7 @@ export default {
       this.current_song = 0
       this.play_status = false
       this.play_progress = 0
-      audio.src = ''
+      audio_source.src = ''
       // 保存当前歌单
       utils.save_playlist(this.current_song, this.playlist)
     },
@@ -410,6 +423,12 @@ export default {
       this.current_song = this.playlist.findIndex(song => {return song.id === current_song_id})
       // 保存当前歌单
       utils.save_playlist(this.current_song, this.playlist)
+    },
+    playlist_remove_song_id(id) {
+      // 根据id找到对应的下标删歌
+      let idx = this.playlist.findIndex(s => (s.id === id))
+      if (idx === -1) return
+      this.playlist_remove_song(idx)
     },
     playlist_add_song(song, jump = false, auto_play = false) {
       let set_src = false
@@ -526,6 +545,8 @@ export default {
     }
   },
   mounted () {
+    audio = document.getElementById('meumy_player')
+    audio_source = document.getElementById('meumy_player_source')
     audio.addEventListener('loadedmetadata', ()=>{
       this.duration = audio.duration
       this.play_progress = 0
