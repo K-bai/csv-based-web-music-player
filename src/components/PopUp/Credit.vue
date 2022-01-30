@@ -14,7 +14,8 @@
         >
           <a
             v-bind:href="'https://space.bilibili.com/'+cutter.uid"
-            target="blank"
+            target="_blank"
+            rel="noreferrer noopener"
           >
           @{{cutter.name}}</a>
           ({{cutter.count}})
@@ -22,13 +23,13 @@
         切的歌，给录音棚添加了很多存货（鞠躬
       </p>
       <p>有问题？或者想帮忙！（提前感谢）狂戳这个人->
-        <a href="https://message.bilibili.com/#/whisper/mid1818479062" target="blank">@呜米小姐的吃饭小虎牙</a>
+        <a href="https://message.bilibili.com/#/whisper/mid1818479062" target="_blank" rel="noreferrer noopener">@呜米小姐的吃饭小虎牙</a>
         的b站私信！
       </p>
       <p>本项目已开源（
-        <a href="https://github.com/K-bai/csv-based-web-music-player" target="blank">Github</a>
+        <a href="https://github.com/K-bai/csv-based-web-music-player" target="_blank" rel="noreferrer noopener">Github</a>
         ）欢迎Star, Fork！感谢
-        <a href="https://space.bilibili.com/9420577" target="blank">@特斯拉309</a>
+        <a href="https://space.bilibili.com/9420577" target="_blank" rel="noreferrer noopener">@特斯拉309</a>
         的技术支持！
       </p>
     </div>

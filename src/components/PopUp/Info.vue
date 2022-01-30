@@ -10,7 +10,8 @@
           v-for="c in cutter"
           v-bind:key="c[0]"
           v-bind:href="'https://space.bilibili.com/'+c[0]"
-          target="blank"
+          target="_blank"
+          rel="noreferrer noopener"
         >@{{c[1]}}</a>
       </p>
       <p>快乐听歌鸭！~</p>

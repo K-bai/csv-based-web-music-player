@@ -12,20 +12,20 @@
       <p><span>切歌man的留言：</span>{{song.note}}</p>
       <p>
         <span>对应录播：</span>
-        <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&t='+Math.floor(song.record_start_ms/1000)" target="blank">
+        <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&start_progress='+song.record_start_ms" target="_blank" rel="noreferrer noopener">
           {{song.date}} p{{song.record.p}}
         </a> 
         <span>时间点：</span>{{song.record.timecode}}
       </p>
       <p v-if="song.ref!==false">
         <span>参考的路灯man：</span>
-        <a v-bind:href="'https://space.bilibili.com/'+song.ref.uid" target="blank">
+        <a v-bind:href="'https://space.bilibili.com/'+song.ref.uid" target="_blank" rel="noreferrer noopener">
           @{{song.ref.name}}
         </a>
       </p>
       <p v-if="song.ref_cut!==false">
         感谢
-        <a v-bind:href="'https://space.bilibili.com/'+song.ref_cut.uid" target="blank">
+        <a v-bind:href="'https://space.bilibili.com/'+song.ref_cut.uid" target="_blank" rel="noreferrer noopener">
           @{{song.ref_cut.name}}
         </a>
         提供的音频！

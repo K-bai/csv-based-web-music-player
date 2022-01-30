@@ -86,20 +86,20 @@
           <div class="song-full-details-orginal" v-show="song.orginal_artist!==''">原唱: {{song.orginal_artist}}</div>
           <div class="song-full-details-ref" v-show="song.ref!==false">
             参考的路灯man: 
-            <a v-bind:href="'https://space.bilibili.com/'+song.ref.uid" target="blank">
+            <a v-bind:href="'https://space.bilibili.com/'+song.ref.uid" target="_blank" rel="noreferrer noopener">
               @{{song.ref.name}}
             </a>
           </div>
           <div class="song-full-details-record">
             <span>录播：</span>
-            <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&t='+Math.floor(song.record_start_ms/1000)" target="blank">
+            <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&start_progress='+song.record_start_ms" target="_blank" rel="noreferrer noopener">
               {{song.date}} p{{song.record.p}} {{song.record.timecode}}
             </a>
           </div>
           <div class="song-full-details-note" v-show="song.note!==''">切歌man的留言: {{song.note}}</div>
           <div class="song-full-details-ref-cut" v-show="song.ref_cut!==false">
             音频提供: 
-            <a v-bind:href="'https://space.bilibili.com/'+song.ref_cut.uid" target="blank">
+            <a v-bind:href="'https://space.bilibili.com/'+song.ref_cut.uid" target="_blank" rel="noreferrer noopener">
               @{{song.ref_cut.name}}
             </a>
           </div>

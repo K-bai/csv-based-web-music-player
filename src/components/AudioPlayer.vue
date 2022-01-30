@@ -199,7 +199,6 @@ import PopUpShare from './PopUp/Share.vue'
 import PopUpDetails from './PopUp/Details.vue'
 let audio = {}
 let audio_source = {}
-audio.volume = 0.9
 
 // 滑动检测
 var is_mouse_down = false
@@ -547,6 +546,7 @@ export default {
   mounted () {
     audio = document.getElementById('meumy_player')
     audio_source = document.getElementById('meumy_player_source')
+    audio.volume = 0.9
     audio.addEventListener('loadedmetadata', ()=>{
       this.duration = audio.duration
       this.play_progress = 0
