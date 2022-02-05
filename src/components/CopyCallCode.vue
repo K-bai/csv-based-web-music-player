@@ -40,6 +40,15 @@ export default {
             hideTriggers: ['hover'],
           }
         },
+        {
+          name: 'meumy',
+          code: '⛅MeUmy⛅MeUmy⛅MeUmy⛅',
+          popper: {
+            content: '?',
+            showTriggers: ['click'],
+            hideTriggers: ['hover'],
+          }
+        },
       ]
     }
   },

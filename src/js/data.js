@@ -20,36 +20,19 @@ function fetch_csv(url){
 }
 
 function get_song_data(){
-  // 获取数据 包括录播数据库、歌曲数据库、歌单数据库
+  // 获取数据 包括歌曲数据库、歌单数据库
   let url_list = [
-    '/static/recording database.csv',
     '/static/song database.csv',
     '/static/playlist database.csv'
   ]
   let fetch_list = url_list.map(l => fetch_csv(l))
   return Promise.all(fetch_list).then(results => {
-    parse_recording_csv(results[0])
-    parse_song_csv(results[1])
-    parse_playlist_csv(results[2])
+    parse_song_csv(results[0])
+    parse_playlist_csv(results[1])
     song_list.get_all()
   })
 }
 
-function parse_recording_csv(t){
-  // 将csv解析为内存对象
-  let csv = parse(t, {columns: true})
-  // 转换为对象
-  for (let row of csv)
-    window.meumy.recording_list.push(convert_recording(row))
-}
-
-function convert_recording(row){
-  return {
-    date: row['date'],
-    bv: row['bv'],
-    vup: row['vup']
-  }
-}
 
 function parse_song_csv(t){
   // 将csv解析为内存对象
@@ -104,7 +87,11 @@ function convert_song(row){
   let record_start_ms = time_to_ms(row['起始时间点'])
   let song_id = row['id']
   // 添加录播信息
-  let record = parse_record(date, row['录播来源'], parseInt(row['录播片段编号']), record_start_ms)
+  let record = {
+    bv: row['录播来源'],
+    p: parseInt(row['录播片段编号']),
+    timecode: ms_to_timecode(record_start_ms)
+  }
   // 如果有中文歌名就加上
   if (song_name_chs !== '') song_name = `${song_name}（${song_name_chs}）`
   // 有没有音频
@@ -157,22 +144,6 @@ function parse_ref(ref){
   }
   else {
     return false
-  }
-}
-
-function parse_record(date, origin, record_index, record_start){
-  // 转换录播时间点格式
-  let record_p = record_index % 100
-  let date_p = Math.floor(record_index / 100) % 100
-  // 找bv号
-  let recordings = window.meumy.recording_list.filter(r => (
-    r.date === date && r.vup === origin
-  ))
-  // 
-  return {
-    bv: recordings[date_p].bv,
-    p: record_p,
-    timecode: ms_to_timecode(record_start)
   }
 }
 

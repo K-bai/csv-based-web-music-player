@@ -1,10 +1,6 @@
 function get_all(){
   window.meumy.song_collection.push(...[
     {
-      name: '近期精选歌曲',
-      list: last_50()
-    },
-    {
       name: '呜米唱最多的歌',
       list: umy_most_10()
     },
@@ -18,10 +14,6 @@ function get_all(){
 }
 
 
-function last_50(){
-  // 最近50首完整的歌
-  return window.meumy.song_list.filter(s => (s.status === '完整')).slice(0, 50)
-}
 function umy_most_10(){
   // 呜米唱的最多的十首歌
   // 按歌名计数
