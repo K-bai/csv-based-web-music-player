@@ -1,8 +1,8 @@
 function get_all(){
   window.meumy.song_collection.push(...[
     {
-      name: '呜米唱最多的歌',
-      list: umy_most_10()
+      name: '唱的最多的歌',
+      list: all_most_10()
     },
     {
       name: '双人合唱',
@@ -14,8 +14,8 @@ function get_all(){
 }
 
 
-function umy_most_10(){
-  // 呜米唱的最多的十首歌
+function all_most_10(){
+  // 唱的最多的歌
   // 按歌名计数
   let counter = {}
   for (let song of window.meumy.song_list) {
@@ -43,7 +43,10 @@ function umy_most_10(){
 }
 function chorus(){
   // 双人合唱的曲子
-  return window.meumy.song_list.filter(s => (s.artist.split(',').length > 1))
+  return window.meumy.song_list.filter(s => {
+    let artists = s.artist.split(',')
+    return (artists.findIndex(a => (a === '呜米')) !== -1) && (artists.findIndex(a => (a === '咩栗')) !== -1)
+  })
 }
 
 export default {

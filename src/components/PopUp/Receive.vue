@@ -1,9 +1,10 @@
 <template>
   <pop-up-main
     v-on:closepopup="$emit('closepopup')"
-    title="歌曲详情"
+    title="收到一首分享歌曲！"
   >
     <div class="content">
+      <p>这里是歌曲信息：</p>
       <p><span>歌名：</span>{{song.name}}</p>
       <p v-if="song.artist!==''"><span>演唱者：</span>{{song.artist}}</p>
       <p v-if="song.status!==''"><span>演唱状态：</span>{{song.status}}</p>
@@ -38,7 +39,7 @@
 import PopUpMain from './Main.vue'
 
 export default {
-  name: 'PopUpDetails',
+  name: 'PopUpReceive',
   components: {
     PopUpMain
   },

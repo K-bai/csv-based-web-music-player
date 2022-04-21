@@ -9,7 +9,7 @@
           <div class="share-title">复制链接分享当前歌曲</div>
           <button
             slot="reference"
-            class="copy-button"
+            class="general-button general-button-green copy-button"
             v-on:click="copy('https://song.meumy.club/?s='+song.id, song_popper)"
             v-tooltip="song_popper"
           >复制到剪切板</button>
@@ -22,7 +22,7 @@
           <div class="share-title">复制代码分享歌单</div>
           <button
             id="share-songlist-button"
-            class="copy-button"
+            class="general-button general-button-green copy-button"
             v-on:click="copy(playlist_id, songlist_popper)"
             v-tooltip="songlist_popper"
           >复制到剪切板</button>
@@ -111,22 +111,6 @@ export default {
   flex-grow: 0;
   flex-shrink: 0;
   height: 2rem;
-  background-color: white;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 0.3rem;
-  border: 1px solid #28a745;
-  color: #28a745;
-}
-@media (any-hover: hover) {
-  .copy-button:hover{
-    background-color: #28a745;
-    color: white;
-  }
-}
-.copy-button:active {
-  background-color: #208838;
-  color: white;
 }
 .share-list-text {
   max-width: 100%;

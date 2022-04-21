@@ -3,7 +3,7 @@
     <div class="import-info">
       <div>粘贴代码导入歌单：</div>
       <button
-        class="import-button"
+        class="general-button general-button-blue import-button"
         v-on:click="import_code"
         v-tooltip="import_popper"
       >导入！</button>
@@ -58,22 +58,6 @@ export default {
 }
 .import-button {
   height: 2rem;
-  background-color: white;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 0.3rem;
-  border: 1px solid #007bff;
-  color: #007bff;
-}
-@media (any-hover: hover) {
-  .import-button:hover{
-    background-color: #007bff;
-    color: white;
-  }
-}
-.import-button:active {
-  background-color: #0068d6;
-  color: white;
 }
 .import-code {
   margin-top: 1rem;

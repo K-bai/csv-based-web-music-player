@@ -15,8 +15,54 @@ function save_love_list(l){
 function read_love_list(){
   // 初始化
   if (!localStorage.getItem('love_list')) localStorage.setItem('love_list', '[]')
-  return JSON.parse(localStorage.getItem('love_list'))
+  let love_list = JSON.parse(localStorage.getItem('love_list'))
+  if (love_list.length > 0) {
+    if(love_list[0].substring(0, 1) !== 'U') {
+      love_list = []
+      localStorage.setItem('love_list', '[]')
+    }
+  }
+  return love_list
 }
+
+
+
+
+
+
+function save_my_collection(){
+  localStorage.setItem('my_collection', JSON.stringify(window.meumy.my_song_collection.map(
+    collection => ({
+      name: collection.name,
+      song_id_list: collection.list.map(song => song.id)
+    })
+  )))
+}
+
+function read_my_collection(){
+  // 初始化
+  if (!localStorage.getItem('my_collection')) localStorage.setItem('my_collection', '[]')
+  // 验证一遍歌曲
+  let my_collection = JSON.parse(localStorage.getItem('my_collection'))
+  let my_collection_verify = []
+  for (let collection of my_collection) {
+    let song_list = collection.song_id_list.map(i => window.meumy.song_list.find(s => (s.id === i)))
+    song_list = song_list.filter(s => s !== undefined)
+    if (song_list.length === 0) continue
+    my_collection_verify.push({
+      name: collection.name,
+      list: song_list
+    })
+  }
+  return my_collection_verify
+}
+
+
+
+
+
+
+
 
 function save_playlist(current_song, song_list){
   // 转换歌曲列表 仅保存id
@@ -36,12 +82,18 @@ function read_playlist(){
   }
   let current_playlist = JSON.parse(localStorage.getItem('current_playlist'))
   let song_list = current_playlist.song_id_list.map(i => window.meumy.song_list.find(s => (s.id === i)))
+  song_list = song_list.filter(s => s !== undefined)
   if (song_list.length === 0) song_list.push(empty_song)
   return {
-    current_song: current_playlist.current_song,
+    current_song: Math.min(current_playlist.current_song, song_list.length-1),
     song_list
   }
 }
+
+
+
+
+
 
 let default_settings = {
   use_treated: false,
@@ -59,6 +111,13 @@ function read_settings(){
   Object.assign(default_settings, current_settings)
   return default_settings
 }
+
+
+
+
+
+
+
 
 let cipher = 'ILovEMeUmyhOc0nWsJzCVau4BYGAtSH2XpZPld1b657F3xNi98wRKDQkTrgjqf'
 let code_prefix = 'musong://'
@@ -130,6 +189,8 @@ export default {
   empty_song,
   save_love_list,
   read_love_list,
+  save_my_collection,
+  read_my_collection,
   save_playlist,
   read_playlist,
   save_settings,

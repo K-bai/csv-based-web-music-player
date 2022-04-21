@@ -1,0 +1,292 @@
+#player {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - 2rem);
+  box-shadow: 0rem 0rem 0.2rem 0rem #888;
+  background-color: #fff;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 10;
+}
+.c-player {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  min-width: 0;
+}
+.c-info {
+  flex-grow: 2;
+  width: 30%;
+  align-items: stretch;
+  display: flex;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  min-width: 0;
+}
+
+.c-songInfo {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  align-content: space-around;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.c-songName {
+  width: 100%;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+.songName {
+  text-align: left;
+  font-size: 1.2rem;
+  flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.singer {
+  flex-shrink: 0;
+}
+.c-songStatus {
+  width: 100%;
+  color: #888;
+  display: flex;
+  justify-content: space-between;
+}
+.c-info-op {
+  margin-left: 1rem;
+  flex-shrink: 1;
+  flex-grow: 0;
+  flex-basis: 0px;
+  align-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+}
+.c-control {
+  flex-grow: 5;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+.c-controlButtons {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c-playButtons {
+  flex-grow: 1;
+  max-width: 12em;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.playButtons {
+  border-radius: 2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.prevButton {
+  width: 2.5em;
+  height: 2.5em;
+}
+.prevButton div {
+  width: 1.2em;
+  height: 1.2em;
+  background-image: url('../assets/ui/prev.svg');
+  background-size: contain;
+}
+.playButton {
+  width: 3em;
+  height: 3em;
+}
+.playButton div {
+  width: 2.5em;
+  height: 2.5em;
+  background-size: contain;
+}
+.playButton-play {
+  background-image: url('../assets/ui/play.svg');
+}
+.playButton-pause {
+  background-image: url('../assets/ui/pause.svg');
+}
+.playButton-loading {
+  background-image: url('../assets/ui/loading.svg');
+  animation: loading-rotation 1.5s cubic-bezier(.16,.39,.86,.62) 0s infinite;
+}
+@keyframes loading-rotation {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+.nextButton {
+  width: 2.5em;
+  height: 2.5em;
+}
+.nextButton div {
+  width: 1.2em;
+  height: 1.2em;
+  background-image: url('../assets/ui/next.svg');
+  background-size: contain;
+}
+@media (any-hover: hover) {
+  .playButtons:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+.playButtons:active {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+.c-otherButtons {
+  display: flex;
+}
+.otherButtons{
+  border-radius: 2em;
+  height: 2.2em;
+  width: 2.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (any-hover: hover) {
+  .otherButtons:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+.otherButtons:active{
+  background-color: rgba(0, 0, 0, 0.35);
+}
+.playlistButton {
+  position: relative;
+}
+.playlistButton-img {
+  width: 1.3em;
+  height: 1.3em;
+  background-image: url('~bootstrap-icons/icons/music-note-list.svg');
+  background-size: contain;
+}
+.playlistButton-corner {
+  color: rgb(50, 50, 50);
+  background-color: rgb(230, 230, 230);
+  border-radius: 2px;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  font-size: 0.7em;
+  text-align: center;
+  position: absolute;
+  left: 2em;
+  top: 0px;
+}
+.otherButtons img{
+  width: 1.3em;
+  height: 1.3em;
+}
+.c-volumeBar {
+  position: absolute;
+  bottom: 6rem;
+  height: 7rem;
+  width: 2.2rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0px 0px 0.2rem 0px gray;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+}
+.c-volumeBarRaw {
+  height: 100%;
+  width: 0.6rem;
+  border-radius: 1rem;
+  background-color: darkgray;
+  overflow: hidden;
+  cursor: pointer;
+}
+.volumeBar-invert {
+  height: 50%;
+  width: 100%;
+  background-color: rgb(235, 235, 235);
+}
+
+.c-progressBarText {
+  display: flex;
+  align-items: center;
+}
+.c-progressBar {
+  flex-grow: 1;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  height: 1.5rem;
+  position: relative;
+}
+.progressBar-button {
+  background-image: url('../assets/ui/progress_knot.svg');
+  background-size: contain;
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  z-index: 30;
+  cursor: pointer;
+  left: calc(10% - 0.75rem);
+}
+.c-progressBarRaw {
+  margin-top: 0.5rem;
+  height: 0.5rem;
+  background-color: #999;
+  border-radius: 1rem;
+  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.322);
+  overflow: hidden;
+  cursor: pointer;
+}
+.progressBar-loading {
+  background-color: #fff;
+  opacity: 0.15;
+  height: 0.5rem;
+  width: 50%;
+  position: relative;
+  top: -0.5rem;
+  z-index: 10;
+}
+.progressBar-fill {
+  background-color: #66ccff;
+  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.322);
+  height: 0.5rem;
+  width: 10%;
+  position: relative;
+  z-index: 20;
+}
+
+
+@media all and (max-width: 799px) {
+  .c-info {
+    width: 100%;
+    margin-bottom: 0.3rem;
+  }
+  .c-progressBar {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  .c-controlButtons {
+    font-size: 1.2rem;
+  }
+  .c-volumeBarRaw {
+    width: 1.3rem;
+    border-radius: 0.3rem;
+  }
+}

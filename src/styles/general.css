@@ -1,0 +1,129 @@
+.card {
+  border-radius: 0.3rem;
+  border:1px solid rgba(0, 0, 0, 0.096);
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.719);
+  background-color: white;
+}
+.card hr {
+  border: none;
+  border-top: 1px rgb(207, 207, 207) solid;
+}
+.general-input {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px rgb(190, 190, 190) solid;
+  border-radius: 0.3rem;
+  background-color: white;
+}
+
+.general-button {
+  background-color: white;
+  border-radius: 0.3rem;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.general-button-blue {
+  border: 1px solid #007bff;
+  color: #007bff;
+}
+@media (any-hover: hover) {
+  .general-button-blue:hover{
+    background-color: #007bff;
+    color: white;
+  }
+}
+.general-button-blue:active {
+  background-color: #0068d6;
+  color: white;
+}
+
+.general-button-grey {
+  border: 1px solid #6c757d;
+  color: #6c757d;
+}
+@media (any-hover: hover) {
+  .general-button-grey:hover{
+    background-color: #6c757d;
+    color: white;
+  }
+}
+.general-button-grey:active {
+  background-color: #545b61;
+  color: white;
+}
+
+.general-button-green {
+  border: 1px solid #28a745;
+  color: #28a745;
+}
+@media (any-hover: hover) {
+  .general-button-green:hover{
+    background-color: #28a745;
+    color: white;
+  }
+}
+.general-button-green:active {
+  background-color: #208838;
+  color: white;
+}
+
+.general-button-red {
+  border: 1px solid #dc3545;
+  color: #dc3545;
+}
+@media (any-hover: hover) {
+  .general-button-red:hover{
+    background-color: #dc3545;
+    color: white;
+  }
+}
+.general-button-red:active {
+  background-color: #ab2936;
+  color: white;
+}
+
+.general-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid rgba(0,0,0,.25);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.general-checkbox:checked {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23fff' viewBox='0 0 16 16'><path d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z'/></svg>");
+  background-size: 1.2rem;
+  background-position: center;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+
+
+
+.popper {
+  border-radius: 0.2rem;
+  border: 1px solid rgba(0, 0, 0, 0.274);
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.164);
+  background-color: white;
+  padding: 0.5rem;
+}
+.popper[x-placement^="top"] {
+  border: 1px solid rgba(0, 0, 0, 0.274);
+}
+
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.1s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}

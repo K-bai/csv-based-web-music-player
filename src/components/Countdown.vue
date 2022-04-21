@@ -23,7 +23,7 @@
         placeholder="多少分钟后停止"
       />
       <button
-        class="general-button countdown-button"
+        class="general-button general-button-grey countdown-button"
         v-on:click="toggle_start"
       >{{is_counting_down?'清除':'开始'}}</button>
     </div>
@@ -137,14 +137,6 @@ export default {
   flex-shrink: 0;
   border-top-left-radius: 0rem;
   border-bottom-left-radius: 0rem;
-  color: #6c757d;
-  border: 1px solid #6c757d;
-}
-@media (any-hover: hover) {
-  .countdown-button:hover{
-    background-color: #6c757d;
-    color: white;
-  }
 }
 
 @media all and (max-width: 799px) {

@@ -1,6 +1,6 @@
 import { parse } from 'csv-parse/dist/esm/sync.js'
 import dayjs from 'dayjs'
-import song_list from './song_list.js'
+import song_collection from './song_collection.js'
 import utils from './utils.js'
 
 let AVAILABLE_DAYS_LIMIT = 5
@@ -29,7 +29,8 @@ function get_song_data(){
   return Promise.all(fetch_list).then(results => {
     parse_song_csv(results[0])
     parse_playlist_csv(results[1])
-    song_list.get_all()
+    song_collection.get_all()
+    window.meumy.my_song_collection.push(...utils.read_my_collection())
   })
 }
 
@@ -49,6 +50,10 @@ function parse_song_csv(t){
     if (d1.isBefore(d2)) return -1
     else if (d2.isBefore(d1)) return 1
     else {
+      // 如果有没有录播信息的就不排序
+      if (s2.record === false || s2.record === false) {
+        return 0
+      }
       // 按录播bv号判断
       if (s2.record.bv !== s1.record.bv)
         return utils.str_to_code(s1.record.bv) - utils.str_to_code(s2.record.bv)
@@ -65,14 +70,15 @@ function parse_song_csv(t){
   // 计算各种筛选条件
   // 状态
   window.meumy.filter_options.status.push('--')
-  window.meumy.filter_options.status.push(...new Set(window.meumy.song_list.map(i=>i.status)))
+  window.meumy.filter_options.status.push(...new Set(window.meumy.song_list.map(i=>i.status).filter(i=>(i!==''))))
   // 语言
   window.meumy.filter_options.language.push('--')
-  window.meumy.filter_options.language.push(...new Set(window.meumy.song_list.map(i=>i.language)))
+  window.meumy.filter_options.language.push(...new Set(window.meumy.song_list.map(i=>i.language).filter(i=>(i!==''))))
   // 演唱者
   let artist = new Set(['--'])
   for (let song of window.meumy.song_list)
-    for (let a of song.artist.split(',')) artist.add(a)
+    for (let a of song.artist.split(','))
+      if (a !== '') artist.add(a)
   window.meumy.filter_options.artist.push(...artist)
   // 月份
   window.meumy.filter_options.month.push('--')
@@ -81,16 +87,23 @@ function parse_song_csv(t){
 
 
 function convert_song(row){
+  // id和日期必须存在
+  let song_id = row['id']
+  let date = row['日期']
+  // 以下为非必要项
   let song_name = row['歌名']
   let song_name_chs = row['中文歌名']
-  let date = row['日期']
   let record_start_ms = time_to_ms(row['起始时间点'])
-  let song_id = row['id']
-  // 添加录播信息
-  let record = {
-    bv: row['录播来源'],
-    p: parseInt(row['录播片段编号']),
-    timecode: ms_to_timecode(record_start_ms)
+  // 录播信息
+  let bv = row['录播来源']
+  let bv_p = row['录播片段编号']
+  let record = false
+  if ( bv !== '' && bv_p !== '') {
+    record = {
+      bv: row['录播来源'],
+      p: parseInt(row['录播片段编号']),
+      timecode: ms_to_timecode(record_start_ms)
+    }
   }
   // 如果有中文歌名就加上
   if (song_name_chs !== '') song_name = `${song_name}（${song_name_chs}）`
@@ -108,7 +121,7 @@ function convert_song(row){
   let duration = '--:--'
   if (have_audio) {
     let record_end_ms = time_to_ms(row['结束时间点'])
-    if (record_end_ms)
+    if (record_end_ms !== 0)
       duration = ms_to_duration(record_end_ms - record_start_ms)
   }
   // 返回一首歌
@@ -148,7 +161,7 @@ function parse_ref(ref){
 }
 
 function time_to_ms(d){
-  // 将hh:mm:ss.xxx格式的时间转化为毫秒数
+  // 将hh:mm:ss.xxx格式的时间转化为毫秒数 解析不了就返回0
   let ms = 0
   let time_list = d.match(/^(\d{2}):(\d{2}):(\d{2}).(\d{3})$/)
   if (time_list) {
@@ -158,7 +171,7 @@ function time_to_ms(d){
     ms += parseInt(time_list[4])
     return ms
   }
-  else return false
+  else return 0
 }
 
 function ms_to_duration(ms){

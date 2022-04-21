@@ -1,17 +1,8 @@
 <template>
   <div class="c-outer card">
-    <div class="title">歌单</div>
-    <div class="c-song-collection">
-      <div
-        class="collection-item"
-        v-for="collection in song_collection"
-        v-bind:key="collection.name"
-        v-on:click="replace_collection(collection.list)"
-      >
-        <img src="~bootstrap-icons/icons/tag.svg" />
-        <div>{{collection.name}}</div>
-      </div>
-    </div>
+    <song-filter-collection />
+    <hr />
+    <song-filter-my-collection />
     <hr />
     <div class="title title-filter">
       <div>筛选</div>
@@ -72,11 +63,11 @@
         v-on:keydown.space.stop=""
       />
       <button
-        class="general-button filter-song-search-go filter-song-search-button"
+        class="general-button general-button-blue filter-song-search-go filter-song-search-button"
         v-on:click="apply_search(false)"
       >搜索!</button>
       <button
-        class="general-button filter-song-search-clear filter-song-search-button"
+        class="general-button general-button-grey filter-song-search-clear filter-song-search-button"
         v-on:click="apply_search(true)"
       >清空</button>
     </div>
@@ -88,18 +79,20 @@
 </template>
 
 <script>
-import PopUpExplainTreated from './PopUp/ExplainTreated.vue'
+import PopUpExplainTreated from '@/components/PopUp/ExplainTreated.vue'
+import SongFilterCollection from './Collection.vue'
+import SongFilterMyCollection from './MyCollection.vue'
 import utils from '@/js/utils.js'
 
 export default {
   name: 'SongFilter',
   components: {
+    SongFilterMyCollection,
+    SongFilterCollection,
     PopUpExplainTreated
   },
   data() {
     return {
-      song_list_org: window.meumy.song_list,
-      song_collection: window.meumy.song_collection,
       show_filter: false,
       filters: [
         {name: 'artist', text: '演唱者', value: '--', options: window.meumy.filter_options.artist},
@@ -126,13 +119,13 @@ export default {
   ],
   computed: {
     self_song_list_filtered: function() {
-      let l = this.song_list_org.slice()
+      let l = window.meumy.song_list.slice()
       let filter = {}
       for ( let item of this.filters)
         filter[item.name] = item.value
       // 筛选歌单
       if (filter.collection !== '--')
-        l = this.song_collection.find(c => (c.name === filter.collection)).list.slice()
+        l = window.meumy.song_collection.find(c => (c.name === filter.collection)).list.slice()
       // 筛选演唱状态
       if (filter.status !== '--')
         l = l.filter(song => (song.status === filter.status))
@@ -180,6 +173,9 @@ export default {
       return l
     }
   },
+  mounted () {
+    this.$root.$on('data_loaded', this.filter_change_event)
+  },
   methods: {
     apply_search(clear) {
       if (clear) this.search.text = ''
@@ -189,8 +185,8 @@ export default {
     filter_change_event() {
       this.$emit('update:song_list_filtered', this.self_song_list_filtered)
     },
-    replace_collection(song_list) {
-      this.$parent.$parent.$refs.player.playlist_replace(song_list.filter(s => s.have_audio))
+    replace_collection(song_collection) {
+      this.$parent.$parent.$refs.player.playlist_replace(song_collection.filter(s => s.have_audio))
     },
     search_press_enter(event) {
       this.apply_search(false)
@@ -215,37 +211,6 @@ export default {
 .title {
   margin: 0.5rem;
   font-size: 1.3rem;
-}
-.c-song-collection {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-}
-.collection-item {
-  padding-top: 0.3rem;
-  padding-bottom: 0.3rem;
-  padding-left: 0.6rem;
-  padding-right: 0.6rem;
-  margin-right: 1rem;
-  border-bottom: 1px rgb(190, 190, 190) solid;
-  color: #2a2d30;
-  user-select: none;
-  cursor: pointer;
-  display: flex;
-  align-items: flex-end;
-}
-@media (any-hover: hover) {
-  .collection-item:hover{
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-}
-.collection-item:active {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.collection-item div {
-  margin-left: 0.3rem;
 }
 
 .title-filter {
@@ -314,34 +279,10 @@ export default {
 }
 .filter-song-search-go {
   border-radius: 0rem;
-  border: 1px solid #007bff;
-  color: #007bff;
-}
-@media (any-hover: hover) {
-  .filter-song-search-go:hover{
-    background-color: #007bff;
-    color: white;
-  }
-}
-.filter-song-search-go:active {
-  background-color: #0068d6;
-  color: white;
 }
 .filter-song-search-clear {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-  border: 1px solid #6c757d;
-  color: #6c757d;
   border-left: none;
-}
-@media (any-hover: hover) {
-  .filter-song-search-clear:hover{
-    background-color: #6c757d;
-    color: white;
-  }
-}
-.filter-song-search-clear:active {
-  background-color: #545b61;
-  color: white;
 }
 </style>

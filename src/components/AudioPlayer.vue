@@ -130,42 +130,16 @@
       </div>
     </div>
     <transition name="fade" v-on:enter="playlist_scroll">
-      <div class="c-playlist" v-show="show_playlist">
-        <div class="c-playlist-title">
-          <div class="playlist-clearAll">
-            <span v-on:click="playlist_clear">清空</span>
-          </div>
-          <div class="playlist-title">
-            播放列表
-          </div>
-          <div class="playlist-close">
-            <span v-on:click="show_playlist = false">收起</span>
-          </div>
-        </div>
-        <div class="c-playlist-songList" ref="playlist">
-          <div
-            v-for="(song, index) in playlist_without_empty"
-            v-bind:class="['c-playlist-song', {'c-playlist-playing': song.id===playlist[current_song].id}]"
-            v-bind:key="song.id"
-            v-on:click="change_song(index)"
-          >
-            <div class="playlist-name"><span class="playlist-index">{{index+1}}. </span>{{song.name}}</div>
-            <div class="playlist-dash">-</div>
-            <div class="playlist-artist">{{song.artist}}</div>
-            <div class="playlist-status">{{song.status}}</div>
-            <div class="playlist-duration">{{song.duration}}</div>
-            <div
-              class="playlist-clear"
-              v-on:click.stop="playlist_remove_song(index)"
-            >
-              <div class="playlist-clear-img"></div>
-            </div>
-          </div>
-          <div class="playlist-empty" v-show="playlist[0].id === 'empty_song'">
-            播放列表为空
-          </div>
-        </div>
-      </div>
+      <play-list
+        ref="playlist"
+        v-show="show_playlist"
+        v-bind:playlist="playlist"
+        v-bind:current_song="current_song"
+        v-on:close="show_playlist=false"
+        v-on:clear="playlist_clear"
+        v-on:apply="change_song"
+        v-on:remove="playlist_remove_song"
+      />
     </transition>
     <pop-up-share
       v-if="show_share"
@@ -195,6 +169,7 @@
 
 <script>
 import utils from '@/js/utils.js'
+import PlayList from './PlayList.vue'
 import PopUpShare from './PopUp/Share.vue'
 import PopUpDetails from './PopUp/Details.vue'
 let audio = {}
@@ -209,6 +184,7 @@ window.addEventListener('mouseup', () => {
 export default {
   name: 'AudioPlayer',
   components: {
+    PlayList,
     PopUpShare,
     PopUpDetails
   },
@@ -294,7 +270,7 @@ export default {
       audio_source.src = src
       audio.load()
       // 播放列表跳转
-      if (this.show_playlist) this.playlist_scroll()
+      //if (this.show_playlist) this.playlist_scroll()
       // 更改media session信息
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new window.MediaMetadata({
@@ -396,6 +372,7 @@ export default {
       this.play_status = false
       this.play_progress = 0
       audio_source.src = ''
+      this.audio_pause()
       // 保存当前歌单
       utils.save_playlist(this.current_song, this.playlist)
     },
@@ -497,15 +474,10 @@ export default {
     },
     playlist_scroll() {
       // 滚动播放列表到当前歌曲
-      this.$refs.playlist.children[this.current_song].scrollIntoView({block: "nearest"})
+      this.$refs.playlist.playlist_scroll()
     }
   },
   computed: {
-    playlist_without_empty() {
-      return this.playlist.filter(s => {
-        return s.id !== 'empty_song'
-      })
-    },
     volume_height() {
       return {
         height: String((1-this.volume)*100)+"%"
@@ -631,459 +603,6 @@ export default {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-#player {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: calc(100% - 2rem);
-  box-shadow: 0rem 0rem 0.2rem 0rem #888;
-  background-color: #fff;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  display: flex;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-  z-index: 10;
-}
-.c-player {
-  flex-grow: 1;
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  min-width: 0;
-}
-.c-info {
-  flex-grow: 2;
-  width: 30%;
-  align-items: stretch;
-  display: flex;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  min-width: 0;
-}
-
-.c-songInfo {
-  flex-grow: 1;
-  position: relative;
-  display: flex;
-  align-content: space-around;
-  flex-wrap: wrap;
-  min-width: 0;
-}
-.c-songName {
-  width: 100%;
-  display: flex;
-  min-width: 0;
-  align-items: center;
-}
-.songName {
-  text-align: left;
-  font-size: 1.2rem;
-  flex-grow: 1;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.singer {
-  flex-shrink: 0;
-}
-.c-songStatus {
-  width: 100%;
-  color: #888;
-  display: flex;
-  justify-content: space-between;
-}
-.c-info-op {
-  margin-left: 1rem;
-  flex-shrink: 1;
-  flex-grow: 0;
-  flex-basis: 0px;
-  align-content: space-between;
-  display: flex;
-  flex-wrap: wrap;
-}
-.c-control {
-  flex-grow: 5;
-  flex-shrink: 0;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  user-select: none;
-}
-.c-controlButtons {
-  font-size: 1rem;
-  margin-bottom: 0.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.c-playButtons {
-  flex-grow: 1;
-  max-width: 12em;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-.playButtons {
-  border-radius: 2em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.prevButton {
-  width: 2.5em;
-  height: 2.5em;
-}
-.prevButton div {
-  width: 1.2em;
-  height: 1.2em;
-  background-image: url('../assets/ui/prev.svg');
-  background-size: contain;
-}
-.playButton {
-  width: 3em;
-  height: 3em;
-}
-.playButton div {
-  width: 2.5em;
-  height: 2.5em;
-  background-size: contain;
-}
-.playButton-play {
-  background-image: url('../assets/ui/play.svg');
-}
-.playButton-pause {
-  background-image: url('../assets/ui/pause.svg');
-}
-.playButton-loading {
-  background-image: url('../assets/ui/loading.svg');
-  animation: loading-rotation 1.5s cubic-bezier(.16,.39,.86,.62) 0s infinite;
-}
-@keyframes loading-rotation {
-  0% { transform: rotate(0deg);}
-  100% { transform: rotate(360deg);}
-}
-.nextButton {
-  width: 2.5em;
-  height: 2.5em;
-}
-.nextButton div {
-  width: 1.2em;
-  height: 1.2em;
-  background-image: url('../assets/ui/next.svg');
-  background-size: contain;
-}
-@media (any-hover: hover) {
-  .playButtons:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-}
-.playButtons:active {
-  background-color: rgba(0, 0, 0, 0.35);
-}
-.c-otherButtons {
-  display: flex;
-}
-.otherButtons{
-  border-radius: 2em;
-  height: 2.2em;
-  width: 2.2em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-@media (any-hover: hover) {
-  .otherButtons:hover{
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-}
-.otherButtons:active{
-  background-color: rgba(0, 0, 0, 0.35);
-}
-.playlistButton {
-  position: relative;
-}
-.playlistButton-img {
-  width: 1.3em;
-  height: 1.3em;
-  background-image: url('~bootstrap-icons/icons/music-note-list.svg');
-  background-size: contain;
-}
-.playlistButton-corner {
-  color: rgb(50, 50, 50);
-  background-color: rgb(230, 230, 230);
-  border-radius: 2px;
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-  font-size: 0.7em;
-  text-align: center;
-  position: absolute;
-  left: 2em;
-  top: 0px;
-}
-.otherButtons img{
-  width: 1.3em;
-  height: 1.3em;
-}
-.c-volumeBar {
-  position: absolute;
-  bottom: 6rem;
-  height: 7rem;
-  width: 2.2rem;
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
-  background-color: white;
-  border-radius: 3px;
-  box-shadow: 0px 0px 0.2rem 0px gray;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-}
-.c-volumeBarRaw {
-  height: 100%;
-  width: 0.6rem;
-  border-radius: 1rem;
-  background-color: darkgray;
-  overflow: hidden;
-  cursor: pointer;
-}
-.volumeBar-invert {
-  height: 50%;
-  width: 100%;
-  background-color: rgb(235, 235, 235);
-}
-
-.c-progressBarText {
-  display: flex;
-  align-items: center;
-}
-.c-progressBar {
-  flex-grow: 1;
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-  height: 1.5rem;
-  position: relative;
-}
-.progressBar-button {
-  background-image: url('../assets/ui/progress_knot.svg');
-  background-size: contain;
-  width: 1.5rem;
-  height: 1.5rem;
-  position: absolute;
-  z-index: 30;
-  cursor: pointer;
-  left: calc(10% - 0.75rem);
-}
-.c-progressBarRaw {
-  margin-top: 0.5rem;
-  height: 0.5rem;
-  background-color: #999;
-  border-radius: 1rem;
-  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.322);
-  overflow: hidden;
-  cursor: pointer;
-}
-.progressBar-loading {
-  background-color: #fff;
-  opacity: 0.15;
-  height: 0.5rem;
-  width: 50%;
-  position: relative;
-  top: -0.5rem;
-  z-index: 10;
-}
-.progressBar-fill {
-  background-color: #66ccff;
-  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.322);
-  height: 0.5rem;
-  width: 10%;
-  position: relative;
-  z-index: 20;
-}
-
-.c-playlist {
-  position: absolute;
-  bottom: 6rem;
-  right: 1rem;
-  width: 400px;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0px 0px 0.2rem 0px gray;
-  z-index: 100;
-}
-.c-playlist-title {
-  padding-left: 0.7rem;
-  padding-right: 0.7rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  background-color: rgb(230, 230, 230);
-  display: flex;
-  align-items: center;
-}
-.playlist-clearAll {
-  flex-grow: 1;
-  text-align: left;
-  font-size: 1rem;
-}
-.playlist-clearAll span {
-  cursor: pointer;
-  user-select: none;
-  color: rgb(187, 23, 23);
-}
-@media (any-hover: hover) {
-  .playlist-clearAll span:hover {
-    color: rgb(185, 83, 83);
-  }
-}
-.playlist-title {
-  flex-grow: 1;
-  text-align: center;
-  font-size: 1.1rem;
-}
-.playlist-close {
-  flex-grow: 1;
-  text-align: right;
-  font-size: 1rem;
-}
-.playlist-close span {
-  cursor: pointer;
-  color: rgb(23, 146, 187);
-  user-select: none;
-}
-.playlist-close span:hover {
-  color: rgb(57, 153, 185);
-}
-.c-playlist-songList {
-  max-height: calc(100vh - 15rem);
-  min-width: 0;
-  overflow-y: scroll;
-  overscroll-behavior: contain;
-}
-.c-playlist-song {
-  padding: 0.7rem;
-  display: flex;
-  align-items: center;
-  width: calc(100% - 1.4rem);
-  text-align: left;
-  cursor: pointer;
-}
-@media (any-hover: hover) {
-  .c-playlist-song:hover {
-    background-color: rgb(245, 245, 245);
-  }
-}
-.c-playlist-playing {
-  background-color: rgb(243, 243, 243);
-}
-.playlist-name {
-  flex-shrink: 1;
-  font-size: 1rem;
-}
-.playlist-index {
-  color: rgb(105, 105, 105);
-  font-size: 0.8rem;
-}
-.playlist-dash {
-  flex-shrink: 0;
-  color: #333;
-  font-size: 1rem;
-  margin-left: 0.3rem;
-}
-.playlist-artist {
-  flex-shrink: 0;
-  color: #333;
-  font-size: 1rem;
-  margin-left: 0.3rem;
-}
-.playlist-status {
-  flex-grow: 1;
-  flex-shrink: 0;
-  color: #888;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-}
-.playlist-duration {
-  flex-shrink: 0;
-  color: #333;
-  font-size: 0.9rem;
-  margin-left: 0.5rem;
-}
-.playlist-clear {
-  flex-shrink: 0;
-  margin-left: 0.25rem;
-  border-radius: 1rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  text-align: center;
-}
-@media (any-hover: hover) {
-  .playlist-clear:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-}
-.playlist-clear:active {
-  background-color: rgba(0, 0, 0, 0.35);
-}
-.playlist-clear-img {
-  width: 1.5rem;
-  height: 1.5rem;
-  background-image: url("~bootstrap-icons/icons/x.svg");
-  background-position: center;
-  background-size: contain;
-}
-.playlist-empty {
-  margin-top: 0.7rem;
-  margin-bottom: 0.7rem;
-}
-
-
-
-
-
-@media all and (max-width: 799px) {
-  .c-info {
-    width: 100%;
-    margin-bottom: 0.3rem;
-  }
-  .c-progressBar {
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-  .c-controlButtons {
-    font-size: 1.2rem;
-  }
-  .c-volumeBarRaw {
-    width: 1.3rem;
-    border-radius: 0.3rem;
-  }
-  .c-playlist {
-    bottom: 13rem;
-    width: calc(100vw - 2rem);
-  }
-  .c-playlist-songList {
-    max-height: calc(100vh - 23rem);
-  }
-}
+@import '../styles/audio_player.css';
 </style>
