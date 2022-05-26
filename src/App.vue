@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="c-outer">
+    <div v-bind:class="['c-outer', {'blur-filter': loading}]">
       <banner />
       <input v-show="develop" type="checkbox" v-model="if_debug" />
       <div v-show="if_debug">
@@ -18,6 +18,7 @@
       <pop-up-info v-if="show_info" v-on:closepopup="show_info=false" />
       <pop-up-receive v-if="show_share" v-on:closepopup="show_share=false" v-bind:song="share_song" />
     </div>
+    <loading-panel v-if="loading" />
   </div>
 </template>
 
@@ -31,6 +32,7 @@ import Countdown from './components/Countdown.vue'
 import CopyCallCode from './components/CopyCallCode.vue'
 import PopUpInfo from './components/PopUp/Info.vue'
 import PopUpReceive from './components/PopUp/Receive.vue'
+import LoadingPanel from './components/LoadingPanel.vue'
 import song_data from './js/data.js'
 import utils from './js/utils.js'
 
@@ -46,6 +48,7 @@ export default {
     CopyCallCode,
     PopUpInfo,
     PopUpReceive,
+    LoadingPanel
   },
   data() {
     return {
@@ -53,6 +56,7 @@ export default {
       if_debug: false,
       show_info: false,
       show_share: false,
+      loading: true,
       share_song: {},
       debug_list: window.meumy.debug_list
     }
@@ -69,6 +73,8 @@ export default {
         window.meumy.backdoor = true
       // 获取歌曲
       song_data.get_song_data().then(() => {
+        // 取消loading
+        this.loading = false
         this.$root.$emit('data_loaded')
         // 加入保存的播放列表
         let c_playlist = utils.read_playlist()
@@ -143,6 +149,10 @@ body {
   padding-left: 2rem;
   padding-right: 2rem;
   flex-grow: 1;
+}
+
+.blur-filter {
+  filter: blur(5px);
 }
 
 @media all and (max-width: 799px) {

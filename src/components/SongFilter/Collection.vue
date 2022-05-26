@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       song_collection: window.meumy.song_collection,
-      show_collection: true,
+      show_collection: false,
     }
   },
   methods: {
