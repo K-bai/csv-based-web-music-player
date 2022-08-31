@@ -93,7 +93,7 @@
           </div>
           <div class="song-full-details-record" v-show="song.record!==false">
             <span>录播：</span>
-            <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&start_progress='+song.record_start_ms" target="_blank" rel="noreferrer noopener">
+            <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&t='+(song.record_start_ms/1000).toFixed(1)" target="_blank" rel="noreferrer noopener">
               {{song.date}} p{{song.record.p}} {{song.record.timecode}}
             </a>
           </div>
@@ -223,6 +223,13 @@ export default {
       if (header.getBoundingClientRect().bottom < 0)
         header.scrollIntoView()
     }
+  },
+  mounted () {
+    this.$root.$on('jump_collection', () => {
+      // 滚动到顶部
+      let header = this.$refs.header
+      header.scrollIntoView()
+    })
   }
 }
 </script>

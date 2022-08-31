@@ -18,6 +18,22 @@
         v-bind:key="filter_item.name"
       >
         <div class="filter-item-label">{{filter_item.text}}:</div>
+        <el-select
+          v-model="filter_item.value"
+          v-bind:multiple="filter_item.multiple"
+          v-on:change="filter_change_event"
+          clearable
+          collapse-tags
+        >
+          <el-option
+            v-for="option in filter_item.options"
+            v-bind:value="option"
+            v-bind:label="option"
+            v-bind:key="option"
+          >
+          </el-option>
+        </el-select>
+        <!--
         <select
           class="general-input"
           v-model="filter_item.value"
@@ -29,6 +45,7 @@
             v-bind:key="option"
           >{{option}}</option>
         </select>
+        -->
       </div>
       <div class="filter-item">
         <input
@@ -95,15 +112,16 @@ export default {
     return {
       show_filter: false,
       filters: [
-        {name: 'artist', text: '演唱者', value: '--', options: window.meumy.filter_options.artist},
-        {name: 'status', text: '演唱状态', value: '--', options: window.meumy.filter_options.status},
-        {name: 'language', text: '语言', value: '--', options: window.meumy.filter_options.language},
-        {name: 'month', text: '月份', value: '--', options: window.meumy.filter_options.month},
-        {name: 'collection', text: '歌单', value: '--', options: window.meumy.filter_options.collection},
-        {name: 'star', text: '星标', value: '--', options: window.meumy.filter_options.star},
-        {name: 'have_audio', text: '是否有音频', value: '--', options: window.meumy.filter_options.have_audio},
-        {name: 'order', text: '排序', value: '时间倒序', options: window.meumy.filter_options.order},
+        {name: 'artist', text: '演唱者', multiple: true, value: [], options: window.meumy.filter_options.artist},
+        {name: 'status', text: '演唱状态', multiple: true, value: [], options: window.meumy.filter_options.status},
+        {name: 'language', text: '语言', multiple: true, value: [], options: window.meumy.filter_options.language},
+        {name: 'month', text: '月份', multiple: true, value: [], options: window.meumy.filter_options.month},
+        {name: 'collection', text: '歌单', multiple: true, value: [], options: window.meumy.filter_options.collection},
+        {name: 'star', text: '星标', multiple: false, value: '', options: window.meumy.filter_options.star},
+        {name: 'have_audio', text: '是否有音频', multiple: false, value: '', options: window.meumy.filter_options.have_audio},
+        {name: 'order', text: '排序', multiple: false, value: '时间倒序', options: window.meumy.filter_options.order},
       ],
+      search_type: '搜索歌名',
       search: {
         text: '',
         text_for_search: '',
@@ -124,24 +142,24 @@ export default {
       for ( let item of this.filters)
         filter[item.name] = item.value
       // 筛选歌单
-      if (filter.collection !== '--')
-        l = window.meumy.song_collection.find(c => (c.name === filter.collection)).list.slice()
+      if (filter.collection.length !== 0)
+        l = window.meumy.song_collection.find(c => (filter.collection.findIndex(i => (i === c.name)) !== -1)).list.slice()
       // 筛选演唱状态
-      if (filter.status !== '--')
-        l = l.filter(song => (song.status === filter.status))
+      if (filter.status.length !== 0)
+        l = l.filter(song => (filter.status.includes(song.status)))
       // 筛选语言
-      if (filter.language !== '--')
-        l = l.filter(song => (song.language === filter.language))
+      if (filter.language.length !== 0)
+        l = l.filter(song => (filter.language.findIndex(i => (i === song.language)) !== -1))
       // 筛选演唱者
-      if (filter.artist !== '--') {
+      if (filter.artist.length !== 0) {
         l = l.filter(song => {
           let artist_list = song.artist.split(',')
-          return artist_list.findIndex(a => (a === filter.artist)) !== -1
+          return artist_list.findIndex(a => (filter.artist.findIndex(i => (i === a)) !== -1)) !== -1
         })
       }
       // 筛选月份
-      if (filter.month !== '--')
-        l = l.filter(song => (song.date.substring(0, 7) === filter.month))
+      if (filter.month.length !== 0)
+        l = l.filter(song => (filter.month.findIndex(i => (i === song.date.substring(0, 7))) !== -1))
       // 筛选星标
       if (filter.star === '星标')
         l = l.filter(song => (window.meumy.love_list.findIndex(love => (song.id === love)) !== -1))
@@ -175,6 +193,15 @@ export default {
   },
   mounted () {
     this.$root.$on('data_loaded', this.filter_change_event)
+    this.$root.$on('jump_collection', name => {
+      // 跳转到特定歌单
+      // 展开筛选
+      this.show_filter = true
+      // 清空所有筛选
+      this.clear_all_filter()
+      this.filters.find(f => (f.name === 'collection')).value = [name]
+      this.filter_change_event()
+    })
   },
   methods: {
     apply_search(clear) {
@@ -196,6 +223,17 @@ export default {
       utils.save_settings({
         use_treated: this.use_treated.value
       })
+    },
+    clear_all_filter() {
+      this.filters.find(f => (f.name === 'artist')).value = []
+      this.filters.find(f => (f.name === 'status')).value = []
+      this.filters.find(f => (f.name === 'language')).value = []
+      this.filters.find(f => (f.name === 'month')).value = []
+      this.filters.find(f => (f.name === 'collection')).value = []
+      this.filters.find(f => (f.name === 'star')).value = ''
+      this.filters.find(f => (f.name === 'have_audio')).value = ''
+      this.filters.find(f => (f.name === 'order')).value = '时间倒序'
+      this.apply_search(true)
     }
   }
 }

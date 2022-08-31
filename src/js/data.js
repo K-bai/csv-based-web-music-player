@@ -4,6 +4,7 @@ import song_collection from './song_collection.js'
 import utils from './utils.js'
 
 let AVAILABLE_DAYS_LIMIT = 5
+let SONG_CDN_ADDR = 'https://song-file.meumy.club'
 
 function fetch_csv(url){
   return fetch(url, {
@@ -69,19 +70,16 @@ function parse_song_csv(t){
   })
   // 计算各种筛选条件
   // 状态
-  window.meumy.filter_options.status.push('--')
   window.meumy.filter_options.status.push(...new Set(window.meumy.song_list.map(i=>i.status).filter(i=>(i!==''))))
   // 语言
-  window.meumy.filter_options.language.push('--')
   window.meumy.filter_options.language.push(...new Set(window.meumy.song_list.map(i=>i.language).filter(i=>(i!==''))))
   // 演唱者
-  let artist = new Set(['--'])
+  let artist = new Set()
   for (let song of window.meumy.song_list)
     for (let a of song.artist.split(','))
       if (a !== '') artist.add(a)
   window.meumy.filter_options.artist.push(...artist)
   // 月份
-  window.meumy.filter_options.month.push('--')
   window.meumy.filter_options.month.push(...new Set(window.meumy.song_list.map(i=>i.date.substring(0, 7))))
 }
 
@@ -112,7 +110,7 @@ function convert_song(row){
   if (row['有没有音频'] == 'TRUE') have_audio = true
   // 有没有第二版本
   let second_src = ''
-  if (row['有没有第二版本'] == 'TRUE') second_src = `/treated_songs/${song_id}.mp3`
+  if (row['有没有第二版本'] == 'TRUE') second_src = `${SONG_CDN_ADDR}/treated_songs/${song_id}.mp3`
   // 如果没到时间也不可用
   let days_before_available = AVAILABLE_DAYS_LIMIT - dayjs().diff(dayjs(date), 'day')
   if (days_before_available > 0 && !window.meumy.backdoor)
@@ -139,7 +137,7 @@ function convert_song(row){
     ref_cut: parse_ref(row['谁切的']),
     duration,
     id: song_id,
-    src: `/songs/${song_id}.mp3`,
+    src: `${SONG_CDN_ADDR}/songs/${song_id}.mp3`,
     second_src,
     have_audio,
     days_before_available
@@ -203,8 +201,13 @@ function parse_playlist_csv(t){
   let csv = parse(t)
   for (let idx = 0; idx < csv[0].length; idx++) {
     let id_list = csv.map(id => id[idx]).slice(1).filter(id => (id !== ''))
+    let info = JSON.parse(csv[0][idx])
     window.meumy.song_collection.push({
-      name: csv[0][idx],
+      name: info.name,
+      date: info.date,
+      maintainer: info.maintainer,
+      note: info.info,
+      color: info.color,
       list: id_list.map(id => (
         window.meumy.song_list.find(s => (s.id === id))
       ))
@@ -237,13 +240,13 @@ let cutter_list = [
   ['282545441', 'Me-Suwin'],
   ['22257026', '星斗Star'],
   ['434800565', 'CW狂风'],
-  ['674622242', 'MeUmy录播组'],
-  ['62921501', '努力的灵风'],
   ['266752689', '休止-符'],
   ['443742545', '海的宝贝2006'],
   ['545133496', '枺芙'],
   ['5024537', 'Umy的天谴之子'],
-  ['82399211', '星空有丶蓝'],  
+  ['82399211', '星空有丶蓝'], 
+  ['151439304', '八月中秋月'],
+  ['25590017', '崽学家-朔儿'],
 ]
 
 export default {

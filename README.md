@@ -2,6 +2,11 @@
 以csv文件作为数据库的纯前端音乐播放器，使用vue-cli进行构建
 
 # CHANGE LOG
+* 2022-08-31
+    * 分离底层音乐播放与ui
+    * 随机播放改用[Fisher-Yates](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)算法
+* 2022-08-27
+    * bugfix: 回滚了叔叔录播跳转链接格式`start_progress=millisecond`=>`t=second`
 * 2022-04-18
     * feature: 播放列表改为虚拟滚动列表 长播放列表减少卡顿
     * feature: 收到分享的歌曲后弹出窗口

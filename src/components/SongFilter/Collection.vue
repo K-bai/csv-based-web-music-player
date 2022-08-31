@@ -12,10 +12,40 @@
         class="collection-item"
         v-for="collection in song_collection"
         v-bind:key="collection.name"
-        v-on:click="replace_collection(collection.list)"
+        v-bind:style="{borderColor: collection.color}"
       >
-        <img src="~bootstrap-icons/icons/tag.svg" />
-        <div>{{collection.name}}</div>
+        <div class="collection-item-base">
+          <div class="collection-item-title">
+            <div class="collection-item-icon"><img src="~bootstrap-icons/icons/tag.svg" /></div>
+            <div>
+              <div class="collection-item-name">{{collection.name}} ({{collection.list.length}})</div>
+              <div class="collection-item-note">{{collection.note}}</div>
+            </div>
+          </div>
+          <div class="collection-item-info">
+            <div class="collection-item-maintainer">
+              <div>维护者:</div>
+              <div
+                class="collection-item-maintainer-id"
+                v-for="maintainer in collection.maintainer"
+                v-bind:key="maintainer.name"
+              ><a v-bind:href="'https://space.bilibili.com/'+maintainer.uid" target="_blank" rel="noreferrer noopener">
+                @{{maintainer.name}}
+              </a></div>
+            </div>
+            <div class="collection-item-date">{{collection.date}}</div>
+          </div>
+        </div>
+        <div class="collection-item-op">
+          <div class="songlist-button"><button
+            class="general-button general-button-grey replace-button"
+            v-on:click="replace_collection(collection.list)"
+          >听！</button></div>
+          <div class="songlist-button"><button
+            class="general-button general-button-grey jump-button"
+            v-on:click="jump_collection(collection.name)"
+          >查看</button></div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,6 +63,9 @@ export default {
   methods: {
     replace_collection(song_collection) {
       this.$parent.$parent.$parent.$refs.player.playlist_replace(song_collection.filter(s => s.have_audio))
+    },
+    jump_collection(name) {
+      this.$root.$emit('jump_collection', name)
     }
   }
 }
@@ -65,29 +98,123 @@ export default {
   flex-wrap: wrap;
 }
 .collection-item {
+  box-sizing: border-box;
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
-  padding-left: 0.6rem;
-  padding-right: 0.6rem;
+  padding-left: 0.3rem;
+  padding-right: 1rem;
   margin-top: 0.2rem;
   margin-bottom: 0.2rem;
-  margin-right: 1rem;
-  border-bottom: 1px rgb(190, 190, 190) solid;
   color: #2a2d30;
-  user-select: none;
-  cursor: pointer;
   display: flex;
-  align-items: flex-end;
+  justify-content: space-between;
+  width: 50%;
+  border-left: solid 4px;
 }
+.collection-item:nth-child(4n+1) {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+.collection-item:nth-child(4n+2) {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+.collection-item:nth-child(4n+3) {
+  background-color: rgba(0, 0, 0, 0);
+}
+.collection-item:nth-child(4n+4) {
+  background-color: rgba(0, 0, 0, 0);
+}
+.collection-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.collection-item-base {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+.collection-item-title {
+  display: flex;
+  align-items: center;
+}
+.collection-item-title>div {
+  margin-left: 0.5rem;
+}
+.collection-item-note {
+  font-size: 0.8rem;
+  color: grey;
+}
+.collection-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.6rem;
+  color: grey;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+.collection-item-maintainer {
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.collection-item-maintainer-id {
+  margin-right: 0.3rem;
+}
+.collection-item-maintainer-id a:link {color: grey;}
+.collection-item-maintainer-id a:visited {color: grey;}
+.collection-item-maintainer-id a:hover {color: grey;}
+.collection-item-maintainer-id a:active {color: grey;}
+
 @media (any-hover: hover) {
   .collection-item:hover{
     background-color: rgba(0, 0, 0, 0.05);
   }
 }
-.collection-item:active {
-  background-color: rgba(0, 0, 0, 0.1);
+
+
+.collection-item-op {
+  display: flex;
+  flex-direction: column;
 }
-.collection-item div {
-  margin-left: 0.3rem;
+.songlist-button {
+  flex: 1;
+  margin: 0px;
+  padding: 0px;
 }
+.songlist-button>button {
+  height: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.replace-button {
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+  border-bottom-left-radius: 0rem;
+  border-bottom-right-radius: 0rem;
+  border-bottom: none;
+}
+.jump-button {
+  border-top-left-radius: 0rem;
+  border-top-right-radius: 0rem;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+
+
+
+@media all and (max-width: 799px) {
+  .collection-item {
+    width: 100%;
+  }
+  .collection-item:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.025);
+  }
+  .collection-item:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+
 </style>

@@ -38,6 +38,7 @@
       <a href="https://lamp.meumy.club" target="_blank" rel="noreferrer noopener">MeUmy草原自动路灯</a>
       <a href="https://meumy.club" target="_blank" rel="noreferrer noopener">MeUmy草原平行时空</a>
     </p>
+    <p><a href="https://beian.miit.gov.cn/" class="record">京ICP备18037723号-3</a></p>
     <pop-up-credit
       v-if="show_credit"
       v-on:closepopup="show_credit=false"
@@ -82,5 +83,21 @@ hr {
   text-decoration: underline;
   cursor: pointer;
   color: blue;
+}
+.record {
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+.record:link {
+  color: gray;
+}
+.record:active {
+  color: gray;
+}
+.record:hover {
+  color: gray;
+}
+.record:visited {
+  color: gray;
 }
 </style>

@@ -1,15 +1,24 @@
+import dayjs from 'dayjs'
+
 function get_all(){
   window.meumy.song_collection.push(...[
     {
-      name: '唱的最多的歌',
+      name: "唱的最多的歌",
+      date: dayjs().format("YYYY-MM-DD"),
+      maintainer: [{"name":"MeUmy的录音棚", "uid": -1}],
+      note: "她俩唱的最多的10首歌",
+      color: "#bb50b1",
       list: all_most_10()
     },
     {
-      name: '双人合唱',
+      name: "双人合唱",
+      date: dayjs().format("YYYY-MM-DD"),
+      maintainer: [{"name":"MeUmy的录音棚", "uid": -1}],
+      note: "呜米和咩栗的合唱曲目",
+      color: "#bb50b1",
       list: chorus()
     },
   ])
-  window.meumy.filter_options.collection.push('--')
   window.meumy.filter_options.collection.push(...window.meumy.song_collection.map(c => c.name))
 }
 
@@ -44,8 +53,8 @@ function all_most_10(){
 function chorus(){
   // 双人合唱的曲子
   return window.meumy.song_list.filter(s => {
-    let artists = s.artist.split(',')
-    return (artists.findIndex(a => (a === '呜米')) !== -1) && (artists.findIndex(a => (a === '咩栗')) !== -1)
+    let artists = s.artist.split(",")
+    return (artists.findIndex(a => (a === "呜米")) !== -1) && (artists.findIndex(a => (a === "咩栗")) !== -1)
   })
 }
 

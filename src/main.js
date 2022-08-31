@@ -1,23 +1,29 @@
 import '@babel/polyfill'
 import 'mutationobserver-shim'
 import Vue from 'vue'
-import VTooltip from 'v-tooltip'
-import 'v-tooltip/dist/v-tooltip.css'
 
-import App from './App.vue'
-
-
-Vue.use(VTooltip)
-Vue.config.productionTip = false
+import { Select, Input, Option, Popover } from 'element-ui'
 
 import '@/js/global.js'
 
+import App from './App.vue'
+
+Vue.prototype.$ELEMENT = { size: 'medium' }
+Vue.use(Select)
+Vue.use(Input)
+Vue.use(Option)
+Vue.use(Popover)
+
+Vue.config.productionTip = false
 
 
-new Vue({
+
+
+const MeUmyPlayer = new Vue({
   render: h => h(App),
 }).$mount('#app')
 
+window.MeUmyPlayer = MeUmyPlayer
 
 // 注册service worker
 /*

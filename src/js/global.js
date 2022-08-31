@@ -1,5 +1,6 @@
 import utils from '@/js/utils.js'
 import data from '@/js/data.js'
+import MeUmyAudioPlayer from '@/js/audio_player.js'
 
 
 // 全局变量
@@ -12,8 +13,8 @@ window.meumy = {
   love_list: utils.read_love_list(),
   cutter_list: data.cutter_list,
   filter_options: {
-    star: ['--', '星标', '非星标'],
-    have_audio: ['--', '有音频', '无音频'],
+    star: ['星标', '非星标'],
+    have_audio: ['有音频', '无音频'],
     order: ['时间倒序', '时间正序'],
     search_type: ['搜索歌名', '搜索全部信息'],
     status: [],
@@ -24,5 +25,6 @@ window.meumy = {
   },
   backdoor: false,
   use_treated: {value: utils.read_settings().use_treated},
-  debug_list: []
+  debug_list: [],
+  audio_player: new MeUmyAudioPlayer()
 }

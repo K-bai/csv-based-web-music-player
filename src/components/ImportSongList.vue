@@ -2,10 +2,15 @@
   <div class="c-import card">
     <div class="import-info">
       <div>粘贴代码导入歌单：</div>
+      <el-popover
+        trigger="click"
+        v-bind:content="import_popper"
+        ref="pop1"
+      ></el-popover>
       <button
         class="general-button general-button-blue import-button"
         v-on:click="import_code"
-        v-tooltip="import_popper"
+        v-popover:pop1
       >导入！</button>
     </div>
     <textarea class="import-code" v-model="code" v-on:keydown.space.stop=""></textarea>
@@ -19,26 +24,22 @@ export default {
   data () {
     return {
       code: '',
-      import_popper: {
-        content: '?',
-        showTriggers: ['click'],
-        hideTriggers: ['hover'],
-      }
+      import_popper: '?'
     }
   },
   methods: {
     import_code() {
       if (this.code.trim().length === 0) {
-        this.import_popper.content = '?你没粘贴东西'
+        this.import_popper = '?你没粘贴东西'
         return
       }
       let song_list = utils.decode_share(this.code.trim())
       if (song_list) {
         this.$parent.$refs.player.playlist_replace(song_list)
-        this.import_popper.content = '导入成功!'
+        this.import_popper = '导入成功!'
       }
       else
-        this.import_popper.content = '歌单代码错误，请重新复制一下试试~'
+        this.import_popper = '歌单代码错误，请重新复制一下试试~'
       this.code = ''
     }
   }

@@ -13,7 +13,7 @@
       <p v-if="song.note!==''"><span>切歌man的留言：</span>{{song.note}}</p>
       <p v-if="song.record!==false">
         <span>对应录播：</span>
-        <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&start_progress='+song.record_start_ms" target="_blank" rel="noreferrer noopener">
+        <a v-bind:href="'https://www.bilibili.com/video/'+song.record.bv+'?p='+song.record.p+'&t='+(song.record_start_ms/1000).toFixed(1)" target="_blank" rel="noreferrer noopener">
           {{song.date}} p{{song.record.p}}
         </a> 
         <span>时间点：</span>{{song.record.timecode}}

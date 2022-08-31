@@ -36,7 +36,7 @@
               v-bind:title="play_mode_text"
             >
               <img v-show="play_mode=='loop'" src="~bootstrap-icons/icons/arrow-repeat.svg" />
-              <img v-show="play_mode=='loopOnce'" src="@/assets/ui/arrow-repeat-once.svg" />
+              <img v-show="play_mode=='loop once'" src="@/assets/ui/arrow-repeat-once.svg" />
               <img v-show="play_mode=='shuffle'" src="~bootstrap-icons/icons/shuffle.svg" />
             </div>
             <div>
@@ -151,9 +151,6 @@
       v-on:closepopup="show_details=false"
       :song="playlist[current_song]"
     />
-    <audio id="meumy_player">
-      <source id="meumy_player_source" src="" type="audio/mpeg" />
-    </audio>
   </div>
 </template>
 
@@ -172,8 +169,8 @@ import utils from '@/js/utils.js'
 import PlayList from './PlayList.vue'
 import PopUpShare from './PopUp/Share.vue'
 import PopUpDetails from './PopUp/Details.vue'
-let audio = {}
-let audio_source = {}
+
+const audio_player = window.meumy.audio_player
 
 // 滑动检测
 var is_mouse_down = false
@@ -181,7 +178,7 @@ window.addEventListener('mouseup', () => {
   if (is_mouse_down === true) is_mouse_down = false
 })
 
-export default {
+const AudioPlayer = {
   name: 'AudioPlayer',
   components: {
     PlayList,
@@ -197,7 +194,6 @@ export default {
       play_mode: 'loop',
       play_status: false,
       audio_loading: false,
-      auto_play: false,
       volume: 0.9,
       play_progress: 0,
       load_progress: 0,
@@ -217,10 +213,19 @@ export default {
       return `${minute_s}:${second_s}`
     },
     switch_play_mode() {
-      if(this.play_mode === 'loop') this.play_mode = 'loopOnce'
-      else if(this.play_mode === 'loopOnce') this.play_mode = 'shuffle'
-      else if(this.play_mode === 'shuffle') this.play_mode = 'loop'
-      utils.save_settings({play_mode: this.play_mode})
+      if (this.play_mode === 'loop'){
+        audio_player.play_mode = 'loop once'
+        this.play_mode = 'loop once'
+      }
+      else if (this.play_mode === 'loop once'){
+        audio_player.play_mode = 'shuffle'
+        this.play_mode = 'shuffle'
+      }
+      else if (this.play_mode === 'shuffle'){
+        audio_player.play_mode = 'loop'
+        this.play_mode = 'loop'
+      }
+      utils.save_settings({play_mode: audio_player.play_mode})
     },
     volume_bar_mouse_event(event) {
       // 判断是否按键
@@ -257,74 +262,16 @@ export default {
       if (this.playlist[this.current_song].id !== 'empty_song')
         this.show_details = !this.show_details
     },
-    apply_song() {
-      this.audio_loading = false
-      if (this.playlist[this.current_song].id === 'empty_song') return false
-      // 加载当前歌曲 如果是精选状态且有精选版本就跳精选
-      let src = this.playlist[this.current_song].src
-      if (window.meumy.use_treated.value){
-        let second_src = this.playlist[this.current_song].second_src
-        if (second_src !== '')
-          src = second_src
-      }
-      audio_source.src = src
-      audio.load()
-      // 播放列表跳转
-      //if (this.show_playlist) this.playlist_scroll()
-      // 更改media session信息
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new window.MediaMetadata({
-          title: this.playlist[this.current_song].name,
-          artist: this.playlist[this.current_song].artist,
-          album: '',
-          artwork: [{src: require('../assets/logo.png')}]
-        })
-      }
-      audio.title = this.playlist[this.current_song].name
-      // 保存当前歌单
-      utils.save_playlist(this.current_song, this.playlist)
-    },
     audio_toggle_play() {
-      // 播放列表不为空
-      if (this.playlist[0].id !== 'empty_song') {
-        this.play_status = !audio.paused
-        if (this.play_status) audio.pause()
-        else audio.play()
-      }
+      if (audio_player.status === 'pause') audio_player.play()
+      else if (audio_player.status === 'playing') audio_player.pause()
     },
-    audio_pause() {
-      // 正在播放就暂停
-      this.play_status = !audio.paused
-      if (this.play_status) audio.pause()
-    },
-    next_song(idx) {
-      // 如果列表是空的就return
-      if (this.playlist[0].id === 'empty_song') return
-      // 如果当前正在播放，就自动播放下一首
-      this.auto_play = this.play_status
-      // 只有一首歌就回到开头
-      if (this.playlist.length===1){
-        audio.currentTime = 0
-        audio.play()
-        return
-      }
-      if (this.play_mode === 'loop' || this.play_mode === 'loopOnce') {
-        // 列表循环和单曲循环就下一首
-        this.current_song += idx
-        if (this.current_song < 0) this.current_song += this.playlist.length
-        this.current_song %= this.playlist.length
-      }
-      else if (this.play_mode === 'shuffle') {
-        // 随机就随机一首歌
-        this.current_song = this.random_song()
-      }
-      // 加载这首歌
-      this.apply_song()
+    next_song(offset) {
+      audio_player.shift(offset)
     },
     change_song(idx) {
-      this.auto_play = true
-      this.current_song = idx
-      this.apply_song()
+      audio_player.auto_play = true
+      audio_player.jump(idx)
     },
     player_mouse_event(event) {
       // 按键才执行
@@ -333,21 +280,13 @@ export default {
       }
     },
     set_play_progress(progress) {
-      audio.currentTime = Math.max(progress * audio.duration - 0.05, 0)
+      audio_player.ctx.currentTime = Math.max(progress * this.duration - 0.05, 0)
       this.play_progress = progress
     },
     set_volume(volume) {
       volume = Math.min(1, Math.max(0, volume))
-      audio.volume = volume
+      audio_player.ctx.volume = volume
       this.volume = volume
-    },
-    random_song() {
-      // 随机一个数，如果是当前曲子就重新随机
-      var r
-      do {
-        r = Math.floor(Math.random()*(this.playlist.length))
-      } while (r===this.current_song)
-      return r
     },
     toggle_loved() {
       if (this.playlist[0].id === 'empty_song') return
@@ -365,38 +304,34 @@ export default {
       // 保存喜爱列表
       utils.save_love_list(this.love_list)
     },
-    playlist_clear() {
+    playlist_sync_player() {
+      // 同步播放器的歌单
+      let new_list = []
+      if (audio_player.playlist.length === 0) {
+        new_list.push(utils.empty_song)
+      }
+      else{
+        audio_player.playlist.forEach(song => {
+          new_list.push(window.meumy.song_list.find(
+            org_song => (org_song.id === song.id)
+          ))
+        })
+      }
       this.playlist.splice(0, this.playlist.length)
-      this.playlist.push(utils.empty_song)
-      this.current_song = 0
-      this.play_status = false
-      this.play_progress = 0
-      audio_source.src = ''
-      this.audio_pause()
+      this.playlist.push(...new_list)
+      this.current_song = audio_player.song_ptr
+    },
+    playlist_clear() {
+      audio_player.clear_playlist()
+      this.playlist_sync_player()
       // 保存当前歌单
       utils.save_playlist(this.current_song, this.playlist)
     },
     playlist_remove_song(idx) {
-      // 如果只剩一首歌 就相当于清空列表
-      if (this.playlist.length === 1) {
-        this.playlist_clear()
-        return
-      }
-      // 如果删除的歌是现在选中的歌（至少剩了一首）
-      if (idx === this.current_song) {
-        // 把正在播放的切到下一首歌并暂停播放
-        this.current_song += 1
-        this.current_song %= this.playlist.length
-        this.auto_play = false
-        this.play_status = false
-        this.apply_song()
-      }
-      // 先获取当前播放的id
-      let current_song_id = this.playlist[this.current_song].id
-      // 删除选中的歌
-      this.playlist.splice(idx, 1)
-      // 重新获取当前歌index
-      this.current_song = this.playlist.findIndex(song => {return song.id === current_song_id})
+      // 修改播放器歌单
+      audio_player.edit_playlist_delete(idx)
+      // 根据播放器歌单重建ui歌单
+      this.playlist_sync_player()
       // 保存当前歌单
       utils.save_playlist(this.current_song, this.playlist)
     },
@@ -407,66 +342,53 @@ export default {
       this.playlist_remove_song(idx)
     },
     playlist_add_song(song, jump = false, auto_play = false) {
-      let set_src = false
+      // 修改播放器歌单
+      audio_player.edit_playlist_add([song])
+
+      let load_song = false
       if (this.playlist[0].id === 'empty_song') {
-        // 如果播放列表是空的就清空列表
-        this.playlist.splice(0, this.playlist.length)
-        set_src = true
+        // 如果播放列表是空的就要加载歌曲
+        load_song = true
       }
-      // 判断歌曲是否重复
-      var idx = this.playlist.findIndex(s => {return s.id === song.id})
-      if (idx === -1) {
-        // 如果不重复
-        this.playlist.push(song)
-        // 保存当前歌单
-        utils.save_playlist(this.current_song, this.playlist)
-        idx = this.playlist.length-1
-      }
-      // 
+      // 根据播放器歌单重建ui歌单
+      this.playlist_sync_player()
       // 原来播放列表是空的 或者 要求跳转 就跳转到歌曲
-      if (set_src || jump) {
+      if (load_song || jump) {
         // 如果要求跳转就自动播放
-        this.auto_play = auto_play
-        this.current_song = idx
-        this.apply_song()
-      }
-    },
-    playlist_add_many(songs) {
-      if (songs.length === 0) return false
-      // 如果播放列表是空的
-      var should_set_src = false
-      if (this.playlist[0].id === 'empty_song') {
-        // 清空列表
-        this.playlist.splice(0, this.playlist.length)
-        should_set_src = true
-      }
-      // 遍历所有要添加的歌
-      let added = false
-      for (let song of songs) {
-        // 判断歌曲是否重复
-        var idx = this.playlist.findIndex(s => {return s.id === song.id})
-        if (idx === -1) {
-          this.playlist.push(song)
-          added = true
-        }
-      }
-      // 原来播放列表是空的且添加过歌就设置src并暂停
-      if (should_set_src && added) {
-        this.apply_song()
-        this.auto_play = false
+        audio_player.auto_play = auto_play
+        audio_player.song_ptr = audio_player.playlist.length - 1
+        audio_player.load()
       }
       // 保存当前歌单
       utils.save_playlist(this.current_song, this.playlist)
-      return added
+    },
+    playlist_add_many(songs) {
+      // 修改播放器歌单
+      audio_player.edit_playlist_add(songs)
+      // 如果播放列表是空的
+      let if_old_empty = this.playlist[0].id === 'empty_song'
+      // 根据播放器歌单重建ui歌单
+      this.playlist_sync_player()
+      // 新列表是否有歌
+      let if_new_not_empty = this.playlist[0].id !== 'empty_song'
+      // 原来播放列表是空的且现在有歌就设置src并暂停
+      if (if_old_empty && if_new_not_empty) {
+        audio_player.auto_play = false
+        audio_player.load()
+      }
+      // 保存当前歌单
+      utils.save_playlist(this.current_song, this.playlist)
     },
     playlist_replace(playlist, current_song = 0) {
+      // 修改播放器歌单
+      audio_player.clear_playlist()
+      audio_player.edit_playlist_add(playlist)
+      // 根据播放器歌单重建ui歌单
+      this.playlist_sync_player()
       // 更换歌单后暂停播放
-      this.playlist.splice(0, this.playlist.length)
-      for (let song of playlist) this.playlist.push(song)
-      this.current_song = current_song
-      this.auto_play = false
-      this.play_status = false
-      this.apply_song()
+      audio_player.song_ptr = current_song
+      audio_player.auto_play = false
+      audio_player.load()
     },
     playlist_share() {
       // 输出歌单中歌曲的id列表
@@ -500,7 +422,7 @@ export default {
     },
     play_mode_text() {
       if (this.play_mode === 'loop') return '列表循环'
-      if (this.play_mode === 'loopOnce') return '单曲循环'
+      if (this.play_mode === 'loop once') return '单曲循环'
       return '随机'
     },
     playlist_length() {
@@ -516,58 +438,45 @@ export default {
     }
   },
   mounted () {
-    audio = document.getElementById('meumy_player')
-    audio_source = document.getElementById('meumy_player_source')
-    audio.volume = 0.9
-    audio.addEventListener('loadedmetadata', ()=>{
-      this.duration = audio.duration
-      this.play_progress = 0
+    // 播放器事件注册
+    audio_player.event.on('load', ()=>{
+      this.duration = audio_player.duration
+      this.play_progress = audio_player.play_progress
+      this.load_progress = audio_player.load_progress
     })
-    audio.addEventListener('loadeddata', ()=>{
-      this.duration = audio.duration
-      this.play_progress = 0
-    })
-    audio.addEventListener('canplay', ()=>{
-      //console.log('可以播放了')
-      if (this.auto_play) audio.play()
-    })
-    audio.addEventListener('progress', ()=>{
-      if (audio.duration > 0 && audio.buffered.length > 0){
-        this.load_progress = audio.buffered.end(audio.buffered.length-1) / audio.duration
+    audio_player.event.on('load update', (progress)=>{this.load_progress = progress})
+    audio_player.event.on('time update', (time)=>{this.play_progress = time})
+    audio_player.event.on('status update', (status)=>{
+      if (status === 'playing') {
+        this.play_status = true
+        this.audio_loading = false
+      }
+      else if (status === 'pause') {
+        this.play_status = false
+        this.audio_loading = false
+      }
+      else if (status === 'loading') {
+        this.play_status = false
+        this.audio_loading = true
       }
     })
-    audio.addEventListener('waiting', ()=>(this.audio_loading = true))
-    audio.addEventListener('playing', ()=>(this.audio_loading = false))
-    audio.addEventListener('timeupdate', ()=>{
-      if (audio.duration) this.play_progress = audio.currentTime/audio.duration
-      else this.play_progress = 0
-    })
-    audio.addEventListener('play', ()=>{
-      this.play_status = true
-    })
-    audio.addEventListener('pause', ()=>{
-      this.play_status = false
-    })
-    audio.addEventListener('ended', ()=>{
-      // 结束后自动播放下一首
-      this.auto_play = true
-      // 如果只有一首或者是单曲循环就回到开头
-      if (this.playlist.length===1 || this.play_mode==='loopOnce'){
-        audio.currentTime = 0
-        audio.play()
-        return
+    audio_player.event.on('song update', (song)=>{
+      // update current song
+      this.current_song = this.playlist.findIndex(s=>(song.id === s.id))
+      // 更改media session信息
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+          title: this.playlist[this.current_song].name,
+          artist: this.playlist[this.current_song].artist,
+          album: '',
+          artwork: [{src: require('../assets/logo.png')}]
+        })
       }
-      if (this.play_mode==='loop'){
-        // 列表循环
-        this.current_song += 1
-        this.current_song %= this.playlist.length
-      }
-      else if (this.play_mode==='shuffle'){
-        this.current_song = this.random_song()
-      }
-      // 加载歌曲
-      this.apply_song()
+      audio_player.ctx.title = this.playlist[this.current_song].name
+      // 保存当前歌单
+      utils.save_playlist(this.current_song, this.playlist)
     })
+
     // media session支持
     if ('mediaSession' in navigator) {
       navigator.mediaSession.setActionHandler('play', () => {
@@ -594,11 +503,10 @@ export default {
         e.preventDefault()
       }
     })
-    // 自动加载第一首
-    this.apply_song()
-    window.audio = audio
   }
 }
+
+export default AudioPlayer
 </script>
 
 

@@ -6,11 +6,16 @@
       class="copy-item"
     >
       {{up.code}}
-      <a
-        v-tooltip="up.popper"
-        v-on:click="copy(idx)"
-        class="copy-button"
-      >复制</a>
+      <el-popover
+        trigger="click"
+        v-bind:content="popper"
+      >
+        <a
+          slot="reference"
+          v-on:click="copy(idx)"
+          class="copy-button"
+        >复制</a>
+      </el-popover>
     </div>
   </div>
 </template>
@@ -21,33 +26,19 @@ export default {
   name: 'CopyCallCode',
   data () {
     return {
+      popper: '?',
       call_list: [
         {
           name: 'umy',
-          code: '☀️呜米☀️呜米☀️呜米☀️呜米☀️',
-          popper: {
-            content: '?',
-            showTriggers: ['click'],
-            hideTriggers: ['hover'],
-          }
+          code: '☀️呜米☀️呜米☀️呜米☀️呜米☀️'
         },
         {
           name: 'merry',
-          code: '⛈️咩栗⛈️咩栗⛈️咩栗⛈️咩栗⛈️',
-          popper: {
-            content: '?',
-            showTriggers: ['click'],
-            hideTriggers: ['hover'],
-          }
+          code: '⛈️咩栗⛈️咩栗⛈️咩栗⛈️咩栗⛈️'
         },
         {
           name: 'meumy',
-          code: '⛅MeUmy⛅MeUmy⛅MeUmy⛅',
-          popper: {
-            content: '?',
-            showTriggers: ['click'],
-            hideTriggers: ['hover'],
-          }
+          code: '⛅MeUmy⛅MeUmy⛅MeUmy⛅'
         },
       ]
     }
@@ -56,13 +47,13 @@ export default {
     copy (idx) {
       if (navigator.clipboard) {
         navigator.clipboard.writeText(this.call_list[idx].code).then(() => {
-          this.call_list[idx].popper.content = '已成功复制到剪切板'
+          this.popper = '已成功复制到剪切板'
         }, function() {
-          this.call_list[idx].popper.content = '无剪切板权限，请手动复制'
+          this.popper = '无剪切板权限，请手动复制'
         })
       }
       else
-        this.call_list[idx].popper.content = '你的浏览器尚不支持，请手动复制'
+        this.popper = '你的浏览器尚不支持，请手动复制'
     }
   }
 }

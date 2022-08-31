@@ -63,6 +63,8 @@ export default {
     click_collection(idx) {
       if (this.is_deleting_collection) {
         this.my_song_collection.splice(idx, 1)
+        // 写入localstorage
+        utils.save_my_collection()
         this.is_deleting_collection = false
       }
       else {

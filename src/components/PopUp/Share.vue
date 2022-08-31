@@ -7,11 +7,16 @@
       <div class="c-share-body">
         <div class="c-share-title">
           <div class="share-title">复制链接分享当前歌曲</div>
+          <el-popover
+            trigger="click"
+            v-bind:content="song_popper.content"
+            ref="song_popper"
+          ></el-popover>
           <button
             slot="reference"
             class="general-button general-button-green copy-button"
             v-on:click="copy('https://song.meumy.club/?s='+song.id, song_popper)"
-            v-tooltip="song_popper"
+            v-popover:song_popper
           >复制到剪切板</button>
         </div>
         <div><a v-bind:href="'https://song.meumy.club/?s='+song.id">https://song.meumy.club/?s={{song.id}}</a></div>
@@ -20,11 +25,16 @@
       <div class="c-share-body">
         <div class="c-share-title">
           <div class="share-title">复制代码分享歌单</div>
+          <el-popover
+            trigger="click"
+            v-bind:content="songlist_popper.content"
+            ref="songlist_popper"
+          ></el-popover>
           <button
             id="share-songlist-button"
             class="general-button general-button-green copy-button"
             v-on:click="copy(playlist_id, songlist_popper)"
-            v-tooltip="songlist_popper"
+            v-popover:songlist_popper
           >复制到剪切板</button>
         </div>
         <div class="share-list-text">{{playlist_id}}</div>
@@ -56,14 +66,10 @@ export default {
   data() {
     return {
       song_popper: {
-        content: '已成功复制到剪切板',
-        showTriggers: ['click'],
-        hideTriggers: ['hover'],
+        content: '?'
       },
       songlist_popper: {
-        content: '已成功复制到剪切板',
-        showTriggers: ['click'],
-        hideTriggers: ['hover'],
+        content: '?'
       },
     }
   },

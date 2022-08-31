@@ -80,6 +80,7 @@ export default {
         let c_playlist = utils.read_playlist()
         this.$refs.player.playlist_replace(c_playlist.song_list, c_playlist.current_song)
         this.$refs.player.play_mode = utils.read_settings().play_mode
+        window.meumy.audio_player.play_mode = utils.read_settings().play_mode
         // 如果有查询参数就把这首歌加入播放列表
         const parsedUrl = new URL(window.location.href)
         let query = parsedUrl.searchParams.get('s')
