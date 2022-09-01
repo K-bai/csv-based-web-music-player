@@ -9,14 +9,12 @@
         <span v-on:click="$emit('close')">收起</span>
       </div>
     </div>
-    <div
-      class="c-playlist-songList"
-    >
+    <div class="c-playlist-songList">
       <virtual-list
         class="c-playlist-virtual-list"
         v-bind:data-key="'id'"
         v-bind:data-sources="playlist_without_empty"
-        v-bind:extra-props="{current_song}"
+        v-bind:extra-props="{ current_song }"
         v-bind:data-component="SongItem"
         v-bind:keeps="50"
         v-on:apply="$emit('apply', $event)"
@@ -40,70 +38,38 @@
   </div>
 </template>
 
-
-
-
-
-
-
-
-
-
-
 <script>
-import PlayListItem from './PlayListItem.vue'
-import VirtualList from 'vue-virtual-scroll-list'
+import PlayListItem from "./PlayListItem.vue";
+import VirtualList from "vue-virtual-scroll-list";
 export default {
   name: "PlayList",
   data() {
     return {
-      SongItem: PlayListItem
-    }
+      SongItem: PlayListItem,
+    };
   },
   components: {
-    VirtualList
+    VirtualList,
   },
-  props: [
-    'playlist',
-    'current_song'
-  ],
+  props: ["playlist", "current_song"],
   methods: {
     playlist_scroll() {
       // 滚动播放列表到当前歌曲
-      this.$refs.virtual_playlist.scrollToIndex(this.current_song)
+      this.$refs.virtual_playlist.scrollToIndex(this.current_song);
       //this.$refs.playlist.children[this.current_song].scrollIntoView({
       //  block: "nearest",
       //});
-    }
+    },
   },
   computed: {
     playlist_without_empty() {
       return this.playlist.filter((s) => {
         return s.id !== "empty_song";
       });
-    }
+    },
   },
 };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style scoped>
 .c-playlist {
