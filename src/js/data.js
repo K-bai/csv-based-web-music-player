@@ -23,8 +23,8 @@ async function get_song_data() {
   let url_list = ["/static/song database.csv", "/static/playlist database.csv"];
   let fetch_list = url_list.map((l) => fetch_csv(l));
   const results = await Promise.all(fetch_list);
-  parse_song_csv(results[0]);
-  parse_playlist_csv(results[1]);
+  await parse_song_csv(results[0]);
+  await parse_playlist_csv(results[1]);
   song_collection.get_all();
   window.meumy.my_song_collection.push(...utils.read_my_collection());
 }
