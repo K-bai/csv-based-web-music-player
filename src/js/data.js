@@ -6,33 +6,32 @@ import utils from './utils.js'
 let AVAILABLE_DAYS_LIMIT = 5
 let SONG_CDN_ADDR = 'https://song-file.meumy.club'
 
-function fetch_csv(url){
-  return fetch(url, {
+async function fetch_csv(url){
+  const res = await fetch(url, {
     cache: 'no-cache',
     headers: {
       'Content-Type': 'text/csv'
     }
-  }).then(res => {
-    if (res.ok) {
-      return res.text()
-    }
-    else return Promise.reject('Wrong.')
   })
+  if (res.ok) {
+    return res.text()
+  }
+  else
+    return Promise.reject('Wrong.')
 }
 
-function get_song_data(){
+async function get_song_data(){
   // 获取数据 包括歌曲数据库、歌单数据库
   let url_list = [
     '/static/song database.csv',
     '/static/playlist database.csv'
   ]
   let fetch_list = url_list.map(l => fetch_csv(l))
-  return Promise.all(fetch_list).then(results => {
-    parse_song_csv(results[0])
-    parse_playlist_csv(results[1])
-    song_collection.get_all()
-    window.meumy.my_song_collection.push(...utils.read_my_collection())
-  })
+  const results = await Promise.all(fetch_list)
+  parse_song_csv(results[0])
+  parse_playlist_csv(results[1])
+  song_collection.get_all()
+  window.meumy.my_song_collection.push(...utils.read_my_collection())
 }
 
 
@@ -128,7 +127,7 @@ function convert_song(row){
     record,
     record_start_ms,
     name: song_name,
-    orginal_artist: row['原曲艺术家'],
+    original_artist: row['原曲艺术家'],
     artist: row['演唱者'],
     status: row['演唱状态'],
     language: row['语言'],

@@ -11,20 +11,20 @@
   background-color: rgb(252, 252, 252);
 }
 
-.c-controler {
+.c-controller {
   overflow: hidden;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: row-reverse;
 }
-.controler-item {
+.controller-item {
   flex-grow: 1;
   flex-basis: 1rem;
   text-align: center;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.controler-item-all {
+.controller-item-all {
   max-width: 25%;
 }
 
@@ -232,7 +232,7 @@
 
 
 @media all and (max-width: 799px) {
-  .controler-item-all {
+  .controller-item-all {
     max-width: 100%;
   }
   .all-column {
