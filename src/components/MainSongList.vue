@@ -14,10 +14,7 @@
       </button>
     </div>
     <div class="c-song-list">
-      <div
-        ref="header"
-        class="song-list-header"
-      >
+      <div ref="header" class="song-list-header">
         <div class="header-column all-column all-column-idx" />
         <div class="header-column header-column-op all-column all-column-op">
           操作
@@ -76,10 +73,7 @@
               class="item-op-download item-op-all"
               title="下载歌曲"
             >
-              <a
-                :href="song.src"
-                download
-              ><div /></a>
+              <a :href="song.src" download><div /></a>
             </div>
             <div
               v-show="song.have_audio && !in_playlist_list[idx]"
@@ -110,10 +104,7 @@
                 ]"
               />
             </div>
-            <div
-              v-show="!song.have_audio"
-              class="item-op-none"
-            >
+            <div v-show="!song.have_audio" class="item-op-none">
               {{
                 song.days_before_available > 0
                   ? song.days_before_available + "天后可听"
@@ -152,14 +143,8 @@
             {{ is_expanded[idx] ? "...收起" : "详细..." }}
           </div>
         </div>
-        <div
-          v-show="is_expanded[idx]"
-          class="song-list-item-details"
-        >
-          <div
-            v-show="song.language !== ''"
-            class="song-full-details-language"
-          >
+        <div v-show="is_expanded[idx]" class="song-list-item-details">
+          <div v-show="song.language !== ''" class="song-full-details-language">
             语言: {{ song.language }}
           </div>
           <div
@@ -168,10 +153,7 @@
           >
             原唱: {{ song.original_artist }}
           </div>
-          <div
-            v-show="song.ref !== false"
-            class="song-full-details-ref"
-          >
+          <div v-show="song.ref !== false" class="song-full-details-ref">
             参考的路灯man:
             <a
               :href="'https://space.bilibili.com/' + song.ref.uid"
@@ -181,19 +163,16 @@
               @{{ song.ref.name }}
             </a>
           </div>
-          <div
-            v-show="song.record !== false"
-            class="song-full-details-record"
-          >
+          <div v-show="song.record !== false" class="song-full-details-record">
             <span>录播：</span>
             <a
               :href="
                 'https://www.bilibili.com/video/' +
-                  song.record.bv +
-                  '?p=' +
-                  song.record.p +
-                  '&t=' +
-                  (song.record_start_ms / 1000).toFixed(1)
+                song.record.bv +
+                '?p=' +
+                song.record.p +
+                '&t=' +
+                (song.record_start_ms / 1000).toFixed(1)
               "
               target="_blank"
               rel="noreferrer noopener"
@@ -201,10 +180,7 @@
               {{ song.date }} p{{ song.record.p }} {{ song.record.timecode }}
             </a>
           </div>
-          <div
-            v-show="song.note !== ''"
-            class="song-full-details-note"
-          >
+          <div v-show="song.note !== ''" class="song-full-details-note">
             切歌man的留言: {{ song.note }}
           </div>
           <div
@@ -222,10 +198,7 @@
           </div>
         </div>
       </div>
-      <div
-        v-show="song_list.length === 0"
-        class="song-list-no-item"
-      >
+      <div v-show="song_list.length === 0" class="song-list-no-item">
         无结果...
       </div>
     </div>
@@ -239,7 +212,7 @@
 </template>
 
 <script>
-import SongFilter from "./SongFilter/Main.vue";
+import SongFilter from "./SongFilter/Filter.vue";
 import SongListPagination from "./SongListPagination.vue";
 import utils from "@/js/utils.js";
 

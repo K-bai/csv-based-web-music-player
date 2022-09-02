@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     ElPopover: typeof import('element-ui/lib/popover')['default']
     ElSelect: typeof import('element-ui/lib/select')['default']
     ExplainTreated: typeof import('./components/PopUp/ExplainTreated.vue')['default']
+    Filter: typeof import('./components/SongFilter/Filter.vue')['default']
     ImportSongList: typeof import('./components/ImportSongList.vue')['default']
     Info: typeof import('./components/PopUp/Info.vue')['default']
     LoadingPanel: typeof import('./components/LoadingPanel.vue')['default']
