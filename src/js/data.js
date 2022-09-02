@@ -1,4 +1,4 @@
-import csv from "csvtojson";
+import { parse } from "csv-parse";
 import dayjs from "dayjs";
 import song_collection from "./song_collection.js";
 import utils from "./utils.js";
@@ -31,8 +31,10 @@ async function get_song_data() {
 
 async function parse_song_csv(t) {
   // 将csv解析为内存对象
-  const songs = await csv({ noheader: false, output: "json" }).fromString(t);
-  window.meumy.song_list.push(...songs.map((r) => convert_song(r)));
+  const csv = parse(t, { columns: true });
+  for await (const r of csv) {
+    window.meumy.song_list.push(convert_song(r));
+  }
   // 按时间降序
   window.meumy.song_list.sort((s2, s1) => {
     let d1 = dayjs(s1.date, "YYYY-MM-DD");
@@ -195,7 +197,11 @@ function ms_to_timecode(ms) {
 
 async function parse_playlist_csv(t) {
   // 解析预定义歌单
-  const playlists = await csv({ noheader: true, output: "csv" }).fromString(t);
+  const csv = parse(t);
+  const playlists = [];
+  for await (const r of csv) {
+    playlists.push(r);
+  }
   for (let idx = 0; idx < playlists[0].length; idx++) {
     const idSet = playlists.reduce((acc, cur, i) => {
       if (i !== 0 && cur[idx] !== "") {

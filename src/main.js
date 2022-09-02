@@ -6,7 +6,6 @@ import "@/js/global.js";
 
 import App from "./App.vue";
 
-window.Buffer = Buffer;
 Vue.prototype.$ELEMENT = { size: "medium" };
 
 Vue.config.productionTip = false;

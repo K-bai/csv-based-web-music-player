@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import GlobalsPolyfills from "@esbuild-plugins/node-globals-polyfill";
 import viteCompression from "vite-plugin-compression";
 import { svgLoader } from "./svg";
 import vue from "@vitejs/plugin-vue2";
@@ -27,11 +28,19 @@ export default defineConfig({
       define: {
         global: "globalThis",
       },
+      // Enable esbuild polyfill plugins
+      plugins: [
+        GlobalsPolyfills({
+          process: true,
+          buffer: true,
+        }),
+      ],
     },
   },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      stream: "stream-browserify",
     },
   },
 });
