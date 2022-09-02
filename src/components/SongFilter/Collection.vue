@@ -9,10 +9,7 @@
         {{ show_collection ? "...收起" : "展开..." }}
       </div>
     </div>
-    <div
-      v-show="show_collection"
-      class="c-song-collection"
-    >
+    <div v-show="show_collection" class="c-song-collection">
       <div
         v-for="collection in song_collection"
         :key="collection.name"
@@ -22,7 +19,7 @@
         <div class="collection-item-base">
           <div class="collection-item-title">
             <div class="collection-item-icon">
-              <img src="@/assets/ui/tag.svg">
+              <img src="@/assets/ui/tag.svg" />
             </div>
             <div>
               <div class="collection-item-name">

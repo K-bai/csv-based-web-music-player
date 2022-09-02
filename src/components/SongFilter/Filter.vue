@@ -1,30 +1,22 @@
 <template>
   <div class="c-outer card">
     <song-filter-collection />
-    <hr>
+    <hr />
     <song-filter-my-collection />
-    <hr>
+    <hr />
     <div class="title title-filter">
       <div>筛选</div>
-      <div
-        class="title-filter-expand"
-        @click="show_filter = !show_filter"
-      >
+      <div class="title-filter-expand" @click="show_filter = !show_filter">
         {{ show_filter ? "...收起" : "展开..." }}
       </div>
     </div>
-    <div
-      v-show="show_filter"
-      class="c-filter"
-    >
+    <div v-show="show_filter" class="c-filter">
       <div
         v-for="filter_item in filters"
         :key="filter_item.name"
         class="filter-item"
       >
-        <div class="filter-item-label">
-          {{ filter_item.text }}:
-        </div>
+        <div class="filter-item-label">{{ filter_item.text }}:</div>
         <el-select
           v-model="filter_item.value"
           :multiple="filter_item.multiple"
@@ -60,15 +52,13 @@
           class="general-checkbox"
           type="checkbox"
           @change="change_use_treated"
-        >
+        />
         <label
           for="filter-checkbox-treated"
           class="filter-item-label filter-item-treated"
-        >听经过处理的歌</label>
-        <div
-          class="filter-item-question"
-          @click="show_explain = true"
-        />
+          >听经过处理的歌</label
+        >
+        <div class="filter-item-question" @click="show_explain = true" />
       </div>
     </div>
     <div class="filter-song-search">
@@ -76,11 +66,7 @@
         v-model="search.type"
         class="general-input filter-song-search-select"
       >
-        <option
-          v-for="option in search.options"
-          :key="option"
-          :value="option"
-        >
+        <option v-for="option in search.options" :key="option" :value="option">
           {{ option }}
         </option>
       </select>
@@ -89,7 +75,7 @@
         class="general-input filter-song-search-input"
         @keydown.enter="search_press_enter"
         @keydown.space.stop=""
-      >
+      />
       <button
         class="general-button general-button-blue filter-song-search-go filter-song-search-button"
         @click="apply_search(false)"

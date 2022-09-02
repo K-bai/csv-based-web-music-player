@@ -1,8 +1,5 @@
 <template>
-  <pop-up-main
-    title="欢迎！"
-    @closepopup="$emit('closepopup')"
-  >
+  <pop-up-main title="欢迎！" @closepopup="$emit('closepopup')">
     <div class="content">
       <p>看到你是首次打开，球球你关注一下在b站的MeUmy切歌man吧！！！</p>
       <p>
@@ -13,7 +10,8 @@
           :href="'https://space.bilibili.com/' + c[0]"
           target="_blank"
           rel="noreferrer noopener"
-        >@{{ c[1] }}</a>
+          >@{{ c[1] }}</a
+        >
       </p>
       <p>快乐听歌鸭！~</p>
     </div>

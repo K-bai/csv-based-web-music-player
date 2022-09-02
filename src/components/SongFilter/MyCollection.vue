@@ -9,10 +9,7 @@
         {{ show_my_collection ? "...收起" : "展开..." }}
       </div>
     </div>
-    <div
-      v-show="show_my_collection"
-      class="c-song-collection"
-    >
+    <div v-show="show_my_collection" class="c-song-collection">
       <div
         v-for="(collection, index) in my_song_collection"
         :key="collection.name"
@@ -26,11 +23,8 @@
         <img
           v-show="!is_deleting_collection"
           src="@/assets/ui/bookmark-star.svg"
-        >
-        <img
-          v-show="is_deleting_collection"
-          src="@/assets/ui/trash-fill.svg"
-        >
+        />
+        <img v-show="is_deleting_collection" src="@/assets/ui/trash-fill.svg" />
         <div>{{ collection.name }}</div>
       </div>
       <button
@@ -47,7 +41,7 @@
           class="general-input add-collection-input"
           @keydown.enter="add_press_enter"
           @keydown.space.stop=""
-        >
+        />
         <button
           class="general-button general-button-grey add-collection-button"
           @click="add_collection()"

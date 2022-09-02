@@ -4,9 +4,7 @@
       <div class="playlist-clearAll">
         <span @click="$emit('clear')">清空</span>
       </div>
-      <div class="playlist-title">
-        播放列表
-      </div>
+      <div class="playlist-title">播放列表</div>
       <div class="playlist-close">
         <span @click="$emit('close')">收起</span>
       </div>
@@ -33,10 +31,7 @@
         v-on:remove="$emit('remove', $event)"
       />
       -->
-      <div
-        v-show="playlist[0].id === 'empty_song'"
-        class="playlist-empty"
-      >
+      <div v-show="playlist[0].id === 'empty_song'" class="playlist-empty">
         播放列表为空
       </div>
     </div>

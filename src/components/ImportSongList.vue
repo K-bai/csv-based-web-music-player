@@ -2,11 +2,7 @@
   <div class="c-import card">
     <div class="import-info">
       <div>粘贴代码导入歌单：</div>
-      <el-popover
-        ref="pop1"
-        trigger="click"
-        :content="import_popper"
-      />
+      <el-popover ref="pop1" trigger="click" :content="import_popper" />
       <button
         v-popover:pop1
         class="general-button general-button-blue import-button"
@@ -15,11 +11,7 @@
         导入！
       </button>
     </div>
-    <textarea
-      v-model="code"
-      class="import-code"
-      @keydown.space.stop=""
-    />
+    <textarea v-model="code" class="import-code" @keydown.space.stop="" />
   </div>
 </template>
 

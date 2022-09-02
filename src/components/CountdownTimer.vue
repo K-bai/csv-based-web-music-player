@@ -4,10 +4,7 @@
       <div class="countdown-text">
         <div>定时停止：</div>
       </div>
-      <div
-        v-show="is_counting_down"
-        class="general-input countdown-timer"
-      >
+      <div v-show="is_counting_down" class="general-input countdown-timer">
         {{ countdown_display }}
       </div>
       <select
@@ -30,7 +27,7 @@
         type="number"
         min="0"
         placeholder="多少分钟后停止"
-      >
+      />
       <button
         class="general-button general-button-grey countdown-button"
         @click="toggle_start"

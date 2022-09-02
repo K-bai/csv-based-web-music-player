@@ -11,13 +11,14 @@
             href="https://space.bilibili.com/617459493"
             target="_blank"
             rel="noreferrer noopener"
-          >@呜米
+            >@呜米
           </a>
           <a
             href="https://space.bilibili.com/745493"
             target="_blank"
             rel="noreferrer noopener"
-          >@咩栗</a>
+            >@咩栗</a
+          >
           ？搞快关注！
         </div>
         <div>
@@ -26,20 +27,18 @@
             href="https://music.163.com/#/user/home?id=1306304320"
             target="_blank"
             rel="noreferrer noopener"
-          >@呜米嗷嗷嗷
+            >@呜米嗷嗷嗷
           </a>
           <a
             href="https://music.163.com/#/user/home?id=1356709812"
             target="_blank"
             rel="noreferrer noopener"
-          >@咩栗咩咩咩</a>
+            >@咩栗咩咩咩</a
+          >
         </div>
       </div>
     </div>
-    <img
-      class="logo-img"
-      src="@/assets/logo_dark.png"
-    >
+    <img class="logo-img" src="@/assets/logo_dark.png" />
   </div>
 </template>
 

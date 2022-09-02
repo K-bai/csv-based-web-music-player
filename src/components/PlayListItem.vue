@@ -9,9 +9,7 @@
     <div class="playlist-name">
       <span class="playlist-index">{{ index + 1 }}. </span>{{ source.name }}
     </div>
-    <div class="playlist-dash">
-      -
-    </div>
+    <div class="playlist-dash">-</div>
     <div class="playlist-artist">
       {{ source.artist }}
     </div>

@@ -8,17 +8,14 @@
       <p>感谢录播评论区的各位路灯man，找歌过程中帮了太多忙（哭泣</p>
       <p>
         感谢
-        <span
-          v-for="cutter in cutter_list"
-          :key="cutter.uid"
-          class="cutter"
-        >
+        <span v-for="cutter in cutter_list" :key="cutter.uid" class="cutter">
           <a
             :href="'https://space.bilibili.com/' + cutter.uid"
             target="_blank"
             rel="noreferrer noopener"
           >
-            @{{ cutter.name }}</a>
+            @{{ cutter.name }}</a
+          >
           ({{ cutter.count }})
         </span>
         切的歌，给录音棚添加了很多存货（鞠躬
@@ -29,7 +26,8 @@
           href="https://message.bilibili.com/#/whisper/mid1818479062"
           target="_blank"
           rel="noreferrer noopener"
-        >@呜米小姐的吃饭小虎牙</a>
+          >@呜米小姐的吃饭小虎牙</a
+        >
         的b站私信！
       </p>
       <p>
@@ -38,13 +36,15 @@
           href="https://github.com/K-bai/csv-based-web-music-player"
           target="_blank"
           rel="noreferrer noopener"
-        >Github</a>
+          >Github</a
+        >
         ）欢迎Star, Fork！感谢
         <a
           href="https://space.bilibili.com/9420577"
           target="_blank"
           rel="noreferrer noopener"
-        >@特斯拉309</a>
+          >@特斯拉309</a
+        >
         的技术支持！
       </p>
     </div>

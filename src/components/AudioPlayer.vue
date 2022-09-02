@@ -1,9 +1,6 @@
 <template>
   <div id="player">
-    <div
-      class="c-player"
-      @mousemove="player_mouse_event"
-    >
+    <div class="c-player" @mousemove="player_mouse_event">
       <div class="c-info">
         <div class="c-songInfo">
           <div class="c-songName">
@@ -24,17 +21,11 @@
           </div>
         </div>
         <div class="c-info-op">
-          <div
-            class="shareButton otherButtons"
-            @click="toggle_share"
-          >
-            <img src="@/assets/ui/share.svg">
+          <div class="shareButton otherButtons" @click="toggle_share">
+            <img src="@/assets/ui/share.svg" />
           </div>
-          <div
-            class="detailsButton otherButtons"
-            @click="toggle_details"
-          >
-            <img src="@/assets/ui/three-dots.svg">
+          <div class="detailsButton otherButtons" @click="toggle_details">
+            <img src="@/assets/ui/three-dots.svg" />
           </div>
         </div>
       </div>
@@ -49,15 +40,15 @@
               <img
                 v-show="play_mode == 'loop'"
                 src="@/assets/ui/arrow-repeat.svg"
-              >
+              />
               <img
                 v-show="play_mode == 'loop once'"
                 src="@/assets/ui/arrow-repeat-once.svg"
-              >
+              />
               <img
                 v-show="play_mode == 'shuffle'"
                 src="@/assets/ui/shuffle.svg"
-              >
+              />
             </div>
             <div>
               <div
@@ -65,13 +56,10 @@
                 title="音量"
                 @click="show_volume_bar = !show_volume_bar"
               >
-                <img src="@/assets/ui/volume-up.svg">
+                <img src="@/assets/ui/volume-up.svg" />
               </div>
               <transition name="fade">
-                <div
-                  v-show="show_volume_bar"
-                  class="c-volumeBar"
-                >
+                <div v-show="show_volume_bar" class="c-volumeBar">
                   <div
                     id="c-volumeBarRaw"
                     class="c-volumeBarRaw"
@@ -79,10 +67,7 @@
                     @mousemove="volume_bar_mouse_event"
                     @touchmove.prevent="volume_bar_touch_event"
                   >
-                    <div
-                      class="volumeBar-invert"
-                      :style="volume_height"
-                    />
+                    <div class="volumeBar-invert" :style="volume_height" />
                   </div>
                 </div>
               </transition>
@@ -123,14 +108,8 @@
               title="设为星标歌曲"
               @click="toggle_loved"
             >
-              <img
-                v-show="!is_loved"
-                src="@/assets/ui/star.svg"
-              >
-              <img
-                v-show="is_loved"
-                src="@/assets/ui/star-fill.svg"
-              >
+              <img v-show="!is_loved" src="@/assets/ui/star.svg" />
+              <img v-show="is_loved" src="@/assets/ui/star-fill.svg" />
             </div>
             <div
               class="playlistButton otherButtons"
@@ -161,10 +140,7 @@
               @mousedown="progress_bar_mouse_event"
               @touchmove.prevent="progress_bar_touch_event"
             >
-              <div
-                class="progressBar-fill"
-                :style="progress_bar_fill_width"
-              />
+              <div class="progressBar-fill" :style="progress_bar_fill_width" />
               <div
                 class="progressBar-loading"
                 :style="progress_bar_loading_width"
@@ -177,10 +153,7 @@
         </div>
       </div>
     </div>
-    <transition
-      name="fade"
-      @enter="playlist_scroll"
-    >
+    <transition name="fade" @enter="playlist_scroll">
       <play-list
         v-show="show_playlist"
         ref="playlist"

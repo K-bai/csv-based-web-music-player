@@ -6,9 +6,7 @@
       }}
       共{{ total }}首
     </div>
-    <div class="pagination-item pagination-per-page-label">
-      每页数量:
-    </div>
+    <div class="pagination-item pagination-per-page-label">每页数量:</div>
     <select
       v-model="n_per_page"
       class="pagination-item pagination-per-page-select"
@@ -40,7 +38,7 @@
         class="pagination-current-page"
         @change="check_page"
         @keydown.enter="$event.target.blur()"
-      >
+      />
       <div
         class="pagination-go-right pagination-go-button"
         @click="add_page(1)"

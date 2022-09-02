@@ -6,24 +6,28 @@
         href="https://space.bilibili.com/617459493"
         target="_blank"
         rel="noreferrer noopener"
-      >@呜米</a>
+        >@呜米</a
+      >
       和
       <a
         href="https://space.bilibili.com/745493"
         target="_blank"
         rel="noreferrer noopener"
-      >@咩栗</a>？ 搞快去
+        >@咩栗</a
+      >？ 搞快去
       <a
         href="https://live.bilibili.com/22384516"
         target="_blank"
         rel="noreferrer noopener"
-      >呜米的直播间</a>
+        >呜米的直播间</a
+      >
       和
       <a
         href="https://live.bilibili.com/8792912"
         target="_blank"
         rel="noreferrer noopener"
-      >咩栗的直播间</a>
+        >咩栗的直播间</a
+      >
       看她们两个！
     </p>
     <p>
@@ -32,13 +36,15 @@
         href="https://music.163.com/#/user/home?id=1306304320"
         target="_blank"
         rel="noreferrer noopener"
-      >@呜米嗷嗷嗷</a>
+        >@呜米嗷嗷嗷</a
+      >
       和
       <a
         href="https://music.163.com/#/user/home?id=1356709812"
         target="_blank"
         rel="noreferrer noopener"
-      >@咩栗咩咩咩</a>
+        >@咩栗咩咩咩</a
+      >
       听听她们两个的歌！原创曲我吹爆！！！
     </p>
     <p>
@@ -47,17 +53,15 @@
         href="https://space.bilibili.com/674421433"
         target="_blank"
         rel="noreferrer noopener"
-      >@呜米咩栗的草原日常</a>
+        >@呜米咩栗的草原日常</a
+      >
       吧！这里也会有歌听的！
     </p>
-    <hr>
+    <hr />
     <p>使用方法懒得写了，自己玩吧</p>
     <p>
       好多小棉花和小米星帮忙切了超级多的歌，戳这里看看->
-      <a
-        class="credit"
-        @click="show_credit = true"
-      >关于本站</a>
+      <a class="credit" @click="show_credit = true">关于本站</a>
     </p>
     <p>
       试着关注一下这个b站的切歌man？
@@ -65,42 +69,37 @@
         :href="'https://space.bilibili.com/' + cutter[0]"
         target="_blank"
         rel="noreferrer noopener"
-      >@{{ cutter[1] }}</a>
+        >@{{ cutter[1] }}</a
+      >
     </p>
-    <hr>
+    <hr />
     <p class="links">
       友情链接：
       <a
         href="https://space.bilibili.com/674622242"
         target="_blank"
         rel="noreferrer noopener"
-      >MeUmy录播组</a>
-      <a
-        href="https://mht.meumy.club"
-        target="_blank"
-        rel="noreferrer noopener"
-      >MeUmy的棉花糖</a>
+        >MeUmy录播组</a
+      >
+      <a href="https://mht.meumy.club" target="_blank" rel="noreferrer noopener"
+        >MeUmy的棉花糖</a
+      >
       <a
         href="https://lamp.meumy.club"
         target="_blank"
         rel="noreferrer noopener"
-      >MeUmy草原自动路灯</a>
-      <a
-        href="https://meumy.club"
-        target="_blank"
-        rel="noreferrer noopener"
-      >MeUmy草原平行时空</a>
+        >MeUmy草原自动路灯</a
+      >
+      <a href="https://meumy.club" target="_blank" rel="noreferrer noopener"
+        >MeUmy草原平行时空</a
+      >
     </p>
     <p>
-      <a
-        href="https://beian.miit.gov.cn/"
-        class="record"
-      >京ICP备18037723号-3</a>
+      <a href="https://beian.miit.gov.cn/" class="record"
+        >京ICP备18037723号-3</a
+      >
     </p>
-    <pop-up-credit
-      v-if="show_credit"
-      @closepopup="show_credit = false"
-    />
+    <pop-up-credit v-if="show_credit" @closepopup="show_credit = false" />
   </div>
 </template>
 

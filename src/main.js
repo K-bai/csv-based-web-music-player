@@ -1,5 +1,4 @@
 import "mutationobserver-shim";
-import { Buffer } from "buffer";
 import Vue from "vue";
 
 import "@/js/global.js";

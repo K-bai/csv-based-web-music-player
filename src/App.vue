@@ -2,16 +2,9 @@
   <div id="app">
     <div :class="['c-outer', { 'blur-filter': loading }]">
       <page-banner />
-      <input
-        v-show="develop"
-        v-model="if_debug"
-        type="checkbox"
-      >
+      <input v-show="develop" v-model="if_debug" type="checkbox" />
       <div v-show="if_debug">
-        <div
-          v-for="(d, idx) in debug_list"
-          :key="d + idx"
-        >
+        <div v-for="(d, idx) in debug_list" :key="d + idx">
           {{ d }}
         </div>
       </div>
@@ -21,10 +14,7 @@
       <copy-call-code />
       <import-song-list />
       <page-footer />
-      <pop-up-info
-        v-if="show_info"
-        @closepopup="show_info = false"
-      />
+      <pop-up-info v-if="show_info" @closepopup="show_info = false" />
       <pop-up-receive
         v-if="show_share"
         :song="share_song"

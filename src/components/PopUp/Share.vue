@@ -1,14 +1,9 @@
 <template>
-  <pop-up-main
-    title="分享歌曲"
-    @closepopup="$emit('closepopup')"
-  >
+  <pop-up-main title="分享歌曲" @closepopup="$emit('closepopup')">
     <div>
       <div class="c-share-body">
         <div class="c-share-title">
-          <div class="share-title">
-            复制链接分享当前歌曲
-          </div>
+          <div class="share-title">复制链接分享当前歌曲</div>
           <el-popover
             ref="song_popper"
             trigger="click"
@@ -18,23 +13,21 @@
             slot="reference"
             v-popover:song_popper
             class="general-button general-button-green copy-button"
-            @click="
-              copy('https://song.meumy.club/?s=' + song.id, song_popper)
-            "
+            @click="copy('https://song.meumy.club/?s=' + song.id, song_popper)"
           >
             复制到剪切板
           </button>
         </div>
         <div>
-          <a :href="'https://song.meumy.club/?s=' + song.id">https://song.meumy.club/?s={{ song.id }}</a>
+          <a :href="'https://song.meumy.club/?s=' + song.id"
+            >https://song.meumy.club/?s={{ song.id }}</a
+          >
         </div>
       </div>
-      <hr>
+      <hr />
       <div class="c-share-body">
         <div class="c-share-title">
-          <div class="share-title">
-            复制代码分享歌单
-          </div>
+          <div class="share-title">复制代码分享歌单</div>
           <el-popover
             ref="songlist_popper"
             trigger="click"
@@ -53,25 +46,15 @@
           {{ playlist_id }}
         </div>
       </div>
-      <hr>
+      <hr />
       <div class="c-share-body">
         <div class="c-share-title">
-          <div class="share-title">
-            下载当前歌曲
-          </div>
-          <a
-            :href="song.src"
-            download
-          >点击下载</a>
+          <div class="share-title">下载当前歌曲</div>
+          <a :href="song.src" download>点击下载</a>
         </div>
         <div class="c-share-title">
-          <div class="share-title">
-            下载全部歌曲数据库
-          </div>
-          <a
-            href="/static/song database.csv"
-            download
-          >点击下载</a>
+          <div class="share-title">下载全部歌曲数据库</div>
+          <a href="/static/song database.csv" download>点击下载</a>
         </div>
       </div>
     </div>
