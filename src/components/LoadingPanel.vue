@@ -1,11 +1,11 @@
 <template>
   <div class="c-loading">
     <div class="line-scale">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
     </div>
   </div>
 </template>

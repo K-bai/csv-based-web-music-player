@@ -1,23 +1,31 @@
 <template>
   <div
-    v-bind:class="[
+    :class="[
       'c-playlist-song',
       { 'c-playlist-playing': index === current_song },
     ]"
-    v-on:click="$parent.$parent.$emit('apply', index)"
+    @click="$parent.$parent.$emit('apply', index)"
   >
     <div class="playlist-name">
       <span class="playlist-index">{{ index + 1 }}. </span>{{ source.name }}
     </div>
-    <div class="playlist-dash">-</div>
-    <div class="playlist-artist">{{ source.artist }}</div>
-    <div class="playlist-status">{{ source.status }}</div>
-    <div class="playlist-duration">{{ source.duration }}</div>
+    <div class="playlist-dash">
+      -
+    </div>
+    <div class="playlist-artist">
+      {{ source.artist }}
+    </div>
+    <div class="playlist-status">
+      {{ source.status }}
+    </div>
+    <div class="playlist-duration">
+      {{ source.duration }}
+    </div>
     <div
       class="playlist-clear"
-      v-on:click.stop="$parent.$parent.$emit('remove', index)"
+      @click.stop="$parent.$parent.$emit('remove', index)"
     >
-      <div class="playlist-clear-img"></div>
+      <div class="playlist-clear-img" />
     </div>
   </div>
 </template>
@@ -25,10 +33,10 @@
 <script>
 export default {
   name: "PlayListItem",
+  props: ["index", "source", "current_song"],
   data() {
     return {};
   },
-  props: ["index", "source", "current_song"],
 };
 </script>
 

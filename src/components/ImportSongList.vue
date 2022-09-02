@@ -3,23 +3,23 @@
     <div class="import-info">
       <div>粘贴代码导入歌单：</div>
       <el-popover
-        trigger="click"
-        v-bind:content="import_popper"
         ref="pop1"
-      ></el-popover>
+        trigger="click"
+        :content="import_popper"
+      />
       <button
-        class="general-button general-button-blue import-button"
-        v-on:click="import_code"
         v-popover:pop1
+        class="general-button general-button-blue import-button"
+        @click="import_code"
       >
         导入！
       </button>
     </div>
     <textarea
-      class="import-code"
       v-model="code"
-      v-on:keydown.space.stop=""
-    ></textarea>
+      class="import-code"
+      @keydown.space.stop=""
+    />
   </div>
 </template>
 

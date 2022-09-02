@@ -1,22 +1,34 @@
 <template>
   <div id="app">
-    <div v-bind:class="['c-outer', { 'blur-filter': loading }]">
-      <banner />
-      <input v-show="develop" type="checkbox" v-model="if_debug" />
+    <div :class="['c-outer', { 'blur-filter': loading }]">
+      <page-banner />
+      <input
+        v-show="develop"
+        v-model="if_debug"
+        type="checkbox"
+      >
       <div v-show="if_debug">
-        <div v-for="(d, idx) in debug_list" v-bind:key="d + idx">{{ d }}</div>
+        <div
+          v-for="(d, idx) in debug_list"
+          :key="d + idx"
+        >
+          {{ d }}
+        </div>
       </div>
       <main-song-list ref="main" />
       <audio-player ref="player" />
-      <countdown />
+      <countdown-timer />
       <copy-call-code />
       <import-song-list />
-      <v-footer />
-      <pop-up-info v-if="show_info" v-on:closepopup="show_info = false" />
+      <page-footer />
+      <pop-up-info
+        v-if="show_info"
+        @closepopup="show_info = false"
+      />
       <pop-up-receive
         v-if="show_share"
-        v-on:closepopup="show_share = false"
-        v-bind:song="share_song"
+        :song="share_song"
+        @closepopup="show_share = false"
       />
     </div>
     <loading-panel v-if="loading" />
@@ -26,10 +38,10 @@
 <script>
 import MainSongList from "./components/MainSongList.vue";
 import AudioPlayer from "./components/AudioPlayer.vue";
-import Banner from "./components/Banner.vue";
+import PageBanner from "./components/PageBanner.vue";
 import ImportSongList from "./components/ImportSongList.vue";
-import Footer from "./components/Footer.vue";
-import Countdown from "./components/Countdown.vue";
+import PageFooter from "./components/PageFooter.vue";
+import CountdownTimer from "./components/CountdownTimer.vue";
 import CopyCallCode from "./components/CopyCallCode.vue";
 import PopUpInfo from "./components/PopUp/Info.vue";
 import PopUpReceive from "./components/PopUp/Receive.vue";
@@ -42,10 +54,10 @@ export default {
   components: {
     MainSongList,
     AudioPlayer,
-    Banner,
+    PageBanner,
     ImportSongList,
-    "v-footer": Footer,
-    Countdown,
+    PageFooter,
+    CountdownTimer,
     CopyCallCode,
     PopUpInfo,
     PopUpReceive,
@@ -61,6 +73,9 @@ export default {
       share_song: {},
       debug_list: window.meumy.debug_list,
     };
+  },
+  mounted() {
+    this.init();
   },
   methods: {
     share() {
@@ -120,9 +135,6 @@ export default {
         })
         .catch((e) => console.log(e));
     },
-  },
-  mounted() {
-    this.init();
   },
 };
 </script>

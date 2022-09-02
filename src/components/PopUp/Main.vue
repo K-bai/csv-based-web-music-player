@@ -1,15 +1,21 @@
 <template>
-  <div class="background" v-on:mousedown.self="$emit('closepopup')">
+  <div
+    class="background"
+    @mousedown.self="$emit('closepopup')"
+  >
     <div class="card c-popup">
       <div class="popup-title">
         <div>{{ title }}</div>
-        <div class="popup-close" v-on:click.stop="$emit('closepopup')">
-          <div class="popup-close-img"></div>
+        <div
+          class="popup-close"
+          @click.stop="$emit('closepopup')"
+        >
+          <div class="popup-close-img" />
         </div>
       </div>
-      <hr />
+      <hr>
       <div class="popup-content">
-        <slot></slot>
+        <slot />
       </div>
     </div>
   </div>
@@ -18,10 +24,10 @@
 <script>
 export default {
   name: "PopUpMain",
+  props: ["title"],
   data() {
     return {};
   },
-  props: ["title"],
 };
 </script>
 

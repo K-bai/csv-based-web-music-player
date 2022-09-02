@@ -1,36 +1,43 @@
 <template>
   <div class="c-outer card">
     <song-filter-collection />
-    <hr />
+    <hr>
     <song-filter-my-collection />
-    <hr />
+    <hr>
     <div class="title title-filter">
       <div>筛选</div>
-      <div class="title-filter-expand" v-on:click="show_filter = !show_filter">
+      <div
+        class="title-filter-expand"
+        @click="show_filter = !show_filter"
+      >
         {{ show_filter ? "...收起" : "展开..." }}
       </div>
     </div>
-    <div class="c-filter" v-show="show_filter">
+    <div
+      v-show="show_filter"
+      class="c-filter"
+    >
       <div
-        class="filter-item"
         v-for="filter_item in filters"
-        v-bind:key="filter_item.name"
+        :key="filter_item.name"
+        class="filter-item"
       >
-        <div class="filter-item-label">{{ filter_item.text }}:</div>
+        <div class="filter-item-label">
+          {{ filter_item.text }}:
+        </div>
         <el-select
           v-model="filter_item.value"
-          v-bind:multiple="filter_item.multiple"
-          v-on:change="filter_change_event"
+          :multiple="filter_item.multiple"
           clearable
           collapse-tags
+          @change="filter_change_event"
         >
           <el-option
             v-for="option in filter_item.options"
-            v-bind:value="option"
-            v-bind:label="option"
-            v-bind:key="option"
-          >
-          </el-option>
+            :key="option"
+            :value="option"
+            :label="option"
+          />
         </el-select>
         <!--
         <select
@@ -49,31 +56,30 @@
       <div class="filter-item">
         <input
           id="filter-checkbox-treated"
+          v-model="use_treated.value"
           class="general-checkbox"
           type="checkbox"
-          v-model="use_treated.value"
-          v-on:change="change_use_treated"
-        />
+          @change="change_use_treated"
+        >
         <label
           for="filter-checkbox-treated"
           class="filter-item-label filter-item-treated"
-          >听经过处理的歌</label
-        >
+        >听经过处理的歌</label>
         <div
           class="filter-item-question"
-          v-on:click="show_explain = true"
-        ></div>
+          @click="show_explain = true"
+        />
       </div>
     </div>
     <div class="filter-song-search">
       <select
-        class="general-input filter-song-search-select"
         v-model="search.type"
+        class="general-input filter-song-search-select"
       >
         <option
           v-for="option in search.options"
-          v-bind:value="option"
-          v-bind:key="option"
+          :key="option"
+          :value="option"
         >
           {{ option }}
         </option>
@@ -81,25 +87,25 @@
       <input
         v-model="search.text"
         class="general-input filter-song-search-input"
-        v-on:keydown.enter="search_press_enter"
-        v-on:keydown.space.stop=""
-      />
+        @keydown.enter="search_press_enter"
+        @keydown.space.stop=""
+      >
       <button
         class="general-button general-button-blue filter-song-search-go filter-song-search-button"
-        v-on:click="apply_search(false)"
+        @click="apply_search(false)"
       >
         搜索!
       </button>
       <button
         class="general-button general-button-grey filter-song-search-clear filter-song-search-button"
-        v-on:click="apply_search(true)"
+        @click="apply_search(true)"
       >
         清空
       </button>
     </div>
     <pop-up-explain-treated
       v-if="show_explain"
-      v-on:closepopup="show_explain = false"
+      @closepopup="show_explain = false"
     />
   </div>
 </template>
@@ -117,6 +123,7 @@ export default {
     SongFilterCollection,
     PopUpExplainTreated,
   },
+  props: ["song_list_filtered"],
   data() {
     return {
       show_filter: false,
@@ -189,7 +196,6 @@ export default {
       show_explain: false,
     };
   },
-  props: ["song_list_filtered"],
   computed: {
     self_song_list_filtered: function () {
       let l = window.meumy.song_list.slice();

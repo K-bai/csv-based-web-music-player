@@ -1,23 +1,40 @@
 <template>
   <div id="player">
-    <div class="c-player" v-on:mousemove="player_mouse_event">
+    <div
+      class="c-player"
+      @mousemove="player_mouse_event"
+    >
       <div class="c-info">
         <div class="c-songInfo">
           <div class="c-songName">
-            <div class="songName">{{ playlist[current_song].name }}</div>
-            <div class="singer">{{ playlist[current_song].artist }}</div>
+            <div class="songName">
+              {{ playlist[current_song].name }}
+            </div>
+            <div class="singer">
+              {{ playlist[current_song].artist }}
+            </div>
           </div>
           <div class="c-songStatus">
-            <div class="date">{{ playlist[current_song].date }}</div>
-            <div class="songStatus">{{ playlist[current_song].status }}</div>
+            <div class="date">
+              {{ playlist[current_song].date }}
+            </div>
+            <div class="songStatus">
+              {{ playlist[current_song].status }}
+            </div>
           </div>
         </div>
         <div class="c-info-op">
-          <div class="shareButton otherButtons" v-on:click="toggle_share">
-            <img src="@/assets/ui/share.svg" />
+          <div
+            class="shareButton otherButtons"
+            @click="toggle_share"
+          >
+            <img src="@/assets/ui/share.svg">
           </div>
-          <div class="detailsButton otherButtons" v-on:click="toggle_details">
-            <img src="@/assets/ui/three-dots.svg" />
+          <div
+            class="detailsButton otherButtons"
+            @click="toggle_details"
+          >
+            <img src="@/assets/ui/three-dots.svg">
           </div>
         </div>
       </div>
@@ -26,43 +43,46 @@
           <div class="c-otherButtons">
             <div
               class="playModeButton otherButtons"
-              v-on:click="switch_play_mode"
-              v-bind:title="play_mode_text"
+              :title="play_mode_text"
+              @click="switch_play_mode"
             >
               <img
                 v-show="play_mode == 'loop'"
                 src="@/assets/ui/arrow-repeat.svg"
-              />
+              >
               <img
                 v-show="play_mode == 'loop once'"
                 src="@/assets/ui/arrow-repeat-once.svg"
-              />
+              >
               <img
                 v-show="play_mode == 'shuffle'"
                 src="@/assets/ui/shuffle.svg"
-              />
+              >
             </div>
             <div>
               <div
                 class="volumeButton otherButtons"
-                v-on:click="show_volume_bar = !show_volume_bar"
                 title="音量"
+                @click="show_volume_bar = !show_volume_bar"
               >
-                <img src="@/assets/ui/volume-up.svg" />
+                <img src="@/assets/ui/volume-up.svg">
               </div>
               <transition name="fade">
-                <div class="c-volumeBar" v-show="show_volume_bar">
+                <div
+                  v-show="show_volume_bar"
+                  class="c-volumeBar"
+                >
                   <div
-                    class="c-volumeBarRaw"
                     id="c-volumeBarRaw"
-                    v-on:mousedown="volume_bar_mouse_event"
-                    v-on:mousemove="volume_bar_mouse_event"
-                    v-on:touchmove.prevent="volume_bar_touch_event"
+                    class="c-volumeBarRaw"
+                    @mousedown="volume_bar_mouse_event"
+                    @mousemove="volume_bar_mouse_event"
+                    @touchmove.prevent="volume_bar_touch_event"
                   >
                     <div
                       class="volumeBar-invert"
-                      v-bind:style="volume_height"
-                    ></div>
+                      :style="volume_height"
+                    />
                   </div>
                 </div>
               </transition>
@@ -71,48 +91,56 @@
           <div class="c-playButtons">
             <div
               class="prevButton playButtons"
-              v-on:click="next_song(-1)"
               title="上一曲"
+              @click="next_song(-1)"
             >
-              <div></div>
+              <div />
             </div>
             <div
               class="playButton playButtons"
-              v-on:click="audio_toggle_play"
               title="按下空格播放/暂停"
+              @click="audio_toggle_play"
             >
               <div
-                v-bind:class="[
+                :class="[
                   { 'playButton-play': !play_status },
                   { 'playButton-pause': play_status },
                   { 'playButton-loading': audio_loading },
                 ]"
-              ></div>
+              />
             </div>
             <div
               class="nextButton playButtons"
-              v-on:click="next_song(1)"
               title="下一曲"
+              @click="next_song(1)"
             >
-              <div></div>
+              <div />
             </div>
           </div>
           <div class="c-otherButtons">
             <div
               class="loveButton otherButtons"
-              v-on:click="toggle_loved"
               title="设为星标歌曲"
+              @click="toggle_loved"
             >
-              <img v-show="!is_loved" src="@/assets/ui/star.svg" />
-              <img v-show="is_loved" src="@/assets/ui/star-fill.svg" />
+              <img
+                v-show="!is_loved"
+                src="@/assets/ui/star.svg"
+              >
+              <img
+                v-show="is_loved"
+                src="@/assets/ui/star-fill.svg"
+              >
             </div>
             <div
               class="playlistButton otherButtons"
-              v-on:click="show_playlist = !show_playlist"
               title="播放列表"
+              @click="show_playlist = !show_playlist"
             >
-              <div class="playlistButton-img"></div>
-              <div class="playlistButton-corner">{{ playlist_length }}</div>
+              <div class="playlistButton-img" />
+              <div class="playlistButton-corner">
+                {{ playlist_length }}
+              </div>
             </div>
           </div>
         </div>
@@ -123,51 +151,56 @@
           <div class="c-progressBar">
             <div
               class="progressBar-button"
-              v-bind:style="progress_bar_button_left"
-              v-on:mousedown="progress_bar_button_mouse_event"
-              v-on:touchmove.prevent="progress_bar_touch_event"
-            ></div>
+              :style="progress_bar_button_left"
+              @mousedown="progress_bar_button_mouse_event"
+              @touchmove.prevent="progress_bar_touch_event"
+            />
             <div
-              class="c-progressBarRaw"
               id="c-progressBarRaw"
-              v-on:mousedown="progress_bar_mouse_event"
-              v-on:touchmove.prevent="progress_bar_touch_event"
+              class="c-progressBarRaw"
+              @mousedown="progress_bar_mouse_event"
+              @touchmove.prevent="progress_bar_touch_event"
             >
               <div
                 class="progressBar-fill"
-                v-bind:style="progress_bar_fill_width"
-              ></div>
+                :style="progress_bar_fill_width"
+              />
               <div
                 class="progressBar-loading"
-                v-bind:style="progress_bar_loading_width"
-              ></div>
+                :style="progress_bar_loading_width"
+              />
             </div>
           </div>
-          <div class="duration">{{ second_to_text(duration) }}</div>
+          <div class="duration">
+            {{ second_to_text(duration) }}
+          </div>
         </div>
       </div>
     </div>
-    <transition name="fade" v-on:enter="playlist_scroll">
+    <transition
+      name="fade"
+      @enter="playlist_scroll"
+    >
       <play-list
-        ref="playlist"
         v-show="show_playlist"
-        v-bind:playlist="playlist"
-        v-bind:current_song="current_song"
-        v-on:close="show_playlist = false"
-        v-on:clear="playlist_clear"
-        v-on:apply="change_song"
-        v-on:remove="playlist_remove_song"
+        ref="playlist"
+        :playlist="playlist"
+        :current_song="current_song"
+        @close="show_playlist = false"
+        @clear="playlist_clear"
+        @apply="change_song"
+        @remove="playlist_remove_song"
       />
     </transition>
     <pop-up-share
       v-if="show_share"
-      v-on:closepopup="show_share = false"
       :song="playlist[current_song]"
+      @closepopup="show_share = false"
     />
     <pop-up-details
       v-if="show_details"
-      v-on:closepopup="show_details = false"
       :song="playlist[current_song]"
+      @closepopup="show_details = false"
     />
   </div>
 </template>

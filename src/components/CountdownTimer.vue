@@ -1,34 +1,39 @@
 <template>
   <div class="c-countdown-outer">
     <div class="c-countdown">
-      <div class="countdown-text"><div>定时停止：</div></div>
-      <div class="general-input countdown-timer" v-show="is_counting_down">
+      <div class="countdown-text">
+        <div>定时停止：</div>
+      </div>
+      <div
+        v-show="is_counting_down"
+        class="general-input countdown-timer"
+      >
         {{ countdown_display }}
       </div>
       <select
-        class="general-input countdown-select"
-        v-model="time_option"
         v-show="!is_counting_down"
+        v-model="time_option"
+        class="general-input countdown-select"
       >
         <option
           v-for="option in time_options"
-          v-bind:key="option.text"
-          v-bind:value="option.value"
+          :key="option.text"
+          :value="option.value"
         >
           {{ option.text }}
         </option>
       </select>
       <input
-        class="general-input countdown-input"
         v-show="time_option === 'custom' && !is_counting_down"
         v-model="time_input_value"
+        class="general-input countdown-input"
         type="number"
         min="0"
         placeholder="多少分钟后停止"
-      />
+      >
       <button
         class="general-button general-button-grey countdown-button"
-        v-on:click="toggle_start"
+        @click="toggle_start"
       >
         {{ is_counting_down ? "清除" : "开始" }}
       </button>
@@ -38,7 +43,7 @@
 
 <script>
 export default {
-  name: "Countdown",
+  name: "CountdownTimer",
   data() {
     return {
       time_options: [
@@ -54,6 +59,15 @@ export default {
       countdown_time: 0,
       interval_obj: null,
     };
+  },
+  computed: {
+    countdown_display() {
+      let sec = (this.countdown_time % 60).toString();
+      let min = Math.floor(this.countdown_time / 60).toString();
+      if (sec.length === 1) sec = "0" + sec;
+      if (min.length === 1) min = "0" + min;
+      return min + ":" + sec;
+    },
   },
   methods: {
     toggle_start() {
@@ -76,15 +90,6 @@ export default {
         }, 1000);
       }
       this.is_counting_down = !this.is_counting_down;
-    },
-  },
-  computed: {
-    countdown_display() {
-      let sec = (this.countdown_time % 60).toString();
-      let min = Math.floor(this.countdown_time / 60).toString();
-      if (sec.length === 1) sec = "0" + sec;
-      if (min.length === 1) min = "0" + min;
-      return min + ":" + sec;
     },
   },
 };

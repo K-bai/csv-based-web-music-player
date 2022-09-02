@@ -1,5 +1,8 @@
 <template>
-  <pop-up-main v-on:closepopup="$emit('closepopup')" title="经处理的歌">
+  <pop-up-main
+    title="经处理的歌"
+    @closepopup="$emit('closepopup')"
+  >
     <div class="content">
       <p>
         经处理的歌是指将录播片段消除了说话的部分，但是音质可能有部分损失。或者剪掉说话的部分进行简单拼接。仅有少部分歌曲经过处理，其他歌曲仍播放未处理版本。
@@ -10,18 +13,15 @@
           href="https://space.bilibili.com/545133496"
           target="_blank"
           rel="noreferrer noopener"
-          >@枺芙</a
-        >、<a
+        >@枺芙</a>、<a
           href="https://space.bilibili.com/320278333"
           target="_blank"
           rel="noreferrer noopener"
-          >@咩咩的三叉戟</a
-        >和<a
+        >@咩咩的三叉戟</a>和<a
           href="https://space.bilibili.com/1575399407"
           target="_blank"
           rel="noreferrer noopener"
-          >@温梦未醒</a
-        >完成的。具体哪些歌经过了处理可以看二位的精选歌单。
+        >@温梦未醒</a>完成的。具体哪些歌经过了处理可以看二位的精选歌单。
       </p>
     </div>
   </pop-up-main>

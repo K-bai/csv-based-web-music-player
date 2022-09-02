@@ -1,9 +1,20 @@
 <template>
   <div class="c-copy-code">
-    <div v-for="(up, idx) in call_list" v-bind:key="up.name" class="copy-item">
+    <div
+      v-for="(up, idx) in call_list"
+      :key="up.name"
+      class="copy-item"
+    >
       {{ up.code }}
-      <el-popover trigger="click" v-bind:content="popper">
-        <a slot="reference" v-on:click="copy(idx)" class="copy-button">复制</a>
+      <el-popover
+        trigger="click"
+        :content="popper"
+      >
+        <a
+          slot="reference"
+          class="copy-button"
+          @click="copy(idx)"
+        >复制</a>
       </el-popover>
     </div>
   </div>

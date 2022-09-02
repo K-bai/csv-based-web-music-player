@@ -6,16 +6,18 @@
       }}
       共{{ total }}首
     </div>
-    <div class="pagination-item pagination-per-page-label">每页数量:</div>
+    <div class="pagination-item pagination-per-page-label">
+      每页数量:
+    </div>
     <select
-      class="pagination-item pagination-per-page-select"
       v-model="n_per_page"
-      v-on:change="change_per_page"
+      class="pagination-item pagination-per-page-select"
+      @change="change_per_page"
     >
       <option
         v-for="option in per_page_option"
-        v-bind:value="option.value"
-        v-bind:key="option.text"
+        :key="option.text"
+        :value="option.value"
       >
         {{ option.text }}
       </option>
@@ -23,33 +25,33 @@
     <div class="pagination-item c-pagination-go">
       <div
         class="pagination-go-first pagination-go-button"
-        v-on:click="change_page(1)"
+        @click="change_page(1)"
       >
-        <div></div>
+        <div />
       </div>
       <div
         class="pagination-go-left pagination-go-button"
-        v-on:click="add_page(-1)"
+        @click="add_page(-1)"
       >
-        <div></div>
+        <div />
       </div>
       <input
-        class="pagination-current-page"
         v-model="input_page"
-        v-on:change="check_page"
-        v-on:keydown.enter="$event.target.blur()"
-      />
+        class="pagination-current-page"
+        @change="check_page"
+        @keydown.enter="$event.target.blur()"
+      >
       <div
         class="pagination-go-right pagination-go-button"
-        v-on:click="add_page(1)"
+        @click="add_page(1)"
       >
-        <div></div>
+        <div />
       </div>
       <div
         class="pagination-go-last pagination-go-button"
-        v-on:click="to_last_page"
+        @click="to_last_page"
       >
-        <div></div>
+        <div />
       </div>
     </div>
   </div>
@@ -58,6 +60,7 @@
 <script>
 export default {
   name: "SongListPagination",
+  props: ["total", "page", "per_page"],
   data() {
     return {
       n_page: this.page,
@@ -72,7 +75,12 @@ export default {
       input_page: 1,
     };
   },
-  props: ["total", "page", "per_page"],
+  watch: {
+    page() {
+      this.input_page = this.page;
+      this.n_page = this.page;
+    },
+  },
   methods: {
     check_page() {
       let p = parseInt(this.input_page);
@@ -97,12 +105,6 @@ export default {
       // 换每页数量的时候回到第一页
       this.change_page(1);
       this.$emit("update:per_page", this.n_per_page);
-    },
-  },
-  watch: {
-    page() {
-      this.input_page = this.page;
-      this.n_page = this.page;
     },
   },
 };

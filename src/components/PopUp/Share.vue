@@ -1,60 +1,77 @@
 <template>
-  <pop-up-main v-on:closepopup="$emit('closepopup')" title="分享歌曲">
+  <pop-up-main
+    title="分享歌曲"
+    @closepopup="$emit('closepopup')"
+  >
     <div>
       <div class="c-share-body">
         <div class="c-share-title">
-          <div class="share-title">复制链接分享当前歌曲</div>
+          <div class="share-title">
+            复制链接分享当前歌曲
+          </div>
           <el-popover
-            trigger="click"
-            v-bind:content="song_popper.content"
             ref="song_popper"
-          ></el-popover>
+            trigger="click"
+            :content="song_popper.content"
+          />
           <button
             slot="reference"
+            v-popover:song_popper
             class="general-button general-button-green copy-button"
-            v-on:click="
+            @click="
               copy('https://song.meumy.club/?s=' + song.id, song_popper)
             "
-            v-popover:song_popper
           >
             复制到剪切板
           </button>
         </div>
         <div>
-          <a v-bind:href="'https://song.meumy.club/?s=' + song.id"
-            >https://song.meumy.club/?s={{ song.id }}</a
-          >
+          <a :href="'https://song.meumy.club/?s=' + song.id">https://song.meumy.club/?s={{ song.id }}</a>
         </div>
       </div>
-      <hr />
+      <hr>
       <div class="c-share-body">
         <div class="c-share-title">
-          <div class="share-title">复制代码分享歌单</div>
+          <div class="share-title">
+            复制代码分享歌单
+          </div>
           <el-popover
-            trigger="click"
-            v-bind:content="songlist_popper.content"
             ref="songlist_popper"
-          ></el-popover>
+            trigger="click"
+            :content="songlist_popper.content"
+          />
           <button
             id="share-songlist-button"
-            class="general-button general-button-green copy-button"
-            v-on:click="copy(playlist_id, songlist_popper)"
             v-popover:songlist_popper
+            class="general-button general-button-green copy-button"
+            @click="copy(playlist_id, songlist_popper)"
           >
             复制到剪切板
           </button>
         </div>
-        <div class="share-list-text">{{ playlist_id }}</div>
+        <div class="share-list-text">
+          {{ playlist_id }}
+        </div>
       </div>
-      <hr />
+      <hr>
       <div class="c-share-body">
         <div class="c-share-title">
-          <div class="share-title">下载当前歌曲</div>
-          <a v-bind:href="song.src" download>点击下载</a>
+          <div class="share-title">
+            下载当前歌曲
+          </div>
+          <a
+            :href="song.src"
+            download
+          >点击下载</a>
         </div>
         <div class="c-share-title">
-          <div class="share-title">下载全部歌曲数据库</div>
-          <a href="/static/song database.csv" download>点击下载</a>
+          <div class="share-title">
+            下载全部歌曲数据库
+          </div>
+          <a
+            href="/static/song database.csv"
+            download
+          >点击下载</a>
         </div>
       </div>
     </div>
@@ -70,6 +87,7 @@ export default {
   components: {
     PopUpMain,
   },
+  props: ["song"],
   data() {
     return {
       song_popper: {
@@ -80,7 +98,6 @@ export default {
       },
     };
   },
-  props: ["song"],
   computed: {
     playlist_id() {
       return utils.encode_share();

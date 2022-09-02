@@ -4,40 +4,45 @@
       <div>歌单</div>
       <div
         class="title-filter-expand"
-        v-on:click="show_collection = !show_collection"
+        @click="show_collection = !show_collection"
       >
         {{ show_collection ? "...收起" : "展开..." }}
       </div>
     </div>
-    <div class="c-song-collection" v-show="show_collection">
+    <div
+      v-show="show_collection"
+      class="c-song-collection"
+    >
       <div
-        class="collection-item"
         v-for="collection in song_collection"
-        v-bind:key="collection.name"
-        v-bind:style="{ borderColor: collection.color }"
+        :key="collection.name"
+        class="collection-item"
+        :style="{ borderColor: collection.color }"
       >
         <div class="collection-item-base">
           <div class="collection-item-title">
             <div class="collection-item-icon">
-              <img src="@/assets/ui/tag.svg" />
+              <img src="@/assets/ui/tag.svg">
             </div>
             <div>
               <div class="collection-item-name">
                 {{ collection.name }} ({{ collection.list.length }})
               </div>
-              <div class="collection-item-note">{{ collection.note }}</div>
+              <div class="collection-item-note">
+                {{ collection.note }}
+              </div>
             </div>
           </div>
           <div class="collection-item-info">
             <div class="collection-item-maintainer">
               <div>维护者:</div>
               <div
-                class="collection-item-maintainer-id"
                 v-for="maintainer in collection.maintainer"
-                v-bind:key="maintainer.name"
+                :key="maintainer.name"
+                class="collection-item-maintainer-id"
               >
                 <a
-                  v-bind:href="'https://space.bilibili.com/' + maintainer.uid"
+                  :href="'https://space.bilibili.com/' + maintainer.uid"
                   target="_blank"
                   rel="noreferrer noopener"
                 >
@@ -45,14 +50,16 @@
                 </a>
               </div>
             </div>
-            <div class="collection-item-date">{{ collection.date }}</div>
+            <div class="collection-item-date">
+              {{ collection.date }}
+            </div>
           </div>
         </div>
         <div class="collection-item-op">
           <div class="songlist-button">
             <button
               class="general-button general-button-grey replace-button"
-              v-on:click="replace_collection(collection.list)"
+              @click="replace_collection(collection.list)"
             >
               听！
             </button>
@@ -60,7 +67,7 @@
           <div class="songlist-button">
             <button
               class="general-button general-button-grey jump-button"
-              v-on:click="jump_collection(collection.name)"
+              @click="jump_collection(collection.name)"
             >
               查看
             </button>

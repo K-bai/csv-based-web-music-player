@@ -4,33 +4,39 @@
       <div>我的歌单</div>
       <div
         class="title-filter-expand"
-        v-on:click="show_my_collection = !show_my_collection"
+        @click="show_my_collection = !show_my_collection"
       >
         {{ show_my_collection ? "...收起" : "展开..." }}
       </div>
     </div>
-    <div class="c-song-collection" v-show="show_my_collection">
+    <div
+      v-show="show_my_collection"
+      class="c-song-collection"
+    >
       <div
-        v-bind:class="[
+        v-for="(collection, index) in my_song_collection"
+        :key="collection.name"
+        :class="[
           'collection-item',
           { 'collection-item-deleting': is_deleting_collection },
         ]"
-        v-for="(collection, index) in my_song_collection"
-        v-bind:key="collection.name"
-        v-on:click="click_collection(index)"
-        v-bind:title="is_deleting_collection ? '删除该歌单' : '替换播放列表'"
+        :title="is_deleting_collection ? '删除该歌单' : '替换播放列表'"
+        @click="click_collection(index)"
       >
         <img
-          src="@/assets/ui/bookmark-star.svg"
           v-show="!is_deleting_collection"
-        />
-        <img src="@/assets/ui/trash-fill.svg" v-show="is_deleting_collection" />
+          src="@/assets/ui/bookmark-star.svg"
+        >
+        <img
+          v-show="is_deleting_collection"
+          src="@/assets/ui/trash-fill.svg"
+        >
         <div>{{ collection.name }}</div>
       </div>
       <button
-        class="general-button general-button-red control-item"
-        v-on:click="toggle_delete_collection()"
         v-show="my_song_collection.length !== 0"
+        class="general-button general-button-red control-item"
+        @click="toggle_delete_collection()"
       >
         {{ is_deleting_collection ? "取消" : "删除歌单" }}
       </button>
@@ -39,12 +45,12 @@
           v-model="add_collection_name"
           placeholder="歌单名"
           class="general-input add-collection-input"
-          v-on:keydown.enter="add_press_enter"
-          v-on:keydown.space.stop=""
-        />
+          @keydown.enter="add_press_enter"
+          @keydown.space.stop=""
+        >
         <button
           class="general-button general-button-grey add-collection-button"
-          v-on:click="add_collection()"
+          @click="add_collection()"
         >
           添加当前播放列表为歌单
         </button>
