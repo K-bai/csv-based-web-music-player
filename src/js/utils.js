@@ -83,9 +83,8 @@ function read_playlist(){
   let current_playlist = JSON.parse(localStorage.getItem('current_playlist'))
   let song_list = current_playlist.song_id_list.map(i => window.meumy.song_list.find(s => (s.id === i)))
   song_list = song_list.filter(s => s !== undefined)
-  if (song_list.length === 0) song_list.push(empty_song)
   return {
-    current_song: Math.min(current_playlist.current_song, song_list.length-1),
+    current_song: Math.max(Math.min(current_playlist.current_song, song_list.length - 1), 0),
     song_list
   }
 }
