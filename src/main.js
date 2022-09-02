@@ -1,12 +1,15 @@
 import "mutationobserver-shim";
+import { Buffer } from "buffer";
 import Vue from "vue";
 
 import { Select, Input, Option, Popover } from "element-ui";
 
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "@/js/global.js";
 
 import App from "./App.vue";
 
+window.Buffer = Buffer;
 Vue.prototype.$ELEMENT = { size: "medium" };
 Vue.use(Select);
 Vue.use(Input);
@@ -19,7 +22,7 @@ const MeUmyPlayer = new Vue({
   render: (h) => h(App),
 }).$mount("#app");
 
-window.MeUmyPlayer = MeUmyPlayer;
+window.meumyPlayer = MeUmyPlayer;
 
 // 注册service worker
 /*
