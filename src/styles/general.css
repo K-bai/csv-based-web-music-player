@@ -1,6 +1,6 @@
 .card {
   border-radius: 0.3rem;
-  border:1px solid rgba(0, 0, 0, 0.096);
+  border: 1px solid rgba(0, 0, 0, 0.096);
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.719);
   background-color: white;
 }
@@ -29,7 +29,7 @@
   color: #007bff;
 }
 @media (any-hover: hover) {
-  .general-button-blue:hover{
+  .general-button-blue:hover {
     background-color: #007bff;
     color: white;
   }
@@ -44,7 +44,7 @@
   color: #6c757d;
 }
 @media (any-hover: hover) {
-  .general-button-grey:hover{
+  .general-button-grey:hover {
     background-color: #6c757d;
     color: white;
   }
@@ -59,7 +59,7 @@
   color: #28a745;
 }
 @media (any-hover: hover) {
-  .general-button-green:hover{
+  .general-button-green:hover {
     background-color: #28a745;
     color: white;
   }
@@ -74,7 +74,7 @@
   color: #dc3545;
 }
 @media (any-hover: hover) {
-  .general-button-red:hover{
+  .general-button-red:hover {
     background-color: #dc3545;
     color: white;
   }
@@ -92,7 +92,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  border: 1px solid rgba(0,0,0,.25);
+  border: 1px solid rgba(0, 0, 0, 0.25);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -105,9 +105,6 @@
   border-color: #0d6efd;
 }
 
-
-
-
 .popper {
   border-radius: 0.2rem;
   border: 1px solid rgba(0, 0, 0, 0.274);
@@ -119,11 +116,11 @@
   border: 1px solid rgba(0, 0, 0, 0.274);
 }
 
-
-
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.1s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }

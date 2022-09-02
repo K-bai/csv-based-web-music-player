@@ -11,20 +11,20 @@
   background-color: rgb(252, 252, 252);
 }
 
-.c-controler {
+.c-controller {
   overflow: hidden;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: row-reverse;
 }
-.controler-item {
+.controller-item {
   flex-grow: 1;
   flex-basis: 1rem;
   text-align: center;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.controler-item-all {
+.controller-item-all {
   max-width: 25%;
 }
 
@@ -53,18 +53,17 @@
   width: 100%;
   cursor: default;
 }
-.song-list-item-main{
+.song-list-item-main {
   width: 100%;
   display: flex;
   min-height: 2.2rem;
   align-items: center;
 }
 @media (any-hover: hover) {
-  .song-list-item:hover{
+  .song-list-item:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
-
 
 .all-column {
   padding-left: 0.3rem;
@@ -158,14 +157,14 @@
   background-size: contain;
 }
 .item-op-download div {
-  height: 1.0rem;
-  width: 1.0rem;
-  background-image: url("~bootstrap-icons/icons/download.svg");
+  height: 1rem;
+  width: 1rem;
+  background-image: url("@/assets/ui/download.svg");
 }
 .item-op-add div {
   height: 1.1rem;
   width: 1.1rem;
-  background-image: url("~bootstrap-icons/icons/plus-circle.svg");
+  background-image: url("@/assets/ui/plus-circle.svg");
 }
 .item-op-added div {
   height: 1.1rem;
@@ -177,10 +176,10 @@
   width: 1.1rem;
 }
 .item-op-star-false {
-  background-image: url("~bootstrap-icons/icons/star.svg");
+  background-image: url("@/assets/ui/star.svg");
 }
 .item-op-star-true {
-  background-image: url("~bootstrap-icons/icons/star-fill.svg");
+  background-image: url("@/assets/ui/star-fill.svg");
 }
 .item-op-none {
   font-size: 0.7rem;
@@ -229,10 +228,8 @@
   font-style: italic;
 }
 
-
-
 @media all and (max-width: 799px) {
-  .controler-item-all {
+  .controller-item-all {
     max-width: 100%;
   }
   .all-column {
