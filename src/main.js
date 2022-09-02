@@ -4,7 +4,6 @@ import Vue from "vue";
 
 import { Select, Input, Option, Popover } from "element-ui";
 
-import "bootstrap-icons/font/bootstrap-icons.css";
 import "@/js/global.js";
 
 import App from "./App.vue";
