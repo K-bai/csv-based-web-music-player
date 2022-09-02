@@ -107,7 +107,7 @@
 .prevButton div {
   width: 1.2em;
   height: 1.2em;
-  background-image: url('../assets/ui/prev.svg');
+  background-image: url("../assets/ui/prev.svg");
   background-size: contain;
 }
 .playButton {
@@ -120,18 +120,23 @@
   background-size: contain;
 }
 .playButton-play {
-  background-image: url('../assets/ui/play.svg');
+  background-image: url("../assets/ui/play.svg");
 }
 .playButton-pause {
-  background-image: url('../assets/ui/pause.svg');
+  background-image: url("../assets/ui/pause.svg");
 }
 .playButton-loading {
-  background-image: url('../assets/ui/loading.svg');
-  animation: loading-rotation 1.5s cubic-bezier(.16,.39,.86,.62) 0s infinite;
+  background-image: url("../assets/ui/loading.svg");
+  animation: loading-rotation 1.5s cubic-bezier(0.16, 0.39, 0.86, 0.62) 0s
+    infinite;
 }
 @keyframes loading-rotation {
-  0% { transform: rotate(0deg);}
-  100% { transform: rotate(360deg);}
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 .nextButton {
   width: 2.5em;
@@ -140,7 +145,7 @@
 .nextButton div {
   width: 1.2em;
   height: 1.2em;
-  background-image: url('../assets/ui/next.svg');
+  background-image: url("../assets/ui/next.svg");
   background-size: contain;
 }
 @media (any-hover: hover) {
@@ -154,7 +159,7 @@
 .c-otherButtons {
   display: flex;
 }
-.otherButtons{
+.otherButtons {
   border-radius: 2em;
   height: 2.2em;
   width: 2.2em;
@@ -164,11 +169,11 @@
   justify-content: center;
 }
 @media (any-hover: hover) {
-  .otherButtons:hover{
+  .otherButtons:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
-.otherButtons:active{
+.otherButtons:active {
   background-color: rgba(0, 0, 0, 0.35);
 }
 .playlistButton {
@@ -177,7 +182,7 @@
 .playlistButton-img {
   width: 1.3em;
   height: 1.3em;
-  background-image: url('~bootstrap-icons/icons/music-note-list.svg');
+  background-image: url("@/assets/ui/music-note-list.svg");
   background-size: contain;
 }
 .playlistButton-corner {
@@ -192,7 +197,7 @@
   left: 2em;
   top: 0px;
 }
-.otherButtons img{
+.otherButtons img {
   width: 1.3em;
   height: 1.3em;
 }
@@ -236,7 +241,7 @@
   position: relative;
 }
 .progressBar-button {
-  background-image: url('../assets/ui/progress_knot.svg');
+  background-image: url("../assets/ui/progress_knot.svg");
   background-size: contain;
   width: 1.5rem;
   height: 1.5rem;
@@ -271,7 +276,6 @@
   position: relative;
   z-index: 20;
 }
-
 
 @media all and (max-width: 799px) {
   .c-info {

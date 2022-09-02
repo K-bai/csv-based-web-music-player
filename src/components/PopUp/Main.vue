@@ -2,11 +2,8 @@
   <div class="background" v-on:mousedown.self="$emit('closepopup')">
     <div class="card c-popup">
       <div class="popup-title">
-        <div>{{title}}</div>
-        <div
-          class="popup-close"
-          v-on:click.stop="$emit('closepopup')"
-        >
+        <div>{{ title }}</div>
+        <div class="popup-close" v-on:click.stop="$emit('closepopup')">
           <div class="popup-close-img"></div>
         </div>
       </div>
@@ -19,17 +16,13 @@
 </template>
 
 <script>
-
 export default {
-  name: 'PopUpMain',
+  name: "PopUpMain",
   data() {
-    return {
-    }
+    return {};
   },
-  props: [
-    'title'
-  ]
-}
+  props: ["title"],
+};
 </script>
 
 <style scoped>
@@ -76,7 +69,7 @@ export default {
 .popup-close-img {
   width: 1.5rem;
   height: 1.5rem;
-  background-image: url("~bootstrap-icons/icons/x.svg");
+  background-image: url("@/assets/ui/x.svg");
   background-position: center;
   background-size: contain;
 }

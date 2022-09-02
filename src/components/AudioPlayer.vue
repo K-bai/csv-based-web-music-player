@@ -14,10 +14,10 @@
         </div>
         <div class="c-info-op">
           <div class="shareButton otherButtons" v-on:click="toggle_share">
-            <img src="~bootstrap-icons/icons/share.svg" />
+            <img src="@/assets/ui/share.svg" />
           </div>
           <div class="detailsButton otherButtons" v-on:click="toggle_details">
-            <img src="~bootstrap-icons/icons/three-dots.svg" />
+            <img src="@/assets/ui/three-dots.svg" />
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
             >
               <img
                 v-show="play_mode == 'loop'"
-                src="~bootstrap-icons/icons/arrow-repeat.svg"
+                src="@/assets/ui/arrow-repeat.svg"
               />
               <img
                 v-show="play_mode == 'loop once'"
@@ -39,7 +39,7 @@
               />
               <img
                 v-show="play_mode == 'shuffle'"
-                src="~bootstrap-icons/icons/shuffle.svg"
+                src="@/assets/ui/shuffle.svg"
               />
             </div>
             <div>
@@ -48,7 +48,7 @@
                 v-on:click="show_volume_bar = !show_volume_bar"
                 title="音量"
               >
-                <img src="~bootstrap-icons/icons/volume-up.svg" />
+                <img src="@/assets/ui/volume-up.svg" />
               </div>
               <transition name="fade">
                 <div class="c-volumeBar" v-show="show_volume_bar">
@@ -103,11 +103,8 @@
               v-on:click="toggle_loved"
               title="设为星标歌曲"
             >
-              <img v-show="!is_loved" src="~bootstrap-icons/icons/star.svg" />
-              <img
-                v-show="is_loved"
-                src="~bootstrap-icons/icons/star-fill.svg"
-              />
+              <img v-show="!is_loved" src="@/assets/ui/star.svg" />
+              <img v-show="is_loved" src="@/assets/ui/star-fill.svg" />
             </div>
             <div
               class="playlistButton otherButtons"
@@ -180,7 +177,7 @@ import utils from "@/js/utils.js";
 import PlayList from "./PlayList.vue";
 import PopUpShare from "./PopUp/Share.vue";
 import PopUpDetails from "./PopUp/Details.vue";
-
+import default_cover from "@/assets/logo.png";
 const audio_player = window.meumy.audio_player;
 
 // 滑动检测
@@ -489,7 +486,7 @@ const AudioPlayer = {
           title: this.playlist[this.current_song].name,
           artist: this.playlist[this.current_song].artist,
           album: "",
-          artwork: [{ src: require("../assets/logo.png") }],
+          artwork: [{ src: default_cover }],
         });
       }
       audio_player.ctx.title = this.playlist[this.current_song].name;

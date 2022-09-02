@@ -2,7 +2,9 @@
   <div class="c-countdown-outer">
     <div class="c-countdown">
       <div class="countdown-text"><div>定时停止：</div></div>
-      <div class="general-input countdown-timer" v-show="is_counting_down">{{countdown_display}}</div>
+      <div class="general-input countdown-timer" v-show="is_counting_down">
+        {{ countdown_display }}
+      </div>
       <select
         class="general-input countdown-select"
         v-model="time_option"
@@ -12,11 +14,13 @@
           v-for="option in time_options"
           v-bind:key="option.text"
           v-bind:value="option.value"
-        >{{option.text}}</option>
+        >
+          {{ option.text }}
+        </option>
       </select>
       <input
         class="general-input countdown-input"
-        v-show="time_option==='custom' && (!is_counting_down)"
+        v-show="time_option === 'custom' && !is_counting_down"
         v-model="time_input_value"
         type="number"
         min="0"
@@ -25,66 +29,65 @@
       <button
         class="general-button general-button-grey countdown-button"
         v-on:click="toggle_start"
-      >{{is_counting_down?'清除':'开始'}}</button>
+      >
+        {{ is_counting_down ? "清除" : "开始" }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'Countdown',
-  data () {
+  name: "Countdown",
+  data() {
     return {
       time_options: [
-        {text: '15分钟', value: 15},
-        {text: '30分钟', value: 30},
-        {text: '60分钟', value: 60},
-        {text: '120分钟', value: 120},
-        {text: '自定义', value: 'custom'}
+        { text: "15分钟", value: 15 },
+        { text: "30分钟", value: 30 },
+        { text: "60分钟", value: 60 },
+        { text: "120分钟", value: 120 },
+        { text: "自定义", value: "custom" },
       ],
       time_option: 15,
-      time_input_value: '',
+      time_input_value: "",
       is_counting_down: false,
       countdown_time: 0,
       interval_obj: null,
-    }
+    };
   },
   methods: {
-    toggle_start () {
-      if (this.is_counting_down){
+    toggle_start() {
+      if (this.is_counting_down) {
         // 停止计时
-        clearInterval(this.interval_obj)
-      }
-      else {
+        clearInterval(this.interval_obj);
+      } else {
         // 开始计时
-        if (this.time_option === 'custom')
-          this.countdown_time = parseInt(this.time_input_value)*60
-        else
-          this.countdown_time = this.time_option*60
+        if (this.time_option === "custom")
+          this.countdown_time = parseInt(this.time_input_value) * 60;
+        else this.countdown_time = this.time_option * 60;
         this.interval_obj = setInterval(() => {
-          this.countdown_time -= 1
+          this.countdown_time -= 1;
           if (this.countdown_time <= 0) {
-            clearInterval(this.interval_obj)
-            this.is_counting_down = false
-            this.$emit('stop_playing')
-            this.$parent.$refs.player.audio_pause()
+            clearInterval(this.interval_obj);
+            this.is_counting_down = false;
+            this.$emit("stop_playing");
+            this.$parent.$refs.player.audio_pause();
           }
         }, 1000);
       }
-      this.is_counting_down = !this.is_counting_down
-    }
+      this.is_counting_down = !this.is_counting_down;
+    },
   },
   computed: {
-    countdown_display () {
-      let sec = (this.countdown_time % 60).toString()
-      let min = Math.floor(this.countdown_time / 60).toString()
-      if (sec.length === 1) sec = '0' + sec
-      if (min.length === 1) min = '0' + min
-      return min + ':' + sec
-    }
-  }
-}
+    countdown_display() {
+      let sec = (this.countdown_time % 60).toString();
+      let min = Math.floor(this.countdown_time / 60).toString();
+      if (sec.length === 1) sec = "0" + sec;
+      if (min.length === 1) min = "0" + min;
+      return min + ":" + sec;
+    },
+  },
+};
 </script>
 
 <style scoped>

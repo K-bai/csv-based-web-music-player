@@ -7,10 +7,7 @@
     />
     <div class="c-controller">
       <button
-        class="
-          general-button general-button-grey
-          controller-item controller-item-all
-        "
+        class="general-button general-button-grey controller-item controller-item-all"
         v-on:click="all_song_to_playlist"
       >
         全部筛选结果加入播放列表
@@ -30,18 +27,12 @@
             <span class="header-column-name-narrow">歌曲信息</span>
           </div>
           <div
-            class="
-              header-column header-column-artist
-              all-column all-column-artist
-            "
+            class="header-column header-column-artist all-column all-column-artist"
           >
             演唱者
           </div>
           <div
-            class="
-              header-column header-column-status
-              all-column all-column-status
-            "
+            class="header-column header-column-status all-column all-column-status"
           >
             演唱状态
           </div>
@@ -51,19 +42,13 @@
             演唱日期
           </div>
           <div
-            class="
-              header-column header-column-duration
-              all-column all-column-duration
-            "
+            class="header-column header-column-duration all-column all-column-duration"
           >
             时长
           </div>
         </div>
         <div
-          class="
-            header-column header-column-details
-            all-column all-column-details
-          "
+          class="header-column header-column-details all-column all-column-details"
           v-on:click="expend_all"
         >
           展开

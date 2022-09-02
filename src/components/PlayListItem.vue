@@ -22,48 +22,15 @@
   </div>
 </template>
 
-
-
-
-
-
-
-
-
-
-
 <script>
 export default {
   name: "PlayListItem",
   data() {
     return {};
   },
-  props: [
-    'index',
-    'source',
-    'current_song'
-  ]
+  props: ["index", "source", "current_song"],
 };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style scoped>
 .c-playlist-song {
@@ -134,7 +101,7 @@ export default {
 .playlist-clear-img {
   width: 1.5rem;
   height: 1.5rem;
-  background-image: url("~bootstrap-icons/icons/x.svg");
+  background-image: url("@/assets/ui/x.svg");
   background-position: center;
   background-size: contain;
 }

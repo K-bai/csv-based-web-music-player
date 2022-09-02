@@ -4,22 +4,28 @@
       <div>歌单</div>
       <div
         class="title-filter-expand"
-        v-on:click="show_collection=!show_collection"
-      >{{show_collection?'...收起':'展开...'}}</div>
+        v-on:click="show_collection = !show_collection"
+      >
+        {{ show_collection ? "...收起" : "展开..." }}
+      </div>
     </div>
     <div class="c-song-collection" v-show="show_collection">
       <div
         class="collection-item"
         v-for="collection in song_collection"
         v-bind:key="collection.name"
-        v-bind:style="{borderColor: collection.color}"
+        v-bind:style="{ borderColor: collection.color }"
       >
         <div class="collection-item-base">
           <div class="collection-item-title">
-            <div class="collection-item-icon"><img src="~bootstrap-icons/icons/tag.svg" /></div>
+            <div class="collection-item-icon">
+              <img src="@/assets/ui/tag.svg" />
+            </div>
             <div>
-              <div class="collection-item-name">{{collection.name}} ({{collection.list.length}})</div>
-              <div class="collection-item-note">{{collection.note}}</div>
+              <div class="collection-item-name">
+                {{ collection.name }} ({{ collection.list.length }})
+              </div>
+              <div class="collection-item-note">{{ collection.note }}</div>
             </div>
           </div>
           <div class="collection-item-info">
@@ -29,22 +35,36 @@
                 class="collection-item-maintainer-id"
                 v-for="maintainer in collection.maintainer"
                 v-bind:key="maintainer.name"
-              ><a v-bind:href="'https://space.bilibili.com/'+maintainer.uid" target="_blank" rel="noreferrer noopener">
-                @{{maintainer.name}}
-              </a></div>
+              >
+                <a
+                  v-bind:href="'https://space.bilibili.com/' + maintainer.uid"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  @{{ maintainer.name }}
+                </a>
+              </div>
             </div>
-            <div class="collection-item-date">{{collection.date}}</div>
+            <div class="collection-item-date">{{ collection.date }}</div>
           </div>
         </div>
         <div class="collection-item-op">
-          <div class="songlist-button"><button
-            class="general-button general-button-grey replace-button"
-            v-on:click="replace_collection(collection.list)"
-          >听！</button></div>
-          <div class="songlist-button"><button
-            class="general-button general-button-grey jump-button"
-            v-on:click="jump_collection(collection.name)"
-          >查看</button></div>
+          <div class="songlist-button">
+            <button
+              class="general-button general-button-grey replace-button"
+              v-on:click="replace_collection(collection.list)"
+            >
+              听！
+            </button>
+          </div>
+          <div class="songlist-button">
+            <button
+              class="general-button general-button-grey jump-button"
+              v-on:click="jump_collection(collection.name)"
+            >
+              查看
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -53,25 +73,25 @@
 
 <script>
 export default {
-  name: 'SongFilterCollection',
+  name: "SongFilterCollection",
   data() {
     return {
       song_collection: window.meumy.song_collection,
       show_collection: false,
-    }
+    };
   },
   methods: {
     replace_collection(song_collection) {
-      this.$parent.$parent.$parent.$refs.player.playlist_replace(song_collection.filter(s => s.have_audio))
+      this.$parent.$parent.$parent.$refs.player.playlist_replace(
+        song_collection.filter((s) => s.have_audio)
+      );
     },
     jump_collection(name) {
-      this.$root.$emit('jump_collection', name)
-    }
-  }
-}
+      this.$root.$emit("jump_collection", name);
+    },
+  },
+};
 </script>
-
-
 
 <style scoped>
 .title {
@@ -111,16 +131,16 @@ export default {
   width: 50%;
   border-left: solid 4px;
 }
-.collection-item:nth-child(4n+1) {
+.collection-item:nth-child(4n + 1) {
   background-color: rgba(0, 0, 0, 0.025);
 }
-.collection-item:nth-child(4n+2) {
+.collection-item:nth-child(4n + 2) {
   background-color: rgba(0, 0, 0, 0.025);
 }
-.collection-item:nth-child(4n+3) {
+.collection-item:nth-child(4n + 3) {
   background-color: rgba(0, 0, 0, 0);
 }
-.collection-item:nth-child(4n+4) {
+.collection-item:nth-child(4n + 4) {
   background-color: rgba(0, 0, 0, 0);
 }
 .collection-item-icon {
@@ -138,7 +158,7 @@ export default {
   display: flex;
   align-items: center;
 }
-.collection-item-title>div {
+.collection-item-title > div {
   margin-left: 0.5rem;
 }
 .collection-item-note {
@@ -162,17 +182,24 @@ export default {
 .collection-item-maintainer-id {
   margin-right: 0.3rem;
 }
-.collection-item-maintainer-id a:link {color: grey;}
-.collection-item-maintainer-id a:visited {color: grey;}
-.collection-item-maintainer-id a:hover {color: grey;}
-.collection-item-maintainer-id a:active {color: grey;}
+.collection-item-maintainer-id a:link {
+  color: grey;
+}
+.collection-item-maintainer-id a:visited {
+  color: grey;
+}
+.collection-item-maintainer-id a:hover {
+  color: grey;
+}
+.collection-item-maintainer-id a:active {
+  color: grey;
+}
 
 @media (any-hover: hover) {
-  .collection-item:hover{
+  .collection-item:hover {
     background-color: rgba(0, 0, 0, 0.05);
   }
 }
-
 
 .collection-item-op {
   display: flex;
@@ -183,7 +210,7 @@ export default {
   margin: 0px;
   padding: 0px;
 }
-.songlist-button>button {
+.songlist-button > button {
   height: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -202,8 +229,6 @@ export default {
   border-bottom-right-radius: 0.3rem;
 }
 
-
-
 @media all and (max-width: 799px) {
   .collection-item {
     width: 100%;
@@ -215,6 +240,4 @@ export default {
     background-color: rgba(0, 0, 0, 0);
   }
 }
-
-
 </style>
