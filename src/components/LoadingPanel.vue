@@ -1,17 +1,21 @@
 <template>
   <div class="c-loading">
     <div class="line-scale">
-      <div></div><div></div><div></div><div></div><div></div>
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
     </div>
   </div>
 </template>
 
 <script>
-import 'loaders.css/loaders.min.css'
+import "loaders.css/loaders.min.css";
 
 export default {
-  name: 'LoadingPanel'
-}
+  name: "LoadingPanel",
+};
 </script>
 
 <style scoped>
@@ -29,22 +33,22 @@ export default {
   text-align: left;
 }
 
-.c-loading>.line-scale {
+.c-loading > .line-scale {
   transform: scale(2.5);
 }
-.c-loading>.line-scale>:nth-child(1) {
+.c-loading > .line-scale > :nth-child(1) {
   background-color: #cd2335;
 }
-.c-loading>.line-scale>:nth-child(2) {
+.c-loading > .line-scale > :nth-child(2) {
   background-color: #d32a76;
 }
-.c-loading>.line-scale>:nth-child(3) {
+.c-loading > .line-scale > :nth-child(3) {
   background-color: #bb50b1;
 }
-.c-loading>.line-scale>:nth-child(4) {
+.c-loading > .line-scale > :nth-child(4) {
   background-color: #8574db;
 }
-.c-loading>.line-scale>:nth-child(5) {
+.c-loading > .line-scale > :nth-child(5) {
   background-color: #128feb;
 }
 </style>

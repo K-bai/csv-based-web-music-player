@@ -2,26 +2,24 @@
   <div class="c-playlist">
     <div class="c-playlist-title">
       <div class="playlist-clearAll">
-        <span v-on:click="$emit('clear')">清空</span>
+        <span @click="$emit('clear')">清空</span>
       </div>
       <div class="playlist-title">播放列表</div>
       <div class="playlist-close">
-        <span v-on:click="$emit('close')">收起</span>
+        <span @click="$emit('close')">收起</span>
       </div>
     </div>
-    <div
-      class="c-playlist-songList"
-    >
+    <div class="c-playlist-songList">
       <virtual-list
-        class="c-playlist-virtual-list"
-        v-bind:data-key="'id'"
-        v-bind:data-sources="playlist_without_empty"
-        v-bind:extra-props="{current_song}"
-        v-bind:data-component="SongItem"
-        v-bind:keeps="50"
-        v-on:apply="$emit('apply', $event)"
-        v-on:remove="$emit('remove', $event)"
         ref="virtual_playlist"
+        class="c-playlist-virtual-list"
+        :data-key="'id'"
+        :data-sources="playlist_without_empty"
+        :extra-props="{ current_song }"
+        :data-component="SongItem"
+        :keeps="50"
+        @apply="$emit('apply', $event)"
+        @remove="$emit('remove', $event)"
       />
       <!--
       <play-list-item
@@ -33,77 +31,45 @@
         v-on:remove="$emit('remove', $event)"
       />
       -->
-      <div class="playlist-empty" v-show="playlist[0].id === 'empty_song'">
+      <div v-show="playlist[0].id === 'empty_song'" class="playlist-empty">
         播放列表为空
       </div>
     </div>
   </div>
 </template>
 
-
-
-
-
-
-
-
-
-
-
 <script>
-import PlayListItem from './PlayListItem.vue'
-import VirtualList from 'vue-virtual-scroll-list'
+import PlayListItem from "./PlayListItem.vue";
+import VirtualList from "vue-virtual-scroll-list";
 export default {
   name: "PlayList",
+  components: {
+    VirtualList,
+  },
+  props: ["playlist", "current_song"],
   data() {
     return {
-      SongItem: PlayListItem
-    }
-  },
-  components: {
-    VirtualList
-  },
-  props: [
-    'playlist',
-    'current_song'
-  ],
-  methods: {
-    playlist_scroll() {
-      // 滚动播放列表到当前歌曲
-      this.$refs.virtual_playlist.scrollToIndex(this.current_song)
-      //this.$refs.playlist.children[this.current_song].scrollIntoView({
-      //  block: "nearest",
-      //});
-    }
+      SongItem: PlayListItem,
+    };
   },
   computed: {
     playlist_without_empty() {
       return this.playlist.filter((s) => {
         return s.id !== "empty_song";
       });
-    }
+    },
+  },
+  methods: {
+    playlist_scroll() {
+      // 滚动播放列表到当前歌曲
+      this.$refs.virtual_playlist.scrollToIndex(this.current_song);
+      //this.$refs.playlist.children[this.current_song].scrollIntoView({
+      //  block: "nearest",
+      //});
+    },
   },
 };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style scoped>
 .c-playlist {
