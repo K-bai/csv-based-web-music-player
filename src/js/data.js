@@ -1,4 +1,4 @@
-import { parse } from "csv-parse";
+import { parse } from "csv-parse/browser/esm/sync";
 import dayjs from "dayjs";
 import song_collection from "./song_collection.js";
 import utils from "./utils.js";
@@ -32,7 +32,7 @@ async function get_song_data() {
 async function parse_song_csv(t) {
   // 将csv解析为内存对象
   const csv = parse(t, { columns: true });
-  for await (const r of csv) {
+  for (const r of csv) {
     window.meumy.song_list.push(convert_song(r));
   }
   // 按时间降序
@@ -199,7 +199,7 @@ async function parse_playlist_csv(t) {
   // 解析预定义歌单
   const csv = parse(t);
   const playlists = [];
-  for await (const r of csv) {
+  for (const r of csv) {
     playlists.push(r);
   }
   for (let idx = 0; idx < playlists[0].length; idx++) {

@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import GlobalsPolyfills from "@esbuild-plugins/node-globals-polyfill";
 import vue from "@vitejs/plugin-vue2";
 import Components from "unplugin-vue-components/vite";
 import { ElementUiResolver } from "unplugin-vue-components/resolvers";
@@ -15,7 +14,6 @@ export default defineConfig({
   plugins: [
     vue(),
     svg_loader,
-
     Components({
       resolvers: [
         ElementUiResolver({
@@ -25,21 +23,6 @@ export default defineConfig({
       dts: "src/components.d.ts",
     }),
   ],
-  optimizeDeps: {
-    esbuildOptions: {
-      // Node.js global to browser globalThis
-      define: {
-        global: "globalThis",
-      },
-      // Enable esbuild polyfill plugins
-      plugins: [
-        GlobalsPolyfills({
-          process: true,
-          buffer: true,
-        }),
-      ],
-    },
-  },
   css: {
     postcss: {
       plugins: [
@@ -55,7 +38,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      stream: "stream-browserify",
     },
   },
   build: {

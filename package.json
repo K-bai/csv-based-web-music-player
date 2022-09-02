@@ -15,12 +15,10 @@
     "events": "^3.3.0",
     "loaders.css": "^0.1.2",
     "mutationobserver-shim": "^0.3.7",
-    "stream-browserify": "^3.0.0",
     "vue": "^2.7.10",
     "vue-virtual-scroll-list": "^2.3.3"
   },
   "devDependencies": {
-    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@rollup/plugin-image": "^2.1.1",
     "@vitejs/plugin-vue2": "^1.1.2",
     "bootstrap-icons": "^1.9.1",
