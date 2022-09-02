@@ -138,8 +138,10 @@ function convert_song(row) {
     ref_cut: parse_ref(row["谁切的"]),
     duration,
     id: song_id,
-    src: `${SONG_CDN_ADDR}/songs/${song_id}.mp3`,
-    second_src,
+    src: {
+      default: `${SONG_CDN_ADDR}/songs/${song_id}.mp3`,
+      second: second_src
+    },
     have_audio,
     days_before_available,
   };

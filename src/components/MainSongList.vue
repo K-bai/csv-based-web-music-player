@@ -73,7 +73,7 @@
               class="item-op-download item-op-all"
               title="下载歌曲"
             >
-              <a :href="song.src" download><div /></a>
+              <a :href="song.src.default" download><div /></a>
             </div>
             <div
               v-show="song.have_audio && !in_playlist_list[idx]"

@@ -83,14 +83,17 @@ export default {
           // 取消loading
           this.loading = false;
           this.$root.$emit("data_loaded");
+          // 读取设置
+          this.$refs.player.play_mode = utils.read_settings().play_mode;
+          window.meumy.audio_player.play_mode = utils.read_settings().play_mode;
+          window.meumy.use_treated.value = utils.read_settings().use_treated;
+          window.meumy.audio_player.audio_version = window.meumy.use_treated.value ? "second" : "default";
           // 加入保存的播放列表
           let c_playlist = utils.read_playlist();
           this.$refs.player.playlist_replace(
             c_playlist.song_list,
             c_playlist.current_song
           );
-          this.$refs.player.play_mode = utils.read_settings().play_mode;
-          window.meumy.audio_player.play_mode = utils.read_settings().play_mode;
           // 如果有查询参数就把这首歌加入播放列表
           const parsedUrl = new URL(window.location.href);
           let query = parsedUrl.searchParams.get("s");

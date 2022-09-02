@@ -5,7 +5,8 @@ class MeUmyAudioPlayer {
   constructor() {
     // data
     this.status = "pause"; //pause playing loading
-    this.playlist = []; //{id: 'U00001', src: ''}
+    this.playlist = []; //{id: "U00001", src: {default: ""}}
+    this.audio_version = "default"
     this.song_ptr = 0;
     this.load_progress = 0;
     this.play_progress = 0;
@@ -95,14 +96,8 @@ class MeUmyAudioPlayer {
     // if empty then return
     if (this.playlist.length === 0) return;
     // set src and load
-    let src = this.playlist[this.song_ptr].src;
-    if (window.meumy.use_treated.value) {
-      let song = window.meumy.song_list.find(
-        (song) => song.id === this.playlist[this.song_ptr].id
-      );
-      if (song.second_src !== "") src = song.second_src;
-    }
-    this.ctx.src = src;
+    const src_list = this.playlist[this.song_ptr].src;
+    this.ctx.src = src_list[this.audio_version] ? src_list[this.audio_version] : src_list.default;
     this.ctx.load();
     // events
     this.event.emit("song update", this.playlist[this.song_ptr]);
@@ -236,7 +231,7 @@ class MeUmyAudioPlayer {
   }
 }
 
-let DEBUG_FLAG = false;
+let DEBUG_FLAG = true;
 function debug(o, t) {
   if (DEBUG_FLAG) {
     console.log([new Date(), t, o]);

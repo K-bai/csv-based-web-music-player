@@ -297,6 +297,7 @@ export default {
       utils.save_settings({
         use_treated: this.use_treated.value,
       });
+      window.meumy.audio_player.audio_version = window.meumy.use_treated.value ? "second" : "default";
     },
     clear_all_filter() {
       this.filters.find((f) => f.name === "artist").value = [];

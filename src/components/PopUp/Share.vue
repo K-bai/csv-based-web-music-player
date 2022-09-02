@@ -50,7 +50,7 @@
       <div class="c-share-body">
         <div class="c-share-title">
           <div class="share-title">下载当前歌曲</div>
-          <a :href="song.src" download>点击下载</a>
+          <a :href="song.src.default" download>点击下载</a>
         </div>
         <div class="c-share-title">
           <div class="share-title">下载全部歌曲数据库</div>

@@ -23,7 +23,7 @@ window.meumy = {
     collection: [],
   },
   backdoor: false,
-  use_treated: { value: utils.read_settings().use_treated },
+  use_treated: { value: false },
   debug_list: [],
   audio_player: new MeUmyAudioPlayer(),
 };
