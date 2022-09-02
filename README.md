@@ -1,6 +1,6 @@
 # CSV Based Web Music Player
 
-以csv文件作为数据库的纯前端音乐播放器，使用vue-cli进行构建
+以csv文件作为数据库的纯前端音乐播放器，使用vite进行构建
 
 ## CHANGELOG
 
@@ -52,6 +52,12 @@ npm install
 ### Compiles and hot-reloads for development
 
 ```bash
+npm run dev
+```
+
+### Compiles and preview with static
+
+```bash
 npm run serve
 ```
 
@@ -69,4 +75,4 @@ npm run lint
 
 ### Customize configuration
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+See [Configuration Reference](https://vitejs.dev/guide/).
