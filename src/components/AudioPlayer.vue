@@ -377,7 +377,7 @@ const AudioPlayer = {
       if (load_song || jump) {
         // 如果要求跳转就自动播放
         audio_player.auto_play = auto_play;
-        audio_player.song_ptr = audio_player.playlist.length - 1;
+        audio_player.song_ptr = audio_player.playlist.findIndex((s) => s.id === song.id)
         audio_player.load();
       }
       // 保存当前歌单
