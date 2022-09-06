@@ -231,7 +231,7 @@ class MeUmyAudioPlayer {
   }
 }
 
-let DEBUG_FLAG = true;
+let DEBUG_FLAG = false;
 function debug(o, t) {
   if (DEBUG_FLAG) {
     console.log([new Date(), t, o]);

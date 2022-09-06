@@ -82,7 +82,7 @@ export default {
             clearInterval(this.interval_obj);
             this.is_counting_down = false;
             this.$emit("stop_playing");
-            this.$parent.$refs.player.audio_pause();
+            window.meumy.audio_player.pause();
           }
         }, 1000);
       }

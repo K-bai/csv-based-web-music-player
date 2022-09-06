@@ -419,6 +419,10 @@ const AudioPlayer = {
       // 滚动播放列表到当前歌曲
       this.$refs.playlist.playlist_scroll();
     },
+    audio_pause() {
+      // 暂停播放
+      
+    }
   },
   computed: {
     volume_height() {
