@@ -44,7 +44,7 @@ async function parse_song_csv(t) {
     else if (d2.isBefore(d1)) return 1;
     else {
       // 如果有没有录播信息的就不排序
-      if (s2.record === false || s2.record === false) {
+      if (s1.record === false || s2.record === false) {
         return 0;
       }
       // 按录播bv号判断
