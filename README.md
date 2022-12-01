@@ -4,6 +4,11 @@
 
 ## CHANGELOG
 
+* 2022-12-01
+  * 默认显示20首歌
+  * 提供批量下载歌曲链接
+  * 清空按钮会重置所有搜索条件
+  * bugfix: 全部信息搜索卡死
 * 2022-08-31
   * 分离底层音乐播放与ui
   * 随机播放改用[Fisher-Yates](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)算法

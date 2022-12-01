@@ -43,6 +43,8 @@ export default {
   background-color: white;
   min-width: 50%;
   max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
 }
 .popup-title {
   margin-top: 0.7rem;

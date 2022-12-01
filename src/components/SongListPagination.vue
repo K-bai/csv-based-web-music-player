@@ -64,7 +64,6 @@ export default {
       n_page: this.page,
       n_per_page: this.per_page,
       per_page_option: [
-        { text: "10", value: 10 },
         { text: "20", value: 20 },
         { text: "50", value: 50 },
         { text: "100", value: 100 },

@@ -84,7 +84,7 @@
       </button>
       <button
         class="general-button general-button-grey filter-song-search-clear filter-song-search-button"
-        @click="apply_search(true)"
+        @click="clear_all_filter()"
       >
         清空
       </button>
@@ -246,7 +246,7 @@ export default {
         else {
           l = l.filter((song) => {
             let t = this.search.text_for_search.toLowerCase();
-            let flag = flag;
+            let flag = false;
             flag = flag || song.name.toLowerCase().search(t) !== -1;
             if (song.note !== "")
               flag = flag || song.note.toLowerCase().search(t) !== -1;

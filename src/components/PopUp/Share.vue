@@ -42,9 +42,27 @@
             复制到剪切板
           </button>
         </div>
-        <div class="share-list-text">
-          {{ playlist_id }}
+        <div class="share-list-text">{{ playlist_id }}</div>
+      </div>
+      <hr />
+      <div class="c-share-body">
+        <div class="c-share-title">
+          <div class="share-title">复制歌单全部歌曲链接</div>
+          <el-popover
+            ref="songlist_href_popper"
+            trigger="click"
+            :content="songlist_href_popper.content"
+          />
+          <button
+            id="share-songlist-button"
+            v-popover:songlist_href_popper
+            class="general-button general-button-green copy-button"
+            @click="copy(playlist_href, songlist_href_popper)"
+          >
+            复制到剪切板
+          </button>
         </div>
+        <div class="share-list-text">{{ playlist_href }}</div>
       </div>
       <hr />
       <div class="c-share-body">
@@ -79,12 +97,19 @@ export default {
       songlist_popper: {
         content: "?",
       },
+      songlist_href_popper: {
+        content: "?",
+      },
     };
   },
   computed: {
     playlist_id() {
       return utils.encode_share();
     },
+    playlist_href() {
+      return window.meumy.playlist.filter((i) => i !== "empty_song")
+        .map(s => s.src.default).join("\n");
+    }
   },
   methods: {
     copy(text, popper) {
@@ -126,10 +151,11 @@ export default {
 }
 .share-list-text {
   max-width: 100%;
-  max-height: 5rem;
+  max-height: 4rem;
   overflow-y: scroll;
   word-break: break-all;
   border: 1px solid gray;
   padding: 0.5rem;
+  white-space: pre-wrap;
 }
 </style>

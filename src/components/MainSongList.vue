@@ -227,7 +227,7 @@ export default {
       love_list: window.meumy.love_list,
       expand_list: [],
       page: 1,
-      per_page: 10,
+      per_page: 20,
       song_list_filtered: [],
       playlist: window.meumy.playlist,
     };
