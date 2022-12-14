@@ -11,6 +11,7 @@ class MeUmyAudioPlayer {
     this.load_progress = 0;
     this.play_progress = 0;
     this.duration = 0;
+    this.web_audio = null;
     // control
     this.auto_play = false;
     this.play_mode = "loop"; //loop, loop once, shuffle
@@ -22,6 +23,7 @@ class MeUmyAudioPlayer {
   }
 
   init_ctx_events() {
+    this.ctx.crossOrigin = "anonymous";
     this.ctx.addEventListener("loadedmetadata", () => {
       this.duration = this.ctx.duration;
       this.play_progress = 0;
@@ -140,6 +142,7 @@ class MeUmyAudioPlayer {
     // loop
     if (this.play_mode === "loop") {
       this.song_ptr += offset;
+      this.song_ptr += this.playlist.length;
       this.song_ptr %= this.playlist.length;
     }
     // shuffle
@@ -148,6 +151,7 @@ class MeUmyAudioPlayer {
         (idx) => idx === this.song_ptr
       );
       shuffled_ptr += offset;
+      shuffled_ptr += this.shuffled_list.length;
       shuffled_ptr %= this.shuffled_list.length;
       this.song_ptr = this.shuffled_list[shuffled_ptr];
     }
@@ -228,6 +232,34 @@ class MeUmyAudioPlayer {
       result[index] = value;
     }
     this.shuffled_list = result;
+  }
+
+  init_advanced_ctx() {
+    if (this.web_audio !== null) return;
+    // create Web Audio API Context
+    this.web_audio = {};
+    this.web_audio.ctx = new window.AudioContext();
+    // get source
+    this.web_audio.source = this.web_audio.ctx.createMediaElementSource(this.ctx);
+    // connect to analyser
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/AnalyserNode
+    this.web_audio.analyser = this.web_audio.ctx.createAnalyser();
+    this.web_audio.analyser.fftSize = 128;    
+    this.web_audio.source.connect(this.web_audio.analyser);
+    // connect to destination
+    this.web_audio.source.connect(this.web_audio.ctx.destination);    
+  }
+
+  get_time_domain_data() {
+    let data_array = new Uint8Array(this.web_audio.analyser.frequencyBinCount);
+    this.web_audio.analyser.getByteTimeDomainData(data_array);
+    return data_array;
+  }
+
+  get_freq_data() {
+    let data_array = new Uint8Array(this.web_audio.analyser.frequencyBinCount);
+    this.web_audio.analyser.getByteFrequencyData(data_array);
+    return data_array;
   }
 }
 

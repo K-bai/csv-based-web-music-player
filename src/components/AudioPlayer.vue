@@ -1,5 +1,5 @@
 <template>
-  <div id="player">
+  <div id="player" :class="['player-bg', {'theme-transparent': wallpaper_mode.value}]">
     <div class="c-player" @mousemove="player_mouse_event">
       <div class="c-info">
         <div class="c-songInfo">
@@ -215,6 +215,7 @@ const AudioPlayer = {
       playlist: window.meumy.playlist,
       love_list: window.meumy.love_list,
       current_song: 0,
+      wallpaper_mode: window.meumy.wallpaper_mode
     };
   },
   methods: {

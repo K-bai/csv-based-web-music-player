@@ -7,10 +7,22 @@
     />
     <div class="c-controller">
       <button
-        class="general-button general-button-grey controller-item controller-item-all"
+        class="general-button general-button-grey controller-item"
         @click="all_song_to_playlist"
       >
         全部筛选结果加入播放列表
+      </button>
+      <button
+        class="general-button general-button-grey controller-item"
+        @click="wallpaper_mode.value = true"
+      >
+        进入大屏幕模式
+      </button>
+      <button
+        class="general-button general-button-grey controller-item"
+        @click="replace_loved()"
+      >
+        收听我的星标歌曲
       </button>
     </div>
     <div class="c-song-list">
@@ -230,6 +242,7 @@ export default {
       per_page: 20,
       song_list_filtered: [],
       playlist: window.meumy.playlist,
+      wallpaper_mode: window.meumy.wallpaper_mode
     };
   },
   computed: {
@@ -317,6 +330,13 @@ export default {
       let header = this.$refs.header;
       if (header.getBoundingClientRect().bottom < 0) header.scrollIntoView();
     },
+    replace_loved() {
+      this.$parent.$refs.player.playlist_replace(
+        this.love_list.map(s => (
+          window.meumy.song_list.find(m => m.id === s)
+        ))
+      );
+    }
   },
 };
 </script>

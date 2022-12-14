@@ -41,6 +41,7 @@ export default {
 }
 .c-popup {
   background-color: white;
+  color: black;
   min-width: 50%;
   max-width: 80%;
   max-height: 80%;

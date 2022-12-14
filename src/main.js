@@ -3,17 +3,23 @@ import Vue from "vue";
 
 import "@/js/global.js";
 
-import App from "./App.vue";
-
 Vue.prototype.$ELEMENT = { size: "medium" };
 
 Vue.config.productionTip = false;
 
-const MeUmyPlayer = new Vue({
-  render: (h) => h(App),
-}).$mount("#app");
 
-window.meumyPlayer = MeUmyPlayer;
+
+
+import App from "./App.vue";
+
+const app = new Vue({
+  el: "#app",
+  render (h) {
+    return h(App);
+  }
+});
+
+
 
 // 注册service worker
 /*

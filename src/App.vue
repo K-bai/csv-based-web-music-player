@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <div :class="['c-outer', { 'blur-filter': loading }]">
+  <div id="page_home">
+    <div :class="['c-page-outer', { 'blur-filter': loading }, { 'no-scroll-bar': wallpaper_mode.value }]">
       <page-banner />
       <input v-show="develop" v-model="if_debug" type="checkbox" />
       <div v-show="if_debug">
@@ -22,22 +22,24 @@
       />
     </div>
     <loading-panel v-if="loading" />
+    <wallpaper v-if="wallpaper_mode.value" />
   </div>
 </template>
 
 <script>
-import MainSongList from "./components/MainSongList.vue";
-import AudioPlayer from "./components/AudioPlayer.vue";
-import PageBanner from "./components/PageBanner.vue";
-import ImportSongList from "./components/ImportSongList.vue";
-import PageFooter from "./components/PageFooter.vue";
-import CountdownTimer from "./components/CountdownTimer.vue";
-import CopyCallCode from "./components/CopyCallCode.vue";
-import PopUpInfo from "./components/PopUp/Info.vue";
-import PopUpReceive from "./components/PopUp/Receive.vue";
-import LoadingPanel from "./components/LoadingPanel.vue";
-import song_data from "./js/data.js";
-import utils from "./js/utils.js";
+import MainSongList from "@/components/MainSongList.vue";
+import AudioPlayer from "@/components/AudioPlayer.vue";
+import PageBanner from "@/components/PageBanner.vue";
+import ImportSongList from "@/components/ImportSongList.vue";
+import PageFooter from "@/components/PageFooter.vue";
+import CountdownTimer from "@/components/CountdownTimer.vue";
+import CopyCallCode from "@/components/CopyCallCode.vue";
+import PopUpInfo from "@/components/PopUp/Info.vue";
+import PopUpReceive from "@/components/PopUp/Receive.vue";
+import LoadingPanel from "@/components/LoadingPanel.vue";
+import Wallpaper from "@/components/Wallpaper.vue";
+import song_data from "@/js/data.js";
+import utils from "@/js/utils.js";
 
 export default {
   name: "App",
@@ -52,6 +54,7 @@ export default {
     PopUpInfo,
     PopUpReceive,
     LoadingPanel,
+    Wallpaper
   },
   data() {
     return {
@@ -60,6 +63,7 @@ export default {
       show_info: false,
       show_share: false,
       loading: true,
+      wallpaper_mode: window.meumy.wallpaper_mode,
       share_song: {},
       debug_list: window.meumy.debug_list,
     };
@@ -133,7 +137,7 @@ export default {
 </script>
 
 <style>
-@import "./styles/general.css";
+@import "@/styles/general.css";
 
 @media all and (max-width: 380px) {
   html {
@@ -152,31 +156,39 @@ html {
 body {
   margin: 0px;
 }
-#app {
+#page_home {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   margin-top: 0px;
-  padding-bottom: 20rem;
-  background-image: url("assets/ui/banner_bg_dark.png");
+  background-image: url("@/assets/ui/banner_bg_dark.png");
   background-color: rgb(252, 252, 252);
   width: 100%;
   display: flex;
   justify-content: center;
 }
-.c-outer {
+.c-page-outer {
   max-width: 1200px;
   padding-left: 2rem;
   padding-right: 2rem;
   flex-grow: 1;
+  overflow: hidden;
+}
+.c-page-outer::after {
+  display: block;
+  content: "";
+  height: 10rem;
 }
 
 .blur-filter {
   filter: blur(5px);
 }
-
+.no-scroll-bar {
+  height: 100vh;
+  overflow: hidden;
+}
 @media all and (max-width: 799px) {
-  .c-outer {
+  .c-page-outer {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }

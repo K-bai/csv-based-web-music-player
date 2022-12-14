@@ -81,6 +81,7 @@ export default {
   border-radius: 5px;
   box-shadow: 0px 0px 0.2rem 0px gray;
   z-index: 100;
+  color: black;
 }
 .c-playlist-title {
   padding-left: 0.7rem;

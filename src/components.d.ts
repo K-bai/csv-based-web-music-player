@@ -31,5 +31,6 @@ declare module '@vue/runtime-core' {
     Receive: typeof import('./components/PopUp/Receive.vue')['default']
     Share: typeof import('./components/PopUp/Share.vue')['default']
     SongListPagination: typeof import('./components/SongListPagination.vue')['default']
+    Wallpaper: typeof import('./components/Wallpaper.vue')['default']
   }
 }

@@ -1,6 +1,6 @@
 import utils from "@/js/utils.js";
 import data from "@/js/data.js";
-import MeUmyAudioPlayer from "@/js/audio_player.js";
+import MeUmyAudioPlayer from "@/js/MeUmyAudioPlayer.js";
 
 // 全局变量
 window.meumy = {
@@ -26,4 +26,6 @@ window.meumy = {
   use_treated: { value: false },
   debug_list: [],
   audio_player: new MeUmyAudioPlayer(),
+  wallpaper_mode: { value: false },
+  wallpaper_list: []
 };

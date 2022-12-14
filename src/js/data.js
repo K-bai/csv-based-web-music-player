@@ -18,6 +18,7 @@ async function fetch_csv(url) {
   } else return Promise.reject("Wrong.");
 }
 
+
 async function get_song_data() {
   // 获取数据 包括歌曲数据库、歌单数据库
   let url_list = ["/static/song database.csv", "/static/playlist database.csv"];
@@ -257,6 +258,7 @@ let cutter_list = [
 ];
 
 export default {
+  fetch_csv,
   get_song_data,
   cutter_list,
 };

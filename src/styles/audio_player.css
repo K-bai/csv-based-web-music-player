@@ -1,10 +1,10 @@
-#player {
+.player-bg {
   position: fixed;
   bottom: 0;
   right: 0;
   width: calc(100% - 2rem);
   box-shadow: 0rem 0rem 0.2rem 0rem #888;
-  background-color: #fff;
+  background-color: white;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
@@ -14,6 +14,12 @@
   -webkit-tap-highlight-color: transparent;
   z-index: 10;
 }
+.theme-transparent {
+  background-color: #3333;
+  box-shadow: none;
+  color: white;
+}
+
 .c-player {
   flex-grow: 1;
   display: flex;
@@ -58,9 +64,13 @@
 }
 .c-songStatus {
   width: 100%;
-  color: #888;
+  color: rgb(136, 136, 136);
   display: flex;
   justify-content: space-between;
+}
+.theme-transparent .c-songStatus {
+  color: white;
+  box-shadow: none;
 }
 .c-info-op {
   margin-left: 1rem;
@@ -92,6 +102,11 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+/* change svg color by css filter combinations */
+/* https://stackoverflow.com/questions/42966641/how-to-transform-black-into-any-given-color-using-only-css-filters/43960991 */
+.theme-transparent .playButtons { 
+  filter: brightness(0) saturate(100%) invert(72%) sepia(72%) saturate(185%) hue-rotate(165deg) brightness(100%) contrast(87%);
 }
 .playButtons {
   border-radius: 2em;
@@ -168,6 +183,9 @@
   align-items: center;
   justify-content: center;
 }
+.theme-transparent .otherButtons {
+  filter: invert(1);
+}
 @media (any-hover: hover) {
   .otherButtons:hover {
     background-color: rgba(0, 0, 0, 0.1);
@@ -197,6 +215,10 @@
   left: 2em;
   top: 0px;
 }
+.theme-transparent .playlistButton-corner{
+  color: rgb(186, 186, 186);
+  background-color: #222;
+}
 .otherButtons img {
   width: 1.3em;
   height: 1.3em;
@@ -214,6 +236,9 @@
   z-index: 100;
   display: flex;
   justify-content: center;
+}
+.theme-transparent .c-volumeBar{
+  background-color: #fff5;
 }
 .c-volumeBarRaw {
   height: 100%;
@@ -259,14 +284,22 @@
   overflow: hidden;
   cursor: pointer;
 }
+.theme-transparent .c-progressBarRaw{
+  background-color: #fff3;
+  box-shadow: none;
+}
 .progressBar-loading {
-  background-color: #fff;
+  background-color: white;
   opacity: 0.15;
   height: 0.5rem;
   width: 50%;
   position: relative;
   top: -0.5rem;
   z-index: 10;
+}
+.theme-transparent .progressBar-loading{
+  background-color: #fff6;
+  box-shadow: none;
 }
 .progressBar-fill {
   background-color: #66ccff;
@@ -275,6 +308,10 @@
   width: 10%;
   position: relative;
   z-index: 20;
+}
+.theme-transparent .progressBar-fill{
+  background-color: #66ccff60;
+  box-shadow: none;
 }
 
 @media all and (max-width: 799px) {
